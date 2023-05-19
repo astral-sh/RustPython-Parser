@@ -15,9 +15,7 @@ expression: parse_ast
                 args: [],
                 vararg: None,
                 kwonlyargs: [],
-                kw_defaults: [],
                 kwarg: None,
-                defaults: [],
             },
             body: [
                 Pass(
@@ -39,6 +37,7 @@ expression: parse_ast
             ],
             returns: None,
             type_comment: None,
+            type_params: [],
         },
     ),
     ClassDef(
@@ -67,6 +66,7 @@ expression: parse_ast
                     },
                 ),
             ],
+            type_params: [],
         },
     ),
 ]

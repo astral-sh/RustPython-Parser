@@ -25,7 +25,7 @@ use std::iter;
 
 use crate::text_size::TextRange;
 pub(super) use lalrpop_util::ParseError as LalrpopError;
-use rustpython_ast::OptionalRange;
+use rustpython_ast::{OptionalRange, Stmt};
 
 /// Parse a full Python program usually consisting of multiple lines.
 ///  
@@ -192,8 +192,7 @@ pub fn parse_tokens(
     let marker_token = (Tok::start_marker(mode), Default::default());
     let lexer = iter::once(Ok(marker_token)).chain(lxr);
     #[cfg(feature = "full-lexer")]
-    let lexer =
-        lexer.filter_ok(|(tok, _)| !matches!(tok, Tok::Comment { .. } | Tok::NonLogicalNewline));
+    let lexer = lexer.filter_ok(|(tok, _)| !matches!(tok, Tok::NonLogicalNewline));
     python::TopParser::new()
         .parse(
             lexer
@@ -326,9 +325,15 @@ pub(super) fn optional_range(start: TextSize, end: TextSize) -> OptionalRange<Te
     OptionalRange::<TextRange>::new(start, end)
 }
 
+pub(super) struct Body {
+    pub(super) statements: Vec<Stmt>,
+    pub(super) end: TextSize,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::lexer::lex;
 
     #[test]
     fn test_parse_empty() {
@@ -855,7 +860,7 @@ def args_to_tuple(*args: *Ts) -> Tuple[*Ts]: ...
     }
 
     #[test]
-    #[cfg(not(feature = "all-nodes-with-ranges"))]
+    #[cfg(feature = "all-nodes-with-ranges")]
     fn decorator_ranges() {
         let parse_ast = parse_program(
             r#"
@@ -866,6 +871,67 @@ def test():
 @class_decorator
 class Abcd:
     pass
+"#
+            .trim(),
+            "<test>",
+        )
+        .unwrap();
+        insta::assert_debug_snapshot!(parse_ast);
+    }
+
+    #[test]
+    fn body_comment_ranges() {
+        let tokens: Vec<_> = lex(
+            r#"
+def test(a):
+    a + 4
+    
+    # comment
+
+class Abcd:
+    pass
+    
+    # trailing comment
+            "#
+            .trim(),
+            Mode::Module,
+        )
+        .collect();
+
+        dbg!(&tokens);
+
+        let parse_ast = parse_program(
+            r#"
+def test(a):
+    a + 4
+    
+    # comment
+
+class Abcd:
+    pass
+    
+    # trailing comment
+"#
+            .trim(),
+            "<test>",
+        )
+        .unwrap();
+        insta::assert_debug_snapshot!(parse_ast);
+    }
+
+    #[test]
+    fn if_ranges() {
+        let parse_ast = parse_program(
+            r#"
+x = 2
+if True:
+    x = 4 + 3
+elif False:
+    x = 2 + 30
+elif x % 2 == 0:
+    x = x * 2
+else:
+    x = 0
 "#
             .trim(),
             "<test>",

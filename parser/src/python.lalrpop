@@ -10,7 +10,7 @@ use crate::{
     context::set_context,
     string::parse_strings,
     token::{self, StringKind},
-    text_size::TextSize, parser::optional_range
+    text_size::TextSize, parser::{optional_range, Body}
 };
 use num_bigint::BigInt;
 
@@ -34,7 +34,7 @@ Program: ast::Suite = {
     },
 
     // Small statements
-    <mut statements:Program> <small:(<SmallStatement> ";")*> <last:SmallStatement> ";"? "\n" => {
+    <mut statements:Program> <small:(<SmallStatement> ";")*> <last:SmallStatement> ";"? "# comment"? "\n" => {
         statements.extend(small);
         statements.push(last);
         statements
@@ -42,39 +42,45 @@ Program: ast::Suite = {
 
     // Empty lines
     <s:Program> "\n" => s,
+
+    <s:Program> "# comment" => s,
 };
 
-Suite: ast::Suite = {
-    <mut statements:(<SmallStatement> ";")*> <last:SmallStatement> ";"? "\n" => {
+Body: Body = {
+    <mut statements:(<SmallStatement> ";")*> <last:SmallStatement> ";"? <end:@R> "# comment"? "\n" => {
         statements.push(last);
-        statements
+        Body { statements, end }
     },
-    "\n" Indent <s:Statements> Dedent => s,
+    "\n" Indent <body:Statements> Dedent => body
 };
 
 
 // One or more statements
-Statements: Vec<ast::Stmt> = {
+Statements: Body = {
     // First simple statement
-    <mut head:(<SmallStatement> ";")*> <last:SmallStatement> ";"? "\n" => {
-        head.push(last);
-        head
+    <mut statements:(<SmallStatement> ";")*> <last:SmallStatement> ";"? <end:@R> "# comment"? "\n" => {
+        statements.push(last);
+        Body { statements, end }
     },
 
     // The first compound statement
-    <s:CompoundStatement> => vec![s],
+    <s:CompoundStatement> => Body { end: s.end(), statements: vec![s] },
+
+    <body: Body> "# comment" <end:@R> => Body { end, statements: body.statements },
 
     // Any subsequent compound statements
-    <mut statements:Statements> <next:CompoundStatement> => {
-        statements.push(next);
-        statements
+    <mut body:Statements> <next:CompoundStatement> => {
+        body.end = next.end();
+        body.statements.push(next);
+        body
     },
 
     // Any subsequent small statements
-    <mut statements:Statements> <small:(<SmallStatement> ";")*> <last:SmallStatement> ";"? "\n" => {
-        statements.extend(small);
-        statements.push(last);
-        statements
+    <mut body:Statements> <small:(<SmallStatement> ";")*> <last:SmallStatement> ";"? <end:@R> "# comment"? "\n" => {
+        body.statements.extend(small);
+        body.statements.push(last);
+        body.end = end;
+        body
     },
 };
 
@@ -387,12 +393,12 @@ MatchStatement: ast::Stmt = {
 }
 
 MatchCase: ast::MatchCase = {
-    <start:@L> "case" <pattern:Patterns> <guard:(Guard)?> ":" <body:Suite> <end:@R> => {
+    <start:@L> "case" <pattern:Patterns> <guard:(Guard)?> ":" <body:Body> => {
         ast::MatchCase {
             pattern,
             guard: guard.map(Box::new),
-            body,
-            range: optional_range(start, end)
+            body: body.statements,
+            range: optional_range(start, body.end)
         }
     },
 }
@@ -758,142 +764,126 @@ ClassPattern: ast::Pattern = {
 }
 
 IfStatement: ast::Stmt = {
-    <location:@L> "if" <test:NamedExpressionTest> ":" <body:Suite> <s2:(<@L> "elif" <NamedExpressionTest> ":" <Suite>)*> <s3:("else" ":" <Suite>)?> => {
-        // Determine last else:
-        let mut last = s3.unwrap_or_default();
-        let end_location = last
-            .last()
-            .or_else(|| s2.last().and_then(|last| last.2.last()))
-            .or_else(|| body.last())
-            .unwrap()
-            .end();
-        // handle elif:
-        for i in s2.into_iter().rev() {
+    <location:@L> "if" <test:NamedExpressionTest> ":" <body:Body> <elifs:(<@L> "elif" <NamedExpressionTest> ":" <Body>)*> <orelse:("else" ":" <Body>)?> => {
+        let (end, mut last) = if let Some(orelse) = orelse {
+            (orelse.end, orelse.statements)
+        } else {
+            (elifs.last().map_or(body.end, |(_, _, body)| body.end), vec![])
+        };
+
+        for elif in elifs.into_iter().rev() {
             let x = ast::Stmt::If(
-                ast::StmtIf { test: Box::new(i.1), body: i.2, orelse: last, range: (i.0..end_location).into() }
+                ast::StmtIf { test: Box::new(elif.1), body: elif.2.statements, orelse: last, range: (elif.0..end).into() }
             );
-            last = vec![x];
+
+            last = vec![x]
         }
 
         ast::Stmt::If(
-            ast::StmtIf { test: Box::new(test), body, orelse: last, range: (location..end_location).into() }
+            ast::StmtIf { test: Box::new(test), body: body.statements, orelse: last, range: (location..end).into() }
         )
     },
 };
 
 WhileStatement: ast::Stmt = {
-    <location:@L> "while" <test:NamedExpressionTest> ":" <body:Suite> <s2:("else" ":" <Suite>)?> => {
-        let orelse = s2.unwrap_or_default();
-        let end_location = orelse
-            .last()
-            .or_else(|| body.last())
-            .unwrap()
-            .end();
+    <location:@L> "while" <test:NamedExpressionTest> ":" <body:Body> <orelse:("else" ":" <Body>)?> => {
+        let (orelse, end) = orelse.map_or((vec![], body.end), |orelse| (orelse.statements, orelse.end));
         ast::Stmt::While(
             ast::StmtWhile {
                 test: Box::new(test),
-                body,
+                body: body.statements,
                 orelse,
-                range: (location..end_location).into()
+                range: (location..end).into()
             },
         )
     },
 };
 
 ForStatement: ast::Stmt = {
-    <location:@L> <is_async:"async"?> "for" <target:ExpressionList> "in" <iter:TestList> ":" <body:Suite> <orelse:("else" ":" <Suite>)?> => {
-        let orelse = orelse.unwrap_or_default();
-        let end_location = orelse
-            .last()
-            .or_else(|| body.last())
-            .unwrap()
-            .end();
+    <location:@L> <is_async:"async"?> "for" <target:ExpressionList> "in" <iter:TestList> ":" <body:Body> <orelse:("else" ":" <Body>)?> => {
+        let (orelse, end) = orelse.map_or((vec![], body.end), |orelse| (orelse.statements, orelse.end));
+
         let target = Box::new(set_context(target, ast::ExprContext::Store));
         let iter = Box::new(iter);
         let type_comment = None;
         if is_async.is_some() {
-            ast::Stmt::AsyncFor(ast::StmtAsyncFor { target, iter, body, orelse, type_comment, range: (location..end_location).into() })
+            ast::Stmt::AsyncFor(ast::StmtAsyncFor { target, iter, body: body.statements, orelse, type_comment, range: (location..end).into() })
         } else {
-            ast::Stmt::For(ast::StmtFor { target, iter, body, orelse, type_comment, range: (location..end_location).into() })
+            ast::Stmt::For(ast::StmtFor { target, iter, body: body.statements, orelse, type_comment, range: (location..end).into() })
         }
     },
 };
 
 TryStatement: ast::Stmt = {
-    <location:@L> "try" ":" <body:Suite> <handlers:ExceptClause+> <orelse:("else" ":" <Suite>)?> <finalbody:("finally" ":" <Suite>)?> <end_location:@R> => {
-        let orelse = orelse.unwrap_or_default();
-        let finalbody = finalbody.unwrap_or_default();
-        let end_location = finalbody
-            .last()
-            .map(|last| last.end())
-            .or_else(|| orelse.last().map(|last| last.end()))
-            .or_else(|| handlers.last().map(|last| last.end()))
-            .unwrap();
+    <location:@L> "try" ":" <body:Body> <handlers:ExceptClause+> <orelse:("else" ":" <Body>)?> <finalbody:("finally" ":" <Body>)?> => {
+        let (orelse, finalbody, end) = if let Some(finalbody) = finalbody {
+            (orelse.map_or(vec![], |orelse| orelse.statements), finalbody.statements, finalbody.end)
+        } else if let Some(orelse) = orelse {
+            (orelse.statements, vec![], orelse.end)
+        } else {
+            (vec![], vec![], handlers.last().unwrap().end())
+        };
+
         ast::Stmt::Try(
             ast::StmtTry {
-                body,
+                body: body.statements,
                 handlers,
                 orelse,
                 finalbody,
-                range: (location..end_location).into()
+                range: (location..end).into()
             },
         )
     },
-    <location:@L> "try" ":" <body:Suite> <handlers:ExceptStarClause+> <orelse:("else" ":" <Suite>)?> <finalbody:("finally" ":" <Suite>)?> <end_location:@R> => {
-        let orelse = orelse.unwrap_or_default();
-        let finalbody = finalbody.unwrap_or_default();
-        let end_location = finalbody
-            .last()
-            .or_else(|| orelse.last())
-            .map(|last| last.end())
-            .or_else(|| handlers.last().map(|last| last.end()))
-            .unwrap();
+    <location:@L> "try" ":" <body:Body> <handlers:ExceptStarClause+> <orelse:("else" ":" <Body>)?> <finalbody:("finally" ":" <Body>)?> => {
+        let (orelse, finalbody, end) = if let Some(finalbody) = finalbody {
+             (orelse.map_or(vec![], |orelse| orelse.statements), finalbody.statements, finalbody.end)
+         } else if let Some(orelse) = orelse {
+             (orelse.statements, vec![], orelse.end)
+         } else {
+             (vec![], vec![], handlers.last().unwrap().end())
+         };
+
         ast::Stmt::TryStar(
             ast::StmtTryStar {
-                body,
+                body: body.statements,
                 handlers,
                 orelse,
                 finalbody,
-                range: (location..end_location).into()
+                range: (location..end).into()
             },
         )
     },
-    <location:@L> "try" ":" <body:Suite> <finalbody:("finally" ":" <Suite>)> => {
-        let handlers = vec![];
-        let orelse = vec![];
-        let end_location = finalbody.last().unwrap().end();
+    <location:@L> "try" ":" <body:Body> <finalbody:("finally" ":" <Body>)> => {
         ast::Stmt::Try(
             ast::StmtTry {
-                body,
-                handlers,
-                orelse,
-                finalbody,
-                range: (location..end_location).into()
+                body: body.statements,
+                handlers: vec![],
+                orelse: vec![],
+                finalbody: finalbody.statements,
+                range: (location..finalbody.end).into()
             },
         )
     },
 };
 
 ExceptStarClause: ast::Excepthandler = {
-    <location:@L> "except" "*" <typ:Test<"all">> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+    <location:@L> "except" "*" <typ:Test<"all">> ":" <body:Body> => {
         ast::Excepthandler::ExceptHandler(
             ast::ExcepthandlerExceptHandler {
                 type_: Some(Box::new(typ)),
                 name: None,
-                body,
-                range: (location..end_location).into()
+                body: body.statements,
+                range: (location..body.end).into()
             },
         )
     },
-    <location:@L> "except" "*" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+    <location:@L> "except" "*" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Body> => {
         ast::Excepthandler::ExceptHandler(
             ast::ExcepthandlerExceptHandler {
                 type_: Some(Box::new(x.0)),
                 name: Some(x.1),
-                body,
-                range: (location..end_location).into()
+                body: body.statements,
+                range: (location..body.end).into()
             },
         )
     },
@@ -901,38 +891,35 @@ ExceptStarClause: ast::Excepthandler = {
 
 
 ExceptClause: ast::Excepthandler = {
-    <location:@L> "except" <typ:Test<"all">?> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+    <location:@L> "except" <typ:Test<"all">?> ":" <body:Body> => {
         ast::Excepthandler::ExceptHandler(
             ast::ExcepthandlerExceptHandler {
                 type_: typ.map(Box::new),
                 name: None,
-                body,
-                range: (location..end_location).into()
+                body: body.statements,
+                range: (location..body.end).into()
             },
         )
     },
-    <location:@L> "except" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+    <location:@L> "except" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Body> => {
         ast::Excepthandler::ExceptHandler(
             ast::ExcepthandlerExceptHandler {
                 type_: Some(Box::new(x.0)),
                 name: Some(x.1),
-                body,
-                range: (location..end_location).into()
+                body: body.statements,
+                range: (location..body.end).into()
             },
         )
     },
 };
 
 WithStatement: ast::Stmt = {
-    <location:@L> <is_async:"async"?> "with" <items:WithItems> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+    <location:@L> <is_async:"async"?> "with" <items:WithItems> ":" <body:Body> => {
         let type_comment = None;
         if is_async.is_some() {
-            ast::StmtAsyncWith { items, body, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtAsyncWith { items, body: body.statements, type_comment, range: (location..body.end).into() }.into()
         } else {
-            ast::StmtWith { items, body, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtWith { items, body: body.statements, type_comment, range: (location..body.end).into() }.into()
         }
     },
 };
@@ -964,15 +951,29 @@ WithItem<Goal>: ast::Withitem = {
 };
 
 FuncDef: ast::Stmt = {
-    <location:@L> <decorator_list:Decorator*> <is_async:"async"?> "def" <name:Identifier> <args:Parameters> <r:("->" <Test<"all">>)?> ":" <body:Suite> => {
+    <location:@L> <decorator_list:Decorator*> <is_async:"async"?> "def" <name:Identifier> <args:Parameters> <r:("->" <Test<"all">>)?> ":" <body:Body> => {
         let args = Box::new(args);
         let returns = r.map(|x| Box::new(x));
-        let end_location = body.last().unwrap().end();
-        let type_comment = None;
         if is_async.is_some() {
-            ast::StmtAsyncFunctionDef { name, args, body, decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtAsyncFunctionDef {
+                name,
+                args,
+                body: body.statements,
+                decorator_list,
+                returns,
+                type_comment: None,
+                range: (location..body.end).into()
+            }.into()
         } else {
-            ast::StmtFunctionDef { name, args, body, decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtFunctionDef {
+                name,
+                args,
+                body: body.statements,
+                decorator_list,
+                returns,
+                type_comment: None,
+                range: (location..body.end).into()
+            }.into()
         }
     },
 };
@@ -1135,20 +1136,19 @@ KwargParameter<ArgType>: Option<Box<ast::Arg>> = {
 };
 
 ClassDef: ast::Stmt = {
-    <location:@L> <decorator_list:Decorator*> "class" <name:Identifier> <a:("(" ArgumentList ")")?> ":" <body:Suite> => {
+    <location:@L> <decorator_list:Decorator*> "class" <name:Identifier> <a:("(" ArgumentList ")")?> ":" <body:Body> => {
         let (bases, keywords) = match a {
             Some((_, arg, _)) => (arg.args, arg.keywords),
             None => (vec![], vec![]),
         };
-        let end_location = body.last().unwrap().end();
         ast::Stmt::ClassDef(
             ast::StmtClassDef {
                 name,
                 bases,
                 keywords,
-                body,
+                body: body.statements,
                 decorator_list,
-                range: (location..end_location).into()
+                range: (location..body.end).into()
             },
         )
     },
@@ -1764,6 +1764,6 @@ extern {
         name => token::Tok::Name { name: <String> },
         "\n" => token::Tok::Newline,
         ";" => token::Tok::Semi,
-        // "#" => token::Tok::Comment(_),
+         "# comment" => token::Tok::Comment(_),
     }
 }

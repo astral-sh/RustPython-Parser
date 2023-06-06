@@ -157,7 +157,6 @@ mod tests {
     use super::*;
     use crate::{ast, parser::ParseErrorType, Parse};
 
-    #[cfg(not(feature = "all-nodes-with-ranges"))]
     macro_rules! function_and_lambda {
         ($($name:ident: $code:expr,)*) => {
             $(
@@ -168,6 +167,12 @@ mod tests {
                 }
             )*
         }
+    }
+
+    #[cfg(feature = "all-nodes-with-ranges")]
+    function_and_lambda! {
+        test_function_no_args_with_ranges: "def f(): pass",
+        test_function_pos_args_with_ranges: "def f(a, b, c): pass",
     }
 
     #[cfg(not(feature = "all-nodes-with-ranges"))]

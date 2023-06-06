@@ -981,7 +981,12 @@ FuncDef: ast::Stmt = {
 
 Parameters: ast::Arguments = {
     <location:@L> "(" <a: (ParameterList<TypedParameter, StarTypedParameter>)?> ")" <end_location:@R> =>? {
-        let args = a.map(validate_arguments).transpose()?.unwrap_or_else(|| ast::Arguments {
+        let range = optional_range(location, end_location);
+
+        let args = a.map(|mut arguments| {
+            arguments.range = range;
+            validate_arguments(arguments)
+        }).transpose()?.unwrap_or_else(|| ast::Arguments {
             posonlyargs: vec![],
             args: vec![],
             vararg: None,
@@ -989,7 +994,7 @@ Parameters: ast::Arguments = {
             kw_defaults: vec![],
             kwarg: None,
             defaults: vec![],
-            range: optional_range(location, end_location)
+            range
         });
 
         Ok(args)

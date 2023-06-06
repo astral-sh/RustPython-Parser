@@ -1,5 +1,5 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: 296701055ca179a96941a32e449ac86c8d9717215b1dc90c07a7f617741ffa73
+// sha3: d9f1bf2848c06bf5048a11dc3b2d72d6bbe377e857ab1c930fa1d5e9a4150f93
 use crate::{
     ast::{self as ast, Ranged},
     lexer::{LexicalError, LexicalErrorType},
@@ -30997,7 +30997,12 @@ fn __action158<
 ) -> Result<ast::Arguments,__lalrpop_util::ParseError<TextSize,token::Tok,LexicalError>>
 {
     {
-        let args = a.map(validate_arguments).transpose()?.unwrap_or_else(|| ast::Arguments {
+        let range = optional_range(location, end_location);
+
+        let args = a.map(|mut arguments| {
+            arguments.range = range;
+            validate_arguments(arguments)
+        }).transpose()?.unwrap_or_else(|| ast::Arguments {
             posonlyargs: vec![],
             args: vec![],
             vararg: None,
@@ -31005,7 +31010,7 @@ fn __action158<
             kw_defaults: vec![],
             kwarg: None,
             defaults: vec![],
-            range: optional_range(location, end_location)
+            range
         });
 
         Ok(args)

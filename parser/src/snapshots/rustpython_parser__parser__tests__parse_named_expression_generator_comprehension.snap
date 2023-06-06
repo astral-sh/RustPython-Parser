@@ -10,7 +10,7 @@ GeneratorExp(
                 range: 1..11,
                 target: Name(
                     ExprName {
-                        range: 1..2,
+                        range: 1..11,
                         id: Identifier(
                             "x",
                         ),

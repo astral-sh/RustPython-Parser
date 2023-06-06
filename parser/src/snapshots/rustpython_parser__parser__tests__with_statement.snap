@@ -1,6 +1,6 @@
 ---
 source: parser/src/parser.rs
-expression: "parse_program(source, \"<test>\").unwrap()"
+expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
 ---
 [
     With(
@@ -798,7 +798,7 @@ expression: "parse_program(source, \"<test>\").unwrap()"
                             range: 362..368,
                             target: Name(
                                 ExprName {
-                                    range: 362..363,
+                                    range: 362..368,
                                     id: Identifier(
                                         "a",
                                     ),
@@ -840,7 +840,7 @@ expression: "parse_program(source, \"<test>\").unwrap()"
                             range: 382..388,
                             target: Name(
                                 ExprName {
-                                    range: 382..383,
+                                    range: 382..388,
                                     id: Identifier(
                                         "a",
                                     ),
@@ -896,7 +896,7 @@ expression: "parse_program(source, \"<test>\").unwrap()"
                                         range: 407..413,
                                         target: Name(
                                             ExprName {
-                                                range: 407..408,
+                                                range: 407..413,
                                                 id: Identifier(
                                                     "a",
                                                 ),
@@ -919,7 +919,7 @@ expression: "parse_program(source, \"<test>\").unwrap()"
                                         range: 415..421,
                                         target: Name(
                                             ExprName {
-                                                range: 415..416,
+                                                range: 415..421,
                                                 id: Identifier(
                                                     "b",
                                                 ),
@@ -969,7 +969,7 @@ expression: "parse_program(source, \"<test>\").unwrap()"
                                         range: 435..441,
                                         target: Name(
                                             ExprName {
-                                                range: 435..436,
+                                                range: 435..441,
                                                 id: Identifier(
                                                     "a",
                                                 ),
@@ -992,7 +992,7 @@ expression: "parse_program(source, \"<test>\").unwrap()"
                                         range: 443..449,
                                         target: Name(
                                             ExprName {
-                                                range: 443..444,
+                                                range: 443..449,
                                                 id: Identifier(
                                                     "b",
                                                 ),

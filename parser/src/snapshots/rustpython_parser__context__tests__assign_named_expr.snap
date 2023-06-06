@@ -11,7 +11,7 @@ expression: parse_ast
                     range: 3..8,
                     target: Name(
                         ExprName {
-                            range: 3..4,
+                            range: 3..8,
                             id: Identifier(
                                 "x",
                             ),

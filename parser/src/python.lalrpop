@@ -1196,7 +1196,7 @@ NamedExpressionTest: ast::Expr = {
 }
 
 NamedExpression: ast::Expr = {
-    <location:@L> <id:Identifier> <end_location:@R> ":=" <value:Test<"all">> => {
+    <location:@L> <id:Identifier> ":=" <value:Test<"all">> <end_location:@R> => {
         ast::Expr::NamedExpr(
             ast::ExprNamedExpr {
                 target: Box::new(ast::Expr::Name(

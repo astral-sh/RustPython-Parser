@@ -1,5 +1,5 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: d9f1bf2848c06bf5048a11dc3b2d72d6bbe377e857ab1c930fa1d5e9a4150f93
+// sha3: e8cc0d11eb29904c135fe2793b7dc33af644f34e9a673fa815b5e498153d3c95
 use crate::{
     ast::{self as ast, Ranged},
     lexer::{LexicalError, LexicalErrorType},
@@ -31155,9 +31155,9 @@ fn __action168<
 >(
     (_, location, _): (TextSize, TextSize, TextSize),
     (_, id, _): (TextSize, ast::Identifier, TextSize),
-    (_, end_location, _): (TextSize, TextSize, TextSize),
     (_, _, _): (TextSize, token::Tok, TextSize),
     (_, value, _): (TextSize, ast::Expr, TextSize),
+    (_, end_location, _): (TextSize, TextSize, TextSize),
 ) -> ast::Expr
 {
     {
@@ -42457,9 +42457,9 @@ fn __action822<
 fn __action823<
 >(
     __0: (TextSize, ast::Identifier, TextSize),
-    __1: (TextSize, TextSize, TextSize),
-    __2: (TextSize, token::Tok, TextSize),
-    __3: (TextSize, ast::Expr, TextSize),
+    __1: (TextSize, token::Tok, TextSize),
+    __2: (TextSize, ast::Expr, TextSize),
+    __3: (TextSize, TextSize, TextSize),
 ) -> ast::Expr
 {
     let __start0 = __0.0;
@@ -53509,8 +53509,8 @@ fn __action1281<
     __2: (TextSize, ast::Expr, TextSize),
 ) -> ast::Expr
 {
-    let __start0 = __0.2;
-    let __end0 = __1.0;
+    let __start0 = __2.2;
+    let __end0 = __2.2;
     let __temp0 = __action370(
         &__start0,
         &__end0,
@@ -53518,9 +53518,9 @@ fn __action1281<
     let __temp0 = (__start0, __temp0, __end0);
     __action823(
         __0,
-        __temp0,
         __1,
         __2,
+        __temp0,
     )
 }
 

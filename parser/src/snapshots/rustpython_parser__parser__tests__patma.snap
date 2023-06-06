@@ -1996,7 +1996,7 @@ expression: parse_ast
                                 range: 1472..1482,
                                 target: Name(
                                     ExprName {
-                                        range: 1472..1473,
+                                        range: 1472..1482,
                                         id: Identifier(
                                             "x",
                                         ),
@@ -3880,7 +3880,7 @@ expression: parse_ast
                     range: 2789..2795,
                     target: Name(
                         ExprName {
-                            range: 2789..2790,
+                            range: 2789..2795,
                             id: Identifier(
                                 "w",
                             ),

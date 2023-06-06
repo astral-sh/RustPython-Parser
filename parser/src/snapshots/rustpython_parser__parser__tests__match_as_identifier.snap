@@ -670,7 +670,7 @@ expression: parse_ast
                     range: 510..520,
                     target: Name(
                         ExprName {
-                            range: 510..515,
+                            range: 510..520,
                             id: Identifier(
                                 "match",
                             ),

@@ -4059,6 +4059,22 @@ impl TypeIgnoreTypeIgnore {
     }
 }
 
+#[pyclass(module="rustpython_ast.ranged", name="_decorator", extends=super::Ast, frozen)]
+#[derive(Clone, Debug)]
+pub struct Decorator(pub &'static ast::Decorator<TextRange>);
+
+impl From<&'static ast::Decorator<TextRange>> for Decorator {
+    fn from(node: &'static ast::Decorator<TextRange>) -> Self {
+        Decorator(node)
+    }
+}
+
+impl ToPyObject for Decorator {
+    fn to_object(&self, py: Python) -> PyObject {
+        let initializer = PyClassInitializer::from(Ast).add_subclass(self.clone());        
+        Py::new(py, initializer).unwrap().into_py(py)
+    }
+}
 #[pyclass(module="rustpython_ast.ranged", name="_type_param", extends=super::Ast, frozen, subclass)]
 #[derive(Clone, Debug)]
 pub struct TypeParam;
@@ -4083,6 +4099,12 @@ impl ToPyObject for TypeParam {
     }
 }
 
+impl ToPyWrapper for ast::Decorator<TextRange> {
+    #[inline]
+    fn to_py_wrapper(&'static self, py: Python) -> PyResult<Py<PyAny>> {
+        Ok(Decorator(self).to_object(py))
+    }
+}
 impl ToPyWrapper for ast::TypeParam<TextRange> {
     #[inline]
     fn to_py_wrapper(&'static self, py: Python) -> PyResult<Py<PyAny>> {
@@ -4121,6 +4143,13 @@ impl ToPyWrapper for ast::TypeParamTypeVar<TextRange> {
 }
 
 #[pymethods]
+impl Decorator {
+    #[getter]
+    #[inline]
+    fn get_expression(&self, py: Python) -> PyResult<PyObject> {
+        self.0.expression.to_py_wrapper(py)
+    }
+}
 impl TypeParamTypeVar {
     #[getter]
     #[inline]
@@ -4330,5 +4359,6 @@ pub fn add_to_module(py: Python, m: &PyModule) -> PyResult<()> {
     super::init_type::<TypeParamTypeVar, ast::TypeParamTypeVar>(py, m)?;
     super::init_type::<TypeParamParamSpec, ast::TypeParamParamSpec>(py, m)?;
     super::init_type::<TypeParamTypeVarTuple, ast::TypeParamTypeVarTuple>(py, m)?;
+    super::init_type::<Decorator, ast::Decorator>(py, m)?;
     Ok(())
 }

@@ -1383,6 +1383,23 @@ impl LocatedMut for TypeIgnore {
     }
 }
 
+
+pub type Decorator = crate::generic::Decorator<SourceRange>;
+
+#[cfg(feature = "all-nodes-with-ranges")]
+impl Located for Decorator {
+    fn range(&self) -> SourceRange {
+        self.range
+    }
+}
+
+#[cfg(feature = "all-nodes-with-ranges")]
+impl LocatedMut for Decorator {
+    fn range_mut(&mut self) -> &mut SourceRange {
+        &mut self.range
+    }
+}
+
 pub type TypeParam = crate::generic::TypeParam<SourceRange>;
 
 pub type TypeParamTypeVar = crate::generic::TypeParamTypeVar<SourceRange>;

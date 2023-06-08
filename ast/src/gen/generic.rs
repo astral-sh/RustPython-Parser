@@ -23,6 +23,7 @@ pub enum Ast<R = TextRange> {
     MatchCase(MatchCase<R>),
     Pattern(Pattern<R>),
     TypeIgnore(TypeIgnore<R>),
+    Decorator(Decorator<R>),
 }
 impl<R> Node for Ast<R> {
     const NAME: &'static str = "AST";
@@ -137,6 +138,12 @@ impl<R> From<TypeIgnore<R>> for Ast<R> {
     }
 }
 
+impl<R> From<Decorator<R>> for Ast<R> {
+    fn from(node: Decorator<R>) -> Self {
+        Ast::Decorator(node)
+    }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct ModModule<R = TextRange> {
     pub range: OptionalRange<R>,
@@ -242,7 +249,7 @@ pub struct StmtFunctionDef<R = TextRange> {
     pub name: Identifier,
     pub args: Box<Arguments<R>>,
     pub body: Vec<Stmt<R>>,
-    pub decorator_list: Vec<Expr<R>>,
+    pub decorator_list: Vec<Decorator<R>>,
     pub returns: Option<Box<Expr<R>>>,
     pub type_comment: Option<String>,
 }
@@ -275,7 +282,7 @@ pub struct StmtAsyncFunctionDef<R = TextRange> {
     pub name: Identifier,
     pub args: Box<Arguments<R>>,
     pub body: Vec<Stmt<R>>,
-    pub decorator_list: Vec<Expr<R>>,
+    pub decorator_list: Vec<Decorator<R>>,
     pub returns: Option<Box<Expr<R>>>,
     pub type_comment: Option<String>,
 }
@@ -309,7 +316,7 @@ pub struct StmtClassDef<R = TextRange> {
     pub bases: Vec<Expr<R>>,
     pub keywords: Vec<Keyword<R>>,
     pub body: Vec<Stmt<R>>,
-    pub decorator_list: Vec<Expr<R>>,
+    pub decorator_list: Vec<Decorator<R>>,
 }
 
 impl<R> Node for StmtClassDef<R> {
@@ -2986,4 +2993,15 @@ pub enum TypeIgnore<R = TextRange> {
 impl<R> Node for TypeIgnore<R> {
     const NAME: &'static str = "type_ignore";
     const FIELD_NAMES: &'static [&'static str] = &[];
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct Decorator<R = TextRange> {
+    pub range: OptionalRange<R>,
+    pub expression: Expr<R>,
+}
+
+impl<R> Node for Decorator<R> {
+    const NAME: &'static str = "decorator";
+    const FIELD_NAMES: &'static [&'static str] = &["expression"];
 }

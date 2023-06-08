@@ -495,3 +495,10 @@ impl Ranged for crate::TypeIgnore {
         }
     }
 }
+
+#[cfg(feature = "all-nodes-with-ranges")]
+impl Ranged for crate::generic::Decorator<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}

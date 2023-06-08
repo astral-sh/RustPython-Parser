@@ -815,3 +815,13 @@ impl Located for TypeIgnore {
         }
     }
 }
+
+pub type Decorator = crate::generic::Decorator<SourceRange>;
+
+#[cfg(feature = "all-nodes-with-ranges")]
+
+impl Located for Decorator {
+    fn range(&self) -> SourceRange {
+        self.range
+    }
+}

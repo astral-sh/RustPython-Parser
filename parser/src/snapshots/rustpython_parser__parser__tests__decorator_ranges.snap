@@ -6,11 +6,12 @@ expression: parse_ast
     FunctionDef(
         StmtFunctionDef {
             range: 0..34,
-            name: Identifier(
-                "test",
-            ),
+            name: Identifier {
+                id: "test",
+                range: 18..22,
+            },
             args: Arguments {
-                range: (),
+                range: 22..24,
                 posonlyargs: [],
                 args: [],
                 vararg: None,
@@ -25,15 +26,16 @@ expression: parse_ast
                 ),
             ],
             decorator_list: [
-                Name(
-                    ExprName {
-                        range: 1..13,
-                        id: Identifier(
-                            "my_decorator",
-                        ),
-                        ctx: Load,
-                    },
-                ),
+                Decorator {
+                    range: 0..13,
+                    expression: Name(
+                        ExprName {
+                            range: 1..13,
+                            id: "my_decorator",
+                            ctx: Load,
+                        },
+                    ),
+                },
             ],
             returns: None,
             type_comment: None,
@@ -43,9 +45,10 @@ expression: parse_ast
     ClassDef(
         StmtClassDef {
             range: 36..73,
-            name: Identifier(
-                "Abcd",
-            ),
+            name: Identifier {
+                id: "Abcd",
+                range: 59..63,
+            },
             bases: [],
             keywords: [],
             body: [
@@ -56,15 +59,16 @@ expression: parse_ast
                 ),
             ],
             decorator_list: [
-                Name(
-                    ExprName {
-                        range: 37..52,
-                        id: Identifier(
-                            "class_decorator",
-                        ),
-                        ctx: Load,
-                    },
-                ),
+                Decorator {
+                    range: 36..52,
+                    expression: Name(
+                        ExprName {
+                            range: 37..52,
+                            id: "class_decorator",
+                            ctx: Load,
+                        },
+                    ),
+                },
             ],
             type_params: [],
         },

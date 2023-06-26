@@ -19,7 +19,7 @@ where
     T: Ranged,
 {
     fn range(&self) -> TextRange {
-        self.range()
+        T::range(self)
     }
 }
 

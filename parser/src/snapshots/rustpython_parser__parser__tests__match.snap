@@ -5,7 +5,7 @@ expression: parse_ast
 [
     Match(
         StmtMatch {
-            range: 1..73,
+            range: 1..74,
             subject: Dict(
                 ExprDict {
                     range: 7..18,
@@ -37,7 +37,7 @@ expression: parse_ast
             ),
             cases: [
                 MatchCase {
-                    range: 24..73,
+                    range: 24..74,
                     pattern: MatchMapping(
                         PatternMatchMapping {
                             range: 29..52,
@@ -52,42 +52,47 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: [
-                        Expr(
-                            StmtExpr {
-                                range: 62..73,
-                                value: Call(
-                                    ExprCall {
+                    body: Suite(
+                        StmtSuite {
+                            range: 62..74,
+                            statements: [
+                                Expr(
+                                    StmtExpr {
                                         range: 62..73,
-                                        func: Name(
-                                            ExprName {
-                                                range: 62..67,
-                                                id: "print",
-                                                ctx: Load,
+                                        value: Call(
+                                            ExprCall {
+                                                range: 62..73,
+                                                func: Name(
+                                                    ExprName {
+                                                        range: 62..67,
+                                                        id: "print",
+                                                        ctx: Load,
+                                                    },
+                                                ),
+                                                args: [
+                                                    Name(
+                                                        ExprName {
+                                                            range: 68..72,
+                                                            id: "rest",
+                                                            ctx: Load,
+                                                        },
+                                                    ),
+                                                ],
+                                                keywords: [],
                                             },
                                         ),
-                                        args: [
-                                            Name(
-                                                ExprName {
-                                                    range: 68..72,
-                                                    id: "rest",
-                                                    ctx: Load,
-                                                },
-                                            ),
-                                        ],
-                                        keywords: [],
                                     },
                                 ),
-                            },
-                        ),
-                    ],
+                            ],
+                        },
+                    ),
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 74..177,
+            range: 74..178,
             subject: Dict(
                 ExprDict {
                     range: 80..97,
@@ -119,7 +124,7 @@ expression: parse_ast
             ),
             cases: [
                 MatchCase {
-                    range: 103..177,
+                    range: 103..178,
                     pattern: MatchMapping(
                         PatternMatchMapping {
                             range: 108..155,
@@ -181,42 +186,47 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: [
-                        Expr(
-                            StmtExpr {
-                                range: 165..177,
-                                value: Call(
-                                    ExprCall {
+                    body: Suite(
+                        StmtSuite {
+                            range: 165..178,
+                            statements: [
+                                Expr(
+                                    StmtExpr {
                                         range: 165..177,
-                                        func: Name(
-                                            ExprName {
-                                                range: 165..170,
-                                                id: "print",
-                                                ctx: Load,
+                                        value: Call(
+                                            ExprCall {
+                                                range: 165..177,
+                                                func: Name(
+                                                    ExprName {
+                                                        range: 165..170,
+                                                        id: "print",
+                                                        ctx: Load,
+                                                    },
+                                                ),
+                                                args: [
+                                                    Name(
+                                                        ExprName {
+                                                            range: 171..176,
+                                                            id: "label",
+                                                            ctx: Load,
+                                                        },
+                                                    ),
+                                                ],
+                                                keywords: [],
                                             },
                                         ),
-                                        args: [
-                                            Name(
-                                                ExprName {
-                                                    range: 171..176,
-                                                    id: "label",
-                                                    ctx: Load,
-                                                },
-                                            ),
-                                        ],
-                                        keywords: [],
                                     },
                                 ),
-                            },
-                        ),
-                    ],
+                            ],
+                        },
+                    ),
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 178..218,
+            range: 178..219,
             subject: Name(
                 ExprName {
                     range: 184..185,
@@ -226,7 +236,7 @@ expression: parse_ast
             ),
             cases: [
                 MatchCase {
-                    range: 191..218,
+                    range: 191..219,
                     pattern: MatchSequence(
                         PatternMatchSequence {
                             range: 196..203,
@@ -263,39 +273,44 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: [
-                        Assign(
-                            StmtAssign {
-                                range: 213..218,
-                                targets: [
-                                    Name(
-                                        ExprName {
-                                            range: 213..214,
-                                            id: "y",
-                                            ctx: Store,
-                                        },
-                                    ),
-                                ],
-                                value: Constant(
-                                    ExprConstant {
-                                        range: 217..218,
-                                        value: Int(
-                                            0,
+                    body: Suite(
+                        StmtSuite {
+                            range: 213..219,
+                            statements: [
+                                Assign(
+                                    StmtAssign {
+                                        range: 213..218,
+                                        targets: [
+                                            Name(
+                                                ExprName {
+                                                    range: 213..214,
+                                                    id: "y",
+                                                    ctx: Store,
+                                                },
+                                            ),
+                                        ],
+                                        value: Constant(
+                                            ExprConstant {
+                                                range: 217..218,
+                                                value: Int(
+                                                    0,
+                                                ),
+                                                kind: None,
+                                            },
                                         ),
-                                        kind: None,
+                                        type_comment: None,
                                     },
                                 ),
-                                type_comment: None,
-                            },
-                        ),
-                    ],
+                            ],
+                        },
+                    ),
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 219..259,
+            range: 219..260,
             subject: Name(
                 ExprName {
                     range: 225..226,
@@ -305,7 +320,7 @@ expression: parse_ast
             ),
             cases: [
                 MatchCase {
-                    range: 232..259,
+                    range: 232..260,
                     pattern: MatchSequence(
                         PatternMatchSequence {
                             range: 237..244,
@@ -342,39 +357,44 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: [
-                        Assign(
-                            StmtAssign {
-                                range: 254..259,
-                                targets: [
-                                    Name(
-                                        ExprName {
-                                            range: 254..255,
-                                            id: "y",
-                                            ctx: Store,
-                                        },
-                                    ),
-                                ],
-                                value: Constant(
-                                    ExprConstant {
-                                        range: 258..259,
-                                        value: Int(
-                                            0,
+                    body: Suite(
+                        StmtSuite {
+                            range: 254..260,
+                            statements: [
+                                Assign(
+                                    StmtAssign {
+                                        range: 254..259,
+                                        targets: [
+                                            Name(
+                                                ExprName {
+                                                    range: 254..255,
+                                                    id: "y",
+                                                    ctx: Store,
+                                                },
+                                            ),
+                                        ],
+                                        value: Constant(
+                                            ExprConstant {
+                                                range: 258..259,
+                                                value: Int(
+                                                    0,
+                                                ),
+                                                kind: None,
+                                            },
                                         ),
-                                        kind: None,
+                                        type_comment: None,
                                     },
                                 ),
-                                type_comment: None,
-                            },
-                        ),
-                    ],
+                            ],
+                        },
+                    ),
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 260..297,
+            range: 260..298,
             subject: Name(
                 ExprName {
                     range: 266..267,
@@ -384,7 +404,7 @@ expression: parse_ast
             ),
             cases: [
                 MatchCase {
-                    range: 273..297,
+                    range: 273..298,
                     pattern: MatchSequence(
                         PatternMatchSequence {
                             range: 278..282,
@@ -407,32 +427,37 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: [
-                        Assign(
-                            StmtAssign {
-                                range: 292..297,
-                                targets: [
-                                    Name(
-                                        ExprName {
-                                            range: 292..293,
-                                            id: "y",
-                                            ctx: Store,
-                                        },
-                                    ),
-                                ],
-                                value: Constant(
-                                    ExprConstant {
-                                        range: 296..297,
-                                        value: Int(
-                                            0,
+                    body: Suite(
+                        StmtSuite {
+                            range: 292..298,
+                            statements: [
+                                Assign(
+                                    StmtAssign {
+                                        range: 292..297,
+                                        targets: [
+                                            Name(
+                                                ExprName {
+                                                    range: 292..293,
+                                                    id: "y",
+                                                    ctx: Store,
+                                                },
+                                            ),
+                                        ],
+                                        value: Constant(
+                                            ExprConstant {
+                                                range: 296..297,
+                                                value: Int(
+                                                    0,
+                                                ),
+                                                kind: None,
+                                            },
                                         ),
-                                        kind: None,
+                                        type_comment: None,
                                     },
                                 ),
-                                type_comment: None,
-                            },
-                        ),
-                    ],
+                            ],
+                        },
+                    ),
                 },
             ],
         },

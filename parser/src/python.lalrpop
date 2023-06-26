@@ -43,12 +43,20 @@ Program: ast::Suite = {
     <s:Program> "\n" => s,
 };
 
-Suite: ast::Suite = {
-    <mut statements:(<SmallStatement> ";")*> <last:SmallStatement> ";"? "\n" => {
+Suite: ast::Stmt = {
+    <location:@L> <mut statements:(<SmallStatement> ";")*> <last:SmallStatement> ";"? <end_location:@R> "\n" => {
         statements.push(last);
-        statements
+        ast::Stmt::Suite(ast::StmtSuite {
+            range: (location..end_location).into(),
+            statements,
+        })
     },
-    "\n" Indent <s:Statements> Dedent => s,
+    "\n" Indent <location:@L> <statements:Statements> <end_location:@R> Dedent => {
+        ast::Stmt::Suite(ast::StmtSuite {
+            range: (location..end_location).into(),
+            statements,
+        })
+    },
 };
 
 
@@ -334,8 +342,7 @@ MatchStatement: ast::Stmt = {
             .last()
             .unwrap()
             .body
-            .last()
-            .unwrap()
+            .range()
             .end();
         ast::Stmt::Match(
             ast::StmtMatch {
@@ -350,8 +357,7 @@ MatchStatement: ast::Stmt = {
             .last()
             .unwrap()
             .body
-            .last()
-            .unwrap()
+            .range()
             .end();
         ast::Stmt::Match(
             ast::StmtMatch {
@@ -366,8 +372,7 @@ MatchStatement: ast::Stmt = {
             .last()
             .unwrap()
             .body
-            .last()
-            .unwrap()
+            .range()
             .end();
         ast::Stmt::Match(
             ast::StmtMatch {
@@ -388,7 +393,7 @@ MatchStatement: ast::Stmt = {
 MatchCase: ast::MatchCase = {
     <start:@L> "case" <pattern:Patterns> <guard:(Guard)?> ":" <body:Suite> => {
         // SAFETY: `body` is never empty because it is non-optional and `Suite` matches one or more statements.
-        let end = body.last().unwrap().end();
+        let end = body.range().end();
         ast::MatchCase {
             pattern,
             guard: guard.map(Box::new),
@@ -759,42 +764,40 @@ ClassPattern: ast::Pattern = {
 }
 
 IfStatement: ast::Stmt = {
-    <location:@L> "if" <test:NamedExpressionTest> ":" <body:Suite> <s2:(<@L> "elif" <NamedExpressionTest> ":" <Suite>)*> <s3:("else" ":" <Suite>)?> => {
+    <location:@L> "if" <test:NamedExpressionTest> ":" <body:Suite> <s2:(<@L> "elif" <NamedExpressionTest> ":" <Suite>)*> <orelse:("else" ":" <Suite>)?> => {
         // Determine last else:
-        let mut last = s3.unwrap_or_default();
-        let end_location = last
-            .last()
-            .or_else(|| s2.last().and_then(|last| last.2.last()))
-            .or_else(|| body.last())
-            .unwrap()
+        let end_location = orelse
+            .as_ref()
+            .or_else(|| s2.last().map(|x| &x.2))
+            .unwrap_or(&body)
             .end();
+        let mut last = orelse;
         // handle elif:
         for i in s2.into_iter().rev() {
-            let x = ast::Stmt::If(
-                ast::StmtIf { test: Box::new(i.1), body: i.2, orelse: last, range: (i.0..end_location).into() }
+            let elif = ast::Stmt::If(
+                ast::StmtIf { test: Box::new(i.1), body: Box::new(i.2), orelse: last.map(Box::new), range: (i.0..end_location).into() }
             );
-            last = vec![x];
+            last = Some(elif);
         }
 
         ast::Stmt::If(
-            ast::StmtIf { test: Box::new(test), body, orelse: last, range: (location..end_location).into() }
+            ast::StmtIf { test: Box::new(test), body: Box::new(body), orelse: last.map(Box::new), range: (location..end_location).into() }
         )
     },
 };
 
 WhileStatement: ast::Stmt = {
     <location:@L> "while" <test:NamedExpressionTest> ":" <body:Suite> <s2:("else" ":" <Suite>)?> => {
-        let orelse = s2.unwrap_or_default();
+        let orelse = s2;
         let end_location = orelse
-            .last()
-            .or_else(|| body.last())
-            .unwrap()
+            .as_ref()
+            .unwrap_or(&body)
             .end();
         ast::Stmt::While(
             ast::StmtWhile {
                 test: Box::new(test),
-                body,
-                orelse,
+                body: Box::new(body),
+                orelse: orelse.map(Box::new),
                 range: (location..end_location).into()
             },
         )
@@ -803,72 +806,65 @@ WhileStatement: ast::Stmt = {
 
 ForStatement: ast::Stmt = {
     <location:@L> <is_async:"async"?> "for" <target:ExpressionList> "in" <iter:TestList> ":" <body:Suite> <orelse:("else" ":" <Suite>)?> => {
-        let orelse = orelse.unwrap_or_default();
         let end_location = orelse
-            .last()
-            .or_else(|| body.last())
-            .unwrap()
+            .as_ref()
+            .unwrap_or(&body)
             .end();
         let target = Box::new(set_context(target, ast::ExprContext::Store));
         let iter = Box::new(iter);
         let type_comment = None;
         if is_async.is_some() {
-            ast::Stmt::AsyncFor(ast::StmtAsyncFor { target, iter, body, orelse, type_comment, range: (location..end_location).into() })
+            ast::Stmt::AsyncFor(ast::StmtAsyncFor { target, iter, body: Box::new(body), orelse: orelse.map(Box::new), type_comment, range: (location..end_location).into() })
         } else {
-            ast::Stmt::For(ast::StmtFor { target, iter, body, orelse, type_comment, range: (location..end_location).into() })
+            ast::Stmt::For(ast::StmtFor { target, iter, body: Box::new(body), orelse: orelse.map(Box::new), type_comment, range: (location..end_location).into() })
         }
     },
 };
 
 TryStatement: ast::Stmt = {
     <location:@L> "try" ":" <body:Suite> <handlers:ExceptClause+> <orelse:("else" ":" <Suite>)?> <finalbody:("finally" ":" <Suite>)?> <end_location:@R> => {
-        let orelse = orelse.unwrap_or_default();
-        let finalbody = finalbody.unwrap_or_default();
         let end_location = finalbody
-            .last()
+            .as_ref()
             .map(|last| last.end())
-            .or_else(|| orelse.last().map(|last| last.end()))
+            .or_else(|| orelse.as_ref().map(|last| last.end()))
             .or_else(|| handlers.last().map(|last| last.end()))
             .unwrap();
         ast::Stmt::Try(
             ast::StmtTry {
-                body,
+                body: Box::new(body),
                 handlers,
-                orelse,
-                finalbody,
+                orelse: orelse.map(Box::new),
+                finalbody: finalbody.map(Box::new),
                 range: (location..end_location).into()
             },
         )
     },
     <location:@L> "try" ":" <body:Suite> <handlers:ExceptStarClause+> <orelse:("else" ":" <Suite>)?> <finalbody:("finally" ":" <Suite>)?> <end_location:@R> => {
-        let orelse = orelse.unwrap_or_default();
-        let finalbody = finalbody.unwrap_or_default();
         let end_location = finalbody
-            .last()
-            .or_else(|| orelse.last())
+            .as_ref()
+            .or(orelse.as_ref())
             .map(|last| last.end())
             .or_else(|| handlers.last().map(|last| last.end()))
             .unwrap();
         ast::Stmt::TryStar(
             ast::StmtTryStar {
-                body,
+                body: Box::new(body),
                 handlers,
-                orelse,
-                finalbody,
+                orelse: orelse.map(Box::new),
+                finalbody: finalbody.map(Box::new),
                 range: (location..end_location).into()
             },
         )
     },
     <location:@L> "try" ":" <body:Suite> <finalbody:("finally" ":" <Suite>)> => {
         let handlers = vec![];
-        let orelse = vec![];
-        let end_location = finalbody.last().unwrap().end();
+        let end_location = finalbody.range().end();
         ast::Stmt::Try(
             ast::StmtTry {
-                body,
+                body: Box::new(body),
                 handlers,
-                orelse,
-                finalbody,
+                orelse: None,
+                finalbody: Some(Box::new(finalbody)),
                 range: (location..end_location).into()
             },
         )
@@ -877,23 +873,23 @@ TryStatement: ast::Stmt = {
 
 ExceptStarClause: ast::ExceptHandler = {
     <location:@L> "except" "*" <typ:Test<"all">> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+        let end_location = body.range().end();
         ast::ExceptHandler::ExceptHandler(
             ast::ExceptHandlerExceptHandler {
                 type_: Some(Box::new(typ)),
                 name: None,
-                body,
+                body: Box::new(body),
                 range: (location..end_location).into()
             },
         )
     },
     <location:@L> "except" "*" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+        let end_location = body.range().end();
         ast::ExceptHandler::ExceptHandler(
             ast::ExceptHandlerExceptHandler {
                 type_: Some(Box::new(x.0)),
                 name: Some(x.1),
-                body,
+                body: Box::new(body),
                 range: (location..end_location).into()
             },
         )
@@ -903,23 +899,23 @@ ExceptStarClause: ast::ExceptHandler = {
 
 ExceptClause: ast::ExceptHandler = {
     <location:@L> "except" <typ:Test<"all">?> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+        let end_location = body.range().end();
         ast::ExceptHandler::ExceptHandler(
             ast::ExceptHandlerExceptHandler {
                 type_: typ.map(Box::new),
                 name: None,
-                body,
+                body: Box::new(body),
                 range: (location..end_location).into()
             },
         )
     },
     <location:@L> "except" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+        let end_location = body.range().end();
         ast::ExceptHandler::ExceptHandler(
             ast::ExceptHandlerExceptHandler {
                 type_: Some(Box::new(x.0)),
                 name: Some(x.1),
-                body,
+                body: Box::new(body),
                 range: (location..end_location).into()
             },
         )
@@ -928,12 +924,12 @@ ExceptClause: ast::ExceptHandler = {
 
 WithStatement: ast::Stmt = {
     <location:@L> <is_async:"async"?> "with" <items:WithItems> ":" <body:Suite> => {
-        let end_location = body.last().unwrap().end();
+        let end_location = body.range().end();
         let type_comment = None;
         if is_async.is_some() {
-            ast::StmtAsyncWith { items, body, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtAsyncWith { items, body: Box::new(body), type_comment, range: (location..end_location).into() }.into()
         } else {
-            ast::StmtWith { items, body, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtWith { items, body: Box::new(body), type_comment, range: (location..end_location).into() }.into()
         }
     },
 };
@@ -968,12 +964,12 @@ FuncDef: ast::Stmt = {
     <location:@L> <decorator_list:Decorator*> <is_async:"async"?> "def" <name:Identifier> <args:Parameters> <r:("->" <Test<"all">>)?> ":" <body:Suite> => {
         let args = Box::new(args);
         let returns = r.map(|x| Box::new(x));
-        let end_location = body.last().unwrap().end();
+        let end_location = body.range().end();
         let type_comment = None;
         if is_async.is_some() {
-            ast::StmtAsyncFunctionDef { name, args, body, decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtAsyncFunctionDef { name, args, body: Box::new(body), decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
         } else {
-            ast::StmtFunctionDef { name, args, body, decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtFunctionDef { name, args, body: Box::new(body), decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
         }
     },
 };
@@ -1137,13 +1133,13 @@ ClassDef: ast::Stmt = {
             Some((_, arg, _)) => (arg.args, arg.keywords),
             None => (vec![], vec![]),
         };
-        let end_location = body.last().unwrap().end();
+        let end_location = body.range().end();
         ast::Stmt::ClassDef(
             ast::StmtClassDef {
                 name,
                 bases,
                 keywords,
-                body,
+                body: Box::new(body),
                 decorator_list,
                 range: (location..end_location).into()
             },

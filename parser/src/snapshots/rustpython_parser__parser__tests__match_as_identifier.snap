@@ -620,19 +620,24 @@ expression: parse_ast
                     ),
                 },
             ),
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 522..526,
-                    },
-                ),
-            ],
-            orelse: [],
+            body: Suite(
+                StmtSuite {
+                    range: 522..526,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 522..526,
+                            },
+                        ),
+                    ],
+                },
+            ),
+            orelse: None,
         },
     ),
     Match(
         StmtMatch {
-            range: 527..581,
+            range: 527..582,
             subject: Name(
                 ExprName {
                     range: 533..538,
@@ -658,16 +663,21 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: [
-                        Pass(
-                            StmtPass {
-                                range: 552..556,
-                            },
-                        ),
-                    ],
+                    body: Suite(
+                        StmtSuite {
+                            range: 552..556,
+                            statements: [
+                                Pass(
+                                    StmtPass {
+                                        range: 552..556,
+                                    },
+                                ),
+                            ],
+                        },
+                    ),
                 },
                 MatchCase {
-                    range: 561..581,
+                    range: 561..582,
                     pattern: MatchValue(
                         PatternMatchValue {
                             range: 566..567,
@@ -683,13 +693,18 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: [
-                        Pass(
-                            StmtPass {
-                                range: 577..581,
-                            },
-                        ),
-                    ],
+                    body: Suite(
+                        StmtSuite {
+                            range: 577..582,
+                            statements: [
+                                Pass(
+                                    StmtPass {
+                                        range: 577..581,
+                                    },
+                                ),
+                            ],
+                        },
+                    ),
                 },
             ],
         },

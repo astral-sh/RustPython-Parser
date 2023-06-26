@@ -5,7 +5,7 @@ expression: parse_ast
 [
     FunctionDef(
         StmtFunctionDef {
-            range: 0..34,
+            range: 0..35,
             name: Identifier {
                 id: "test",
                 range: 18..22,
@@ -18,13 +18,18 @@ expression: parse_ast
                 kwonlyargs: [],
                 kwarg: None,
             },
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 30..34,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 30..35,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 30..34,
+                            },
+                        ),
+                    ],
+                },
+            ),
             decorator_list: [
                 Decorator {
                     range: 0..13,
@@ -50,13 +55,18 @@ expression: parse_ast
             },
             bases: [],
             keywords: [],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 69..73,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 69..73,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 69..73,
+                            },
+                        ),
+                    ],
+                },
+            ),
             decorator_list: [
                 Decorator {
                     range: 36..52,

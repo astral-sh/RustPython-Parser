@@ -79,13 +79,18 @@ Ok(
                     ],
                     kwarg: None,
                 },
-                body: [
-                    Pass(
-                        StmtPass {
-                            range: 25..29,
-                        },
-                    ),
-                ],
+                body: Suite(
+                    StmtSuite {
+                        range: 25..29,
+                        statements: [
+                            Pass(
+                                StmtPass {
+                                    range: 25..29,
+                                },
+                            ),
+                        ],
+                    },
+                ),
                 decorator_list: [],
                 returns: None,
                 type_comment: None,

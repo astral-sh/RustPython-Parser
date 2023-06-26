@@ -166,6 +166,11 @@ impl Ranged for crate::generic::StmtContinue {
         self.range
     }
 }
+impl Ranged for crate::generic::StmtSuite {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
 impl Ranged for crate::Stmt {
     fn range(&self) -> TextRange {
         match self {
@@ -196,6 +201,7 @@ impl Ranged for crate::Stmt {
             Self::Pass(node) => node.range(),
             Self::Break(node) => node.range(),
             Self::Continue(node) => node.range(),
+            Self::Suite(node) => node.range(),
         }
     }
 }

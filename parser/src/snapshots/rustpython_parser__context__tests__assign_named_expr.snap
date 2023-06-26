@@ -27,14 +27,19 @@ expression: parse_ast
                     ),
                 },
             ),
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 10..14,
-                    },
-                ),
-            ],
-            orelse: [],
+            body: Suite(
+                StmtSuite {
+                    range: 10..14,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 10..14,
+                            },
+                        ),
+                    ],
+                },
+            ),
+            orelse: None,
         },
     ),
 ]

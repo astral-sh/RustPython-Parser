@@ -621,6 +621,29 @@ impl Parse for ast::StmtContinue {
     }
 }
 
+impl Parse for ast::StmtSuite {
+    fn lex_starts_at(
+        source: &str,
+        offset: TextSize,
+    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
+        ast::Stmt::lex_starts_at(source, offset)
+    }
+    fn parse_tokens(
+        lxr: impl IntoIterator<Item = LexResult>,
+        source_path: &str,
+    ) -> Result<Self, ParseError> {
+        let node = ast::Stmt::parse_tokens(lxr, source_path)?;
+        match node {
+            ast::Stmt::Suite(node) => Ok(node),
+            node => Err(ParseError {
+                error: ParseErrorType::InvalidToken,
+                offset: node.range().start(),
+                source_path: source_path.to_owned(),
+            }),
+        }
+    }
+}
+
 impl Parse for ast::ExprBoolOp {
     fn lex_starts_at(
         source: &str,

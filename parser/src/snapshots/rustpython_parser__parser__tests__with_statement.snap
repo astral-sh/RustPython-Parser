@@ -21,13 +21,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 8..12,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 8..12,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 8..12,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -57,13 +62,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 26..30,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 26..30,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 26..30,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -98,13 +108,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 42..46,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 42..46,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 42..46,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -155,13 +170,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 68..72,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 68..72,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 68..72,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -206,13 +226,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 93..97,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 93..97,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 93..97,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -265,13 +290,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 123..127,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 123..127,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 123..127,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -291,13 +321,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 137..141,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 137..141,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 137..141,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -325,13 +360,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 156..160,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 156..160,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 156..160,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -353,13 +393,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 171..175,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 171..175,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 171..175,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -389,13 +434,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 191..195,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 191..195,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 191..195,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -417,13 +467,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 207..211,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 207..211,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 207..211,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -461,13 +516,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 228..232,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 228..232,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 228..232,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -502,13 +562,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 246..250,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 246..250,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 246..250,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -555,13 +620,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 269..273,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 269..273,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 269..273,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -595,13 +665,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 286..290,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 286..290,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 286..290,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -643,13 +718,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 308..312,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 308..312,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 308..312,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -692,13 +772,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 327..331,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 327..331,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 327..331,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -749,13 +834,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 351..355,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 351..355,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 351..355,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -789,13 +879,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 371..375,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 371..375,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 371..375,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -837,13 +932,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 396..400,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 396..400,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 396..400,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -906,13 +1006,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     optional_vars: None,
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 424..428,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 424..428,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 424..428,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -983,13 +1088,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 457..461,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 457..461,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 457..461,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -1019,13 +1129,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 477..481,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 477..481,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 477..481,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -1055,13 +1170,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 498..502,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 498..502,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 498..502,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -1112,13 +1232,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 526..530,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 526..530,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 526..530,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),
@@ -1169,13 +1294,18 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     ),
                 },
             ],
-            body: [
-                Pass(
-                    StmtPass {
-                        range: 555..559,
-                    },
-                ),
-            ],
+            body: Suite(
+                StmtSuite {
+                    range: 555..559,
+                    statements: [
+                        Pass(
+                            StmtPass {
+                                range: 555..559,
+                            },
+                        ),
+                    ],
+                },
+            ),
             type_comment: None,
         },
     ),

@@ -1,3 +1,4 @@
+#![allow(unsafe_code)]
 //! This crate can be used to parse Python source code into an Abstract
 //! Syntax Tree.
 //!

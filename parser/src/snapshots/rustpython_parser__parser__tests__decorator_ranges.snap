@@ -18,18 +18,13 @@ expression: parse_ast
                 kwonlyargs: [],
                 kwarg: None,
             },
-            body: Suite(
-                StmtSuite {
-                    range: 30..35,
-                    statements: [
-                        Pass(
-                            StmtPass {
-                                range: 30..34,
-                            },
-                        ),
-                    ],
-                },
-            ),
+            body: [
+                Pass(
+                    StmtPass {
+                        range: 30..34,
+                    },
+                ),
+            ],
             decorator_list: [
                 Decorator {
                     range: 0..13,
@@ -55,18 +50,13 @@ expression: parse_ast
             },
             bases: [],
             keywords: [],
-            body: Suite(
-                StmtSuite {
-                    range: 69..73,
-                    statements: [
-                        Pass(
-                            StmtPass {
-                                range: 69..73,
-                            },
-                        ),
-                    ],
-                },
-            ),
+            body: [
+                Pass(
+                    StmtPass {
+                        range: 69..73,
+                    },
+                ),
+            ],
             decorator_list: [
                 Decorator {
                     range: 36..52,

@@ -15,27 +15,22 @@ expression: parse_ast
                     kind: None,
                 },
             ),
-            body: Suite(
-                StmtSuite {
-                    range: 6..8,
-                    statements: [
-                        Expr(
-                            StmtExpr {
+            body: [
+                Expr(
+                    StmtExpr {
+                        range: 6..8,
+                        value: Constant(
+                            ExprConstant {
                                 range: 6..8,
-                                value: Constant(
-                                    ExprConstant {
-                                        range: 6..8,
-                                        value: Int(
-                                            10,
-                                        ),
-                                        kind: None,
-                                    },
+                                value: Int(
+                                    10,
                                 ),
+                                kind: None,
                             },
                         ),
-                    ],
-                },
-            ),
+                    },
+                ),
+            ],
             orelse: Some(
                 If(
                     StmtIf {
@@ -49,27 +44,22 @@ expression: parse_ast
                                 kind: None,
                             },
                         ),
-                        body: Suite(
-                            StmtSuite {
-                                range: 17..19,
-                                statements: [
-                                    Expr(
-                                        StmtExpr {
+                        body: [
+                            Expr(
+                                StmtExpr {
+                                    range: 17..19,
+                                    value: Constant(
+                                        ExprConstant {
                                             range: 17..19,
-                                            value: Constant(
-                                                ExprConstant {
-                                                    range: 17..19,
-                                                    value: Int(
-                                                        20,
-                                                    ),
-                                                    kind: None,
-                                                },
+                                            value: Int(
+                                                20,
                                             ),
+                                            kind: None,
                                         },
                                     ),
-                                ],
-                            },
-                        ),
+                                },
+                            ),
+                        ],
                         orelse: Some(
                             Suite(
                                 StmtSuite {

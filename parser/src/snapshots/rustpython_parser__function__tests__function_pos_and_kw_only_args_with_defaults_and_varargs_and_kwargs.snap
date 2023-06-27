@@ -139,18 +139,13 @@ Ok(
                         },
                     ),
                 },
-                body: Suite(
-                    StmtSuite {
-                        range: 48..52,
-                        statements: [
-                            Pass(
-                                StmtPass {
-                                    range: 48..52,
-                                },
-                            ),
-                        ],
-                    },
-                ),
+                body: [
+                    Pass(
+                        StmtPass {
+                            range: 48..52,
+                        },
+                    ),
+                ],
                 decorator_list: [],
                 returns: None,
                 type_comment: None,

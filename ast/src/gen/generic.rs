@@ -315,7 +315,7 @@ pub struct StmtFunctionDef {
     pub range: TextRange,
     pub name: Identifier,
     pub args: Box<Arguments>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub decorator_list: Vec<Decorator>,
     pub returns: Option<Box<Expr>>,
     pub type_comment: Option<String>,
@@ -349,7 +349,7 @@ pub struct StmtAsyncFunctionDef {
     pub range: TextRange,
     pub name: Identifier,
     pub args: Box<Arguments>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub decorator_list: Vec<Decorator>,
     pub returns: Option<Box<Expr>>,
     pub type_comment: Option<String>,
@@ -384,7 +384,7 @@ pub struct StmtClassDef {
     pub name: Identifier,
     pub bases: Vec<Expr>,
     pub keywords: Vec<Keyword>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub decorator_list: Vec<Decorator>,
 }
 
@@ -527,7 +527,7 @@ pub struct StmtFor {
     pub range: TextRange,
     pub target: Box<Expr>,
     pub iter: Box<Expr>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub orelse: Option<Box<Stmt>>,
     pub type_comment: Option<String>,
 }
@@ -554,7 +554,7 @@ pub struct StmtAsyncFor {
     pub range: TextRange,
     pub target: Box<Expr>,
     pub iter: Box<Expr>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub orelse: Option<Box<Stmt>>,
     pub type_comment: Option<String>,
 }
@@ -580,7 +580,7 @@ impl From<StmtAsyncFor> for Ast {
 pub struct StmtWhile {
     pub range: TextRange,
     pub test: Box<Expr>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub orelse: Option<Box<Stmt>>,
 }
 
@@ -604,7 +604,7 @@ impl From<StmtWhile> for Ast {
 pub struct StmtIf {
     pub range: TextRange,
     pub test: Box<Expr>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub orelse: Option<Box<Stmt>>,
 }
 
@@ -628,7 +628,7 @@ impl From<StmtIf> for Ast {
 pub struct StmtWith {
     pub range: TextRange,
     pub items: Vec<WithItem>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub type_comment: Option<String>,
 }
 
@@ -652,7 +652,7 @@ impl From<StmtWith> for Ast {
 pub struct StmtAsyncWith {
     pub range: TextRange,
     pub items: Vec<WithItem>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub type_comment: Option<String>,
 }
 
@@ -721,7 +721,7 @@ impl From<StmtRaise> for Ast {
 #[derive(Clone, Debug, PartialEq)]
 pub struct StmtTry {
     pub range: TextRange,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub handlers: Vec<ExceptHandler>,
     pub orelse: Option<Box<Stmt>>,
     pub finalbody: Option<Box<Stmt>>,
@@ -746,7 +746,7 @@ impl From<StmtTry> for Ast {
 #[derive(Clone, Debug, PartialEq)]
 pub struct StmtTryStar {
     pub range: TextRange,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
     pub handlers: Vec<ExceptHandler>,
     pub orelse: Option<Box<Stmt>>,
     pub finalbody: Option<Box<Stmt>>,
@@ -2755,7 +2755,7 @@ pub struct ExceptHandlerExceptHandler {
     pub range: TextRange,
     pub type_: Option<Box<Expr>>,
     pub name: Option<Identifier>,
-    pub body: Box<Stmt>,
+    pub body: Vec<Stmt>,
 }
 
 impl Node for ExceptHandlerExceptHandler {
@@ -2863,7 +2863,7 @@ pub struct MatchCase {
     pub range: TextRange,
     pub pattern: Pattern,
     pub guard: Option<Box<Expr>>,
-    pub body: Stmt,
+    pub body: Vec<Stmt>,
 }
 
 impl Node for MatchCase {

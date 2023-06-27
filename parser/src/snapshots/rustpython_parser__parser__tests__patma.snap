@@ -5,7 +5,7 @@ expression: parse_ast
 [
     Match(
         StmtMatch {
-            range: 67..104,
+            range: 67..103,
             subject: Name(
                 ExprName {
                     range: 73..74,
@@ -38,44 +38,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 98..104,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 98..103,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 98..99,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 102..103,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 98..103,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 98..99,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 102..103,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 126..168,
+            range: 126..167,
             subject: Name(
                 ExprName {
                     range: 132..133,
@@ -115,44 +110,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 162..168,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 162..167,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 162..163,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 166..167,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 162..167,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 162..163,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 166..167,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 190..261,
+            range: 190..260,
             subject: Name(
                 ExprName {
                     range: 196..197,
@@ -188,37 +178,32 @@ expression: parse_ast
                             },
                         ),
                     ),
-                    body: Suite(
-                        StmtSuite {
-                            range: 224..230,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 224..229,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 224..225,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 228..229,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 224..229,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 224..225,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 228..229,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 234..261,
@@ -247,44 +232,39 @@ expression: parse_ast
                             },
                         ),
                     ),
-                    body: Suite(
-                        StmtSuite {
-                            range: 255..261,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 255..260,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 255..256,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 259..260,
-                                                value: Int(
-                                                    1,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 255..260,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 255..256,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 259..260,
+                                        value: Int(
+                                            1,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 283..333,
+            range: 283..332,
             subject: Constant(
                 ExprConstant {
                     range: 289..290,
@@ -361,44 +341,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 324..333,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 324..332,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 324..325,
-                                                    id: "x",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 328..332,
-                                                value: Bool(
-                                                    true,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 324..332,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 324..325,
+                                            id: "x",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 328..332,
+                                        value: Bool(
+                                            true,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 355..404,
+            range: 355..403,
             subject: Name(
                 ExprName {
                     range: 361..362,
@@ -487,44 +462,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 398..404,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 398..403,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 398..399,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 402..403,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 398..403,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 398..399,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 402..403,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 445..524,
+            range: 445..523,
             subject: Name(
                 ExprName {
                     range: 451..452,
@@ -549,29 +519,24 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 477..490,
-                            statements: [
-                                Return(
-                                    StmtReturn {
-                                        range: 477..489,
-                                        value: Some(
-                                            Constant(
-                                                ExprConstant {
-                                                    range: 484..489,
-                                                    value: Str(
-                                                        "seq",
-                                                    ),
-                                                    kind: None,
-                                                },
+                    body: [
+                        Return(
+                            StmtReturn {
+                                range: 477..489,
+                                value: Some(
+                                    Constant(
+                                        ExprConstant {
+                                            range: 484..489,
+                                            value: Str(
+                                                "seq",
                                             ),
-                                        ),
-                                    },
+                                            kind: None,
+                                        },
+                                    ),
                                 ),
-                            ],
-                        },
-                    ),
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 494..524,
@@ -584,36 +549,31 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 511..524,
-                            statements: [
-                                Return(
-                                    StmtReturn {
-                                        range: 511..523,
-                                        value: Some(
-                                            Constant(
-                                                ExprConstant {
-                                                    range: 518..523,
-                                                    value: Str(
-                                                        "map",
-                                                    ),
-                                                    kind: None,
-                                                },
+                    body: [
+                        Return(
+                            StmtReturn {
+                                range: 511..523,
+                                value: Some(
+                                    Constant(
+                                        ExprConstant {
+                                            range: 518..523,
+                                            value: Str(
+                                                "map",
                                             ),
-                                        ),
-                                    },
+                                            kind: None,
+                                        },
+                                    ),
                                 ),
-                            ],
-                        },
-                    ),
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 546..715,
+            range: 546..714,
             subject: Name(
                 ExprName {
                     range: 552..553,
@@ -687,37 +647,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 589..595,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 589..594,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 589..590,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 593..594,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 589..594,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 589..590,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 593..594,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 599..688,
@@ -928,37 +883,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 682..688,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 682..687,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 682..683,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 686..687,
-                                                value: Int(
-                                                    1,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 682..687,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 682..683,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 686..687,
+                                        value: Int(
+                                            1,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 692..715,
@@ -969,44 +919,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 709..715,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 709..714,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 709..710,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 713..714,
-                                                value: Int(
-                                                    2,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 709..714,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 709..710,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 713..714,
+                                        value: Int(
+                                            2,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 737..783,
+            range: 737..782,
             subject: Name(
                 ExprName {
                     range: 743..744,
@@ -1048,44 +993,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 777..783,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 777..782,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 777..778,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 781..782,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 777..782,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 777..778,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 781..782,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 805..842,
+            range: 805..841,
             subject: Name(
                 ExprName {
                     range: 811..812,
@@ -1118,44 +1058,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 836..842,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 836..841,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 836..837,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 840..841,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 836..841,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 836..837,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 840..841,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 864..914,
+            range: 864..913,
             subject: Constant(
                 ExprConstant {
                     range: 870..871,
@@ -1232,44 +1167,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 905..914,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 905..913,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 905..906,
-                                                    id: "x",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 909..913,
-                                                value: Bool(
-                                                    true,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 905..913,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 905..906,
+                                            id: "x",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 909..913,
+                                        value: Bool(
+                                            true,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 936..976,
+            range: 936..975,
             subject: Name(
                 ExprName {
                     range: 942..943,
@@ -1303,44 +1233,39 @@ expression: parse_ast
                             },
                         ),
                     ),
-                    body: Suite(
-                        StmtSuite {
-                            range: 970..976,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 970..975,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 970..971,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 974..975,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 970..975,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 970..971,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 974..975,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 998..1099,
+            range: 998..1098,
             subject: Name(
                 ExprName {
                     range: 1004..1005,
@@ -1385,37 +1310,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1032..1038,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1032..1037,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1032..1033,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1036..1037,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1032..1037,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1032..1033,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1036..1037,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 1042..1069,
@@ -1453,37 +1373,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1063..1069,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1063..1068,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1063..1064,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1067..1068,
-                                                value: Int(
-                                                    1,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1063..1068,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1063..1064,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1067..1068,
+                                        value: Int(
+                                            1,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 1073..1099,
@@ -1501,44 +1416,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1093..1099,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1093..1098,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1093..1094,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1097..1098,
-                                                value: Int(
-                                                    2,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1093..1098,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1093..1094,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1097..1098,
+                                        value: Int(
+                                            2,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1121..1163,
+            range: 1121..1162,
             subject: Call(
                 ExprCall {
                     range: 1127..1132,
@@ -1570,44 +1480,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1157..1163,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1157..1162,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1157..1158,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1161..1162,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1157..1162,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1157..1158,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1161..1162,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1185..1246,
+            range: 1185..1245,
             subject: Name(
                 ExprName {
                     range: 1191..1192,
@@ -1633,37 +1538,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1214..1220,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1214..1219,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1214..1215,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1218..1219,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1214..1219,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1214..1215,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1218..1219,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 1224..1246,
@@ -1682,44 +1582,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1240..1246,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1240..1245,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1240..1241,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1244..1245,
-                                                value: Int(
-                                                    1,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1240..1245,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1240..1241,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1244..1245,
+                                        value: Int(
+                                            1,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1268..1316,
+            range: 1268..1315,
             subject: Name(
                 ExprName {
                     range: 1274..1275,
@@ -1762,42 +1657,37 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1308..1316,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1308..1315,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1308..1309,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Name(
-                                            ExprName {
-                                                range: 1312..1315,
-                                                id: "bar",
-                                                ctx: Load,
-                                            },
-                                        ),
-                                        type_comment: None,
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1308..1315,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1308..1309,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Name(
+                                    ExprName {
+                                        range: 1312..1315,
+                                        id: "bar",
+                                        ctx: Load,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1338..1393,
+            range: 1338..1392,
             subject: Tuple(
                 ExprTuple {
                     range: 1344..1353,
@@ -1897,44 +1787,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1387..1393,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1387..1392,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1387..1388,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1391..1392,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1387..1392,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1387..1388,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1391..1392,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1415..1530,
+            range: 1415..1529,
             subject: Name(
                 ExprName {
                     range: 1421..1422,
@@ -1967,37 +1852,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1446..1452,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1446..1451,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1446..1447,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1450..1451,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1446..1451,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1446..1447,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1450..1451,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 1456..1499,
@@ -2081,37 +1961,32 @@ expression: parse_ast
                             },
                         ),
                     ),
-                    body: Suite(
-                        StmtSuite {
-                            range: 1493..1499,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1493..1498,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1493..1494,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1497..1498,
-                                                value: Int(
-                                                    1,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1493..1498,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1493..1494,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1497..1498,
+                                        value: Int(
+                                            1,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 1503..1530,
@@ -2151,44 +2026,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1524..1530,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1524..1529,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1524..1525,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1528..1529,
-                                                value: Int(
-                                                    2,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1524..1529,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1524..1525,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1528..1529,
+                                        value: Int(
+                                            2,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1552..1596,
+            range: 1552..1595,
             subject: Name(
                 ExprName {
                     range: 1558..1559,
@@ -2237,44 +2107,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1590..1596,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1590..1595,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1590..1591,
-                                                    id: "z",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1594..1595,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1590..1595,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1590..1591,
+                                            id: "z",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1594..1595,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1618..1665,
+            range: 1618..1664,
             subject: Name(
                 ExprName {
                     range: 1624..1625,
@@ -2322,44 +2187,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1659..1665,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1659..1664,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1659..1660,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1663..1664,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1659..1664,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1659..1660,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1663..1664,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1687..1727,
+            range: 1687..1726,
             subject: Tuple(
                 ExprTuple {
                     range: 1693..1697,
@@ -2398,44 +2258,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1721..1727,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1721..1726,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1721..1722,
-                                                    id: "z",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1725..1726,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1721..1726,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1721..1722,
+                                            id: "z",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1725..1726,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1749..1790,
+            range: 1749..1789,
             subject: Name(
                 ExprName {
                     range: 1755..1756,
@@ -2489,44 +2344,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1784..1790,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1784..1789,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1784..1785,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1788..1789,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1784..1789,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1784..1785,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1788..1789,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1812..1850,
+            range: 1812..1849,
             subject: Name(
                 ExprName {
                     range: 1818..1819,
@@ -2544,44 +2394,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1844..1850,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1844..1849,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1844..1845,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1848..1849,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1844..1849,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1844..1845,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1848..1849,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1872..1907,
+            range: 1872..1906,
             subject: Name(
                 ExprName {
                     range: 1878..1879,
@@ -2607,44 +2452,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1901..1907,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1901..1906,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1901..1902,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1905..1906,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1901..1906,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1901..1902,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1905..1906,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1929..1968,
+            range: 1929..1967,
             subject: Name(
                 ExprName {
                     range: 1935..1936,
@@ -2664,44 +2504,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 1962..1968,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 1962..1967,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 1962..1963,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 1966..1967,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 1962..1967,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 1962..1963,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 1966..1967,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 1990..2082,
+            range: 1990..2081,
             subject: Name(
                 ExprName {
                     range: 1996..1997,
@@ -2719,37 +2554,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2020..2026,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2020..2025,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2020..2021,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2024..2025,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2020..2025,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2020..2021,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2024..2025,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 2030..2055,
@@ -2775,37 +2605,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2049..2055,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2049..2054,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2049..2050,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2053..2054,
-                                                value: Int(
-                                                    1,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2049..2054,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2049..2050,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2053..2054,
+                                        value: Int(
+                                            1,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 2059..2082,
@@ -2824,44 +2649,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2076..2082,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2076..2081,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2076..2077,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2080..2081,
-                                                value: Int(
-                                                    2,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2076..2081,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2076..2077,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2080..2081,
+                                        value: Int(
+                                            2,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2104..2139,
+            range: 2104..2138,
             subject: Name(
                 ExprName {
                     range: 2110..2111,
@@ -2885,44 +2705,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2133..2139,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2133..2138,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2133..2134,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2137..2138,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2133..2138,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2133..2134,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2137..2138,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2161..2208,
+            range: 2161..2207,
             subject: Name(
                 ExprName {
                     range: 2167..2168,
@@ -2976,44 +2791,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2202..2208,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2202..2207,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2202..2203,
-                                                    id: "z",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2206..2207,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2202..2207,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2202..2203,
+                                            id: "z",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2206..2207,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2230..2308,
+            range: 2230..2307,
             subject: Name(
                 ExprName {
                     range: 2236..2237,
@@ -3153,44 +2963,39 @@ expression: parse_ast
                             },
                         ),
                     ),
-                    body: Suite(
-                        StmtSuite {
-                            range: 2302..2308,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2302..2307,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2302..2303,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2306..2307,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2302..2307,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2302..2303,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2306..2307,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2330..2500,
+            range: 2330..2499,
             subject: Name(
                 ExprName {
                     range: 2336..2337,
@@ -3264,37 +3069,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2373..2379,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2373..2378,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2373..2374,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2377..2378,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2373..2378,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2373..2374,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2377..2378,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 2383..2473,
@@ -3505,37 +3305,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2467..2473,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2467..2472,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2467..2468,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2471..2472,
-                                                value: Int(
-                                                    1,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2467..2472,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2467..2468,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2471..2472,
+                                        value: Int(
+                                            1,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
                 MatchCase {
                     range: 2477..2500,
@@ -3546,44 +3341,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2494..2500,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2494..2499,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2494..2495,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2498..2499,
-                                                value: Int(
-                                                    2,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2494..2499,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2494..2495,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2498..2499,
+                                        value: Int(
+                                            2,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2522..2569,
+            range: 2522..2568,
             subject: Tuple(
                 ExprTuple {
                     range: 2528..2537,
@@ -3655,44 +3445,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2563..2569,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2563..2568,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2563..2564,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2567..2568,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2563..2568,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2563..2564,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2567..2568,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2591..2639,
+            range: 2591..2638,
             subject: Tuple(
                 ExprTuple {
                     range: 2597..2606,
@@ -3764,44 +3549,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2633..2639,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2633..2638,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2633..2634,
-                                                    id: "y",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2637..2638,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2633..2638,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2633..2634,
+                                            id: "y",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2637..2638,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2661..2698,
+            range: 2661..2697,
             subject: Name(
                 ExprName {
                     range: 2667..2668,
@@ -3832,47 +3612,42 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2692..2698,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2692..2697,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2692..2693,
-                                                    id: "z",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2696..2697,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2692..2697,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2692..2693,
+                                            id: "z",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2696..2697,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2720..2761,
+            range: 2720..2760,
             subject: Tuple(
                 ExprTuple {
-                    range: 2720..2761,
+                    range: 2720..2760,
                     elts: [
                         Name(
                             ExprName {
@@ -3927,44 +3702,39 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2755..2761,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2755..2760,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2755..2756,
-                                                    id: "v",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2759..2760,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2755..2760,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2755..2756,
+                                            id: "v",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2759..2760,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },
     ),
     Match(
         StmtMatch {
-            range: 2783..2830,
+            range: 2783..2829,
             subject: NamedExpr(
                 ExprNamedExpr {
                     range: 2789..2795,
@@ -4020,37 +3790,32 @@ expression: parse_ast
                         },
                     ),
                     guard: None,
-                    body: Suite(
-                        StmtSuite {
-                            range: 2824..2830,
-                            statements: [
-                                Assign(
-                                    StmtAssign {
-                                        range: 2824..2829,
-                                        targets: [
-                                            Name(
-                                                ExprName {
-                                                    range: 2824..2825,
-                                                    id: "z",
-                                                    ctx: Store,
-                                                },
-                                            ),
-                                        ],
-                                        value: Constant(
-                                            ExprConstant {
-                                                range: 2828..2829,
-                                                value: Int(
-                                                    0,
-                                                ),
-                                                kind: None,
-                                            },
+                    body: [
+                        Assign(
+                            StmtAssign {
+                                range: 2824..2829,
+                                targets: [
+                                    Name(
+                                        ExprName {
+                                            range: 2824..2825,
+                                            id: "z",
+                                            ctx: Store,
+                                        },
+                                    ),
+                                ],
+                                value: Constant(
+                                    ExprConstant {
+                                        range: 2828..2829,
+                                        value: Int(
+                                            0,
                                         ),
-                                        type_comment: None,
+                                        kind: None,
                                     },
                                 ),
-                            ],
-                        },
-                    ),
+                                type_comment: None,
+                            },
+                        ),
+                    ],
                 },
             ],
         },

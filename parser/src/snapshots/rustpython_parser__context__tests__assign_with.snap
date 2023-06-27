@@ -29,18 +29,13 @@ expression: parse_ast
                     ),
                 },
             ],
-            body: Suite(
-                StmtSuite {
-                    range: 13..17,
-                    statements: [
-                        Pass(
-                            StmtPass {
-                                range: 13..17,
-                            },
-                        ),
-                    ],
-                },
-            ),
+            body: [
+                Pass(
+                    StmtPass {
+                        range: 13..17,
+                    },
+                ),
+            ],
             type_comment: None,
         },
     ),

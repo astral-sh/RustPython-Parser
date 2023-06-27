@@ -19,18 +19,13 @@ Ok(
                     kwonlyargs: [],
                     kwarg: None,
                 },
-                body: Suite(
-                    StmtSuite {
-                        range: 9..13,
-                        statements: [
-                            Pass(
-                                StmtPass {
-                                    range: 9..13,
-                                },
-                            ),
-                        ],
-                    },
-                ),
+                body: [
+                    Pass(
+                        StmtPass {
+                            range: 9..13,
+                        },
+                    ),
+                ],
                 decorator_list: [],
                 returns: None,
                 type_comment: None,

@@ -42,25 +42,20 @@ expression: parse_ast
                 kwonlyargs: [],
                 kwarg: None,
             },
-            body: Suite(
-                StmtSuite {
-                    range: 46..49,
-                    statements: [
-                        Expr(
-                            StmtExpr {
+            body: [
+                Expr(
+                    StmtExpr {
+                        range: 46..49,
+                        value: Constant(
+                            ExprConstant {
                                 range: 46..49,
-                                value: Constant(
-                                    ExprConstant {
-                                        range: 46..49,
-                                        value: Ellipsis,
-                                        kind: None,
-                                    },
-                                ),
+                                value: Ellipsis,
+                                kind: None,
                             },
                         ),
-                    ],
-                },
-            ),
+                    },
+                ),
+            ],
             decorator_list: [],
             returns: Some(
                 Subscript(

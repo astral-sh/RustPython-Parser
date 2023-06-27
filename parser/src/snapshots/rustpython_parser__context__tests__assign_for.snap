@@ -48,18 +48,13 @@ expression: parse_ast
                     ctx: Load,
                 },
             ),
-            body: Suite(
-                StmtSuite {
-                    range: 20..24,
-                    statements: [
-                        Pass(
-                            StmtPass {
-                                range: 20..24,
-                            },
-                        ),
-                    ],
-                },
-            ),
+            body: [
+                Pass(
+                    StmtPass {
+                        range: 20..24,
+                    },
+                ),
+            ],
             orelse: None,
             type_comment: None,
         },

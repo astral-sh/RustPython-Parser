@@ -9,6 +9,8 @@ pub enum Mode {
     Interactive,
     /// The code consists of a single expression.
     Expression,
+    /// The code is a Jupyter notebook.
+    Jupyter,
 }
 
 impl std::str::FromStr for Mode {
@@ -17,6 +19,7 @@ impl std::str::FromStr for Mode {
         match s {
             "exec" | "single" => Ok(Mode::Module),
             "eval" => Ok(Mode::Expression),
+            "jupyter" => Ok(Mode::Jupyter),
             _ => Err(ModeParseError),
         }
     }
@@ -28,6 +31,6 @@ pub struct ModeParseError;
 
 impl std::fmt::Display for ModeParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, r#"mode must be "exec", "eval", or "single""#)
+        write!(f, r#"mode must be "exec", "eval", "jupyter", or "single""#)
     }
 }

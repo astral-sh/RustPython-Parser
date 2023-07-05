@@ -51,6 +51,8 @@ pub enum Tok {
     /// the token stream prior to parsing.
     #[cfg(feature = "full-lexer")]
     NonLogicalNewline,
+    /// Jupyter magic commands which can start with `%`, `!` or `?`.
+    MagicCommand(String),
     /// Token value for an indent.
     Indent,
     /// Token value for a dedent.
@@ -204,6 +206,7 @@ impl Tok {
             Mode::Module => Tok::StartModule,
             Mode::Interactive => Tok::StartInteractive,
             Mode::Expression => Tok::StartExpression,
+            Mode::Jupyter => Tok::StartModule,
         }
     }
 }
@@ -227,6 +230,7 @@ impl fmt::Display for Tok {
             Newline => f.write_str("Newline"),
             #[cfg(feature = "full-lexer")]
             NonLogicalNewline => f.write_str("NonLogicalNewline"),
+            MagicCommand(value) => f.write_str(value),
             Indent => f.write_str("Indent"),
             Dedent => f.write_str("Dedent"),
             StartModule => f.write_str("StartProgram"),

@@ -175,6 +175,8 @@ pub struct Lexer<T: Iterator<Item = char>> {
     pending: Vec<Spanned>,
     // The current location.
     location: TextSize,
+    // Lexer mode.
+    mode: Mode,
 }
 
 // generated in build.rs, in gen_phf()
@@ -213,7 +215,7 @@ pub fn lex_starts_at(
     mode: Mode,
     start_offset: TextSize,
 ) -> SoftKeywordTransformer<Lexer<std::str::Chars<'_>>> {
-    SoftKeywordTransformer::new(Lexer::new(source.chars(), start_offset), mode)
+    SoftKeywordTransformer::new(Lexer::new(source.chars(), mode, start_offset), mode)
 }
 
 impl<T> Lexer<T>
@@ -222,7 +224,7 @@ where
 {
     /// Create a new lexer from T and a starting location. You probably want to use
     /// [`lex`] instead.
-    pub fn new(input: T, start: TextSize) -> Self {
+    pub fn new(input: T, mode: Mode, start: TextSize) -> Self {
         let mut lxr = Lexer {
             at_begin_of_line: true,
             nesting: 0,
@@ -231,6 +233,7 @@ where
             pending: Vec::with_capacity(5),
             location: start,
             window: CharWindow::new(input),
+            mode,
         };
         // Fill the window.
         lxr.window.slide();
@@ -494,6 +497,28 @@ where
         Ok(())
     }
 
+    /// Lex a single magic command.
+    fn lex_magic_command(&mut self) -> LexResult {
+        let start_pos = self.get_pos();
+        let mut value = String::new();
+        loop {
+            match self.window[0] {
+                Some('\n' | '\r') | None => {
+                    let end_pos = self.get_pos();
+                    return Ok((Tok::MagicCommand(value), TextRange::new(start_pos, end_pos)));
+                }
+                Some(_) => {}
+            }
+            value.push(self.next_char().unwrap());
+        }
+    }
+
+    fn lex_and_emit_magic_command(&mut self) -> Result<(), LexicalError> {
+        let jupyter_magic = self.lex_magic_command()?;
+        self.emit(jupyter_magic);
+        Ok(())
+    }
+
     /// Lex a string literal.
     fn lex_string(&mut self, kind: StringKind) -> LexResult {
         let start_pos = self.get_pos();
@@ -641,6 +666,11 @@ where
                 }
                 Some('#') => {
                     self.lex_and_emit_comment()?;
+                    spaces = 0;
+                    tabs = 0;
+                }
+                Some('%' | '!' | '?') if self.mode == Mode::Jupyter => {
+                    self.lex_and_emit_magic_command()?;
                     spaces = 0;
                     tabs = 0;
                 }

@@ -203,10 +203,9 @@ pub enum Tok {
 impl Tok {
     pub fn start_marker(mode: Mode) -> Self {
         match mode {
-            Mode::Module => Tok::StartModule,
+            Mode::Module | Mode::Jupyter => Tok::StartModule,
             Mode::Interactive => Tok::StartInteractive,
             Mode::Expression => Tok::StartExpression,
-            Mode::Jupyter => Tok::StartModule,
         }
     }
 }

@@ -250,7 +250,7 @@ impl Parse for ast::Constant {
 }
 
 /// Parse a full Python program usually consisting of multiple lines.
-///  
+///
 /// This is a convenience function that can be used to parse a full Python program without having to
 /// specify the [`Mode`] or the location. It is probably what you want to use most of the time.
 ///
@@ -414,7 +414,12 @@ pub fn parse_tokens(
     #[cfg(feature = "full-lexer")]
     let lxr =
         lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::Comment { .. } | Tok::NonLogicalNewline));
-    parse_filtered_tokens(lxr, mode, source_path)
+    if mode == Mode::Jupyter {
+        let lxr = lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::MagicCommand(..)));
+        parse_filtered_tokens(lxr, mode, source_path)
+    } else {
+        parse_filtered_tokens(lxr, mode, source_path)
+    }
 }
 
 fn parse_filtered_tokens(

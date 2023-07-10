@@ -1107,7 +1107,7 @@ def args_to_tuple(*args: *Ts) -> Tuple[*Ts]: ...
 @my_decorator
 def test():
     pass
-    
+
 @class_decorator
 class Abcd:
     pass

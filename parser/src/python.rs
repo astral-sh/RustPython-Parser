@@ -1,5 +1,5 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: f95a98ddc92e7f056dba3f921c7c9b36d7725b180106324fd00b6157a1c36fe7
+// sha3: 78e4fe2d25728ae4a1a411a48ffdc7845d05f16bacd09d23349a56b99a3eeaf4
 use crate::{
     ast::{self as ast, Ranged, bigint::BigInt},
     lexer::{LexicalError, LexicalErrorType},
@@ -31088,8 +31088,14 @@ fn __action158<
 {
     {
         a.as_ref().map(validate_arguments).transpose()?;
+
+        let range = optional_range(location, end_location);
         let args = a
-            .unwrap_or_else(|| ast::Arguments::empty(optional_range(location, end_location)));
+            .map(|mut arguments| {
+                arguments.range = range;
+                arguments
+            })
+            .unwrap_or_else(|| ast::Arguments::empty(range));
 
         Ok(args)
     }
@@ -31139,7 +31145,6 @@ fn __action161<
 #[allow(clippy::too_many_arguments)]
 fn __action162<
 >(
-<<<<<<< HEAD
     (_, location, _): (TextSize, TextSize, TextSize),
     (_, arg, _): (TextSize, ast::Identifier, TextSize),
     (_, a, _): (TextSize, core::option::Option<ast::Expr>, TextSize),
@@ -31170,9 +31175,6 @@ fn __action163<
 #[allow(clippy::too_many_arguments)]
 fn __action164<
 >(
-    (_, decorator_list, _): (TextSize, alloc::vec::Vec<ast::Expr>, TextSize),
-=======
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
     (_, location, _): (TextSize, TextSize, TextSize),
     (_, decorator_list, _): (TextSize, alloc::vec::Vec<ast::Expr>, TextSize),
     (_, _, _): (TextSize, token::Tok, TextSize),
@@ -40364,25 +40366,14 @@ fn __action740<
     __7: (TextSize, ast::Suite, TextSize),
 ) -> ast::Stmt
 {
-<<<<<<< HEAD
-    let __start0 = __0.2;
-    let __end0 = __1.0;
+    let __start0 = __0.0;
+    let __end0 = __0.0;
     let __temp0 = __action373(
-=======
-    let __start0 = __0.0;
-    let __end0 = __0.0;
-    let __temp0 = __action371(
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
         &__start0,
         &__end0,
     );
     let __temp0 = (__start0, __temp0, __end0);
-<<<<<<< HEAD
     __action646(
-        __0,
-=======
-    __action644(
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
         __temp0,
         __0,
         __1,
@@ -40396,69 +40387,6 @@ fn __action740<
 }
 
 #[allow(clippy::too_many_arguments)]
-<<<<<<< HEAD
-=======
-fn __action739<
->(
-    __0: (TextSize, alloc::vec::Vec<ast::Expr>, TextSize),
-    __1: (TextSize, token::Tok, TextSize),
-    __2: (TextSize, ast::Identifier, TextSize),
-    __3: (TextSize, token::Tok, TextSize),
-    __4: (TextSize, ast::Suite, TextSize),
-) -> ast::Stmt
-{
-    let __start0 = __0.0;
-    let __end0 = __0.0;
-    let __temp0 = __action371(
-        &__start0,
-        &__end0,
-    );
-    let __temp0 = (__start0, __temp0, __end0);
-    __action645(
-        __temp0,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-    )
-}
-
-#[allow(clippy::too_many_arguments)]
-fn __action740<
->(
-    __0: (TextSize, ast::Expr, TextSize),
-    __1: (TextSize, token::Tok, TextSize),
-    __2: (TextSize, Vec<ast::Pattern>, TextSize),
-    __3: (TextSize, token::Tok, TextSize),
-    __4: (TextSize, Vec<(ast::Identifier, ast::Pattern)>, TextSize),
-    __5: (TextSize, token::Tok, TextSize),
-    __6: (TextSize, token::Tok, TextSize),
-    __7: (TextSize, TextSize, TextSize),
-) -> ast::Pattern
-{
-    let __start0 = __0.0;
-    let __end0 = __0.0;
-    let __temp0 = __action371(
-        &__start0,
-        &__end0,
-    );
-    let __temp0 = (__start0, __temp0, __end0);
-    __action567(
-        __temp0,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-        __7,
-    )
-}
-
-#[allow(clippy::too_many_arguments)]
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
 fn __action741<
 >(
     __0: (TextSize, alloc::vec::Vec<ast::Expr>, TextSize),
@@ -40468,16 +40396,16 @@ fn __action741<
     __4: (TextSize, ast::Suite, TextSize),
 ) -> ast::Stmt
 {
-    let __start0 = __0.2;
-    let __end0 = __1.0;
+    let __start0 = __0.0;
+    let __end0 = __0.0;
     let __temp0 = __action373(
         &__start0,
         &__end0,
     );
     let __temp0 = (__start0, __temp0, __end0);
     __action647(
-        __0,
         __temp0,
+        __0,
         __1,
         __2,
         __3,
@@ -41484,25 +41412,14 @@ fn __action780<
     __7: (TextSize, ast::Suite, TextSize),
 ) -> ast::Stmt
 {
-<<<<<<< HEAD
-    let __start0 = __0.2;
-    let __end0 = __1.0;
-    let __temp0 = __action373(
-=======
     let __start0 = __0.0;
     let __end0 = __0.0;
-    let __temp0 = __action371(
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
+    let __temp0 = __action373(
         &__start0,
         &__end0,
     );
     let __temp0 = (__start0, __temp0, __end0);
-<<<<<<< HEAD
     __action639(
-        __0,
-=======
-    __action637(
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
         __temp0,
         __0,
         __1,
@@ -41527,25 +41444,14 @@ fn __action781<
     __6: (TextSize, ast::Suite, TextSize),
 ) -> ast::Stmt
 {
-<<<<<<< HEAD
-    let __start0 = __0.2;
-    let __end0 = __1.0;
-    let __temp0 = __action373(
-=======
     let __start0 = __0.0;
     let __end0 = __0.0;
-    let __temp0 = __action371(
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
+    let __temp0 = __action373(
         &__start0,
         &__end0,
     );
     let __temp0 = (__start0, __temp0, __end0);
-<<<<<<< HEAD
     __action640(
-        __0,
-=======
-    __action638(
->>>>>>> 25cc1da (Include decorators in `Class` and `FunctionDef` range)
         __temp0,
         __0,
         __1,

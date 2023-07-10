@@ -1099,8 +1099,10 @@ def args_to_tuple(*args: *Ts) -> Tuple[*Ts]: ...
     fn test_parse_identifier() {
         let i = ast::Identifier::parse_without_path("test").unwrap();
         assert_eq!(i.as_str(), "test");
-        
-    #[cfg(not(feature = "all-nodes-with-ranges"))]
+    }
+
+    #[test]
+    #[cfg(feature = "all-nodes-with-ranges")]
     fn decorator_ranges() {
         let parse_ast = parse_program(
             r#"

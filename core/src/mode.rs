@@ -9,7 +9,8 @@ pub enum Mode {
     Interactive,
     /// The code consists of a single expression.
     Expression,
-    /// The code is a Jupyter notebook.
+    /// The code consists of a sequence of statements which are part of a
+    /// Jupyter notebook and thus could include magics.
     Jupyter,
 }
 

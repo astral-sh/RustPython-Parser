@@ -326,7 +326,8 @@ pub fn parse_expression_starts_at(
 /// Parse the given Python source code using the specified [`Mode`].
 ///
 /// This function is the most general function to parse Python code. Based on the [`Mode`] supplied,
-/// it can be used to parse a single expression, a full Python program or an interactive expression.
+/// it can be used to parse a single expression, a full Python program, an interactive expression
+/// or a Python program containing Jupyter magics.
 ///
 /// # Example
 ///
@@ -352,6 +353,20 @@ pub fn parse_expression_starts_at(
 ///    print("Hello, world!")
 /// "#;
 /// let program = parse(source, Mode::Module, "<embedded>");
+/// assert!(program.is_ok());
+/// ```
+///
+/// Additionally, we can parse a Python program containing Jupyter magics:
+///
+/// ```
+/// use rustpython_parser::{Mode, parse};
+///
+/// let source = r#"
+/// %timeit 1 + 2
+/// ?str.replace
+/// !ls
+/// "#;
+/// let program = parse(source, Mode::Jupyter, "<embedded>");
 /// assert!(program.is_ok());
 /// ```
 pub fn parse(source: &str, mode: Mode, source_path: &str) -> Result<ast::Mod, ParseError> {
@@ -393,6 +408,9 @@ pub fn parse_starts_at(
 /// Parse an iterator of [`LexResult`]s using the specified [`Mode`].
 ///
 /// This could allow you to perform some preprocessing on the tokens before parsing them.
+///
+/// When in [`Mode::Jupyter`], this will filter out all the Jupyter magic commands
+/// before parsing the tokens.
 ///
 /// # Example
 ///
@@ -1103,6 +1121,50 @@ class Abcd:
     pass
 "#
             .trim(),
+            "<test>",
+        )
+        .unwrap();
+        insta::assert_debug_snapshot!(parse_ast);
+    }
+
+    #[test]
+    fn test_jupyter_magic() {
+        let parse_ast = parse(
+            r#"
+# Normal Python code
+(
+    a
+    %
+    b
+)
+
+# Dynamic object info
+??a.foo
+?a.foo
+?a.foo?
+??a.foo()??
+
+# Line magic
+%timeit a = b
+%timeit foo(b) % 3
+%alias showPath pwd && ls -a
+%timeit a =\
+  foo(b); b = 2
+%matplotlib --inline
+%matplotlib \
+    --inline
+
+# System shell access
+!pwd && ls -a | sed 's/^/\    /'
+!pwd \
+  && ls -a | sed 's/^/\\    /'
+!cd /Users/foo/Library/Application\ Support/
+
+# Transforms into `foo()`
+/foo
+"#
+            .trim(),
+            Mode::Jupyter,
             "<test>",
         )
         .unwrap();

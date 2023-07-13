@@ -4,7 +4,7 @@ expression: parse_ast
 ---
 Module(
     ModModule {
-        range: 0..657,
+        range: 0..711,
         body: [
             Expr(
                 StmtExpr {
@@ -81,6 +81,51 @@ Module(
                     ],
                     decorator_list: [],
                     returns: None,
+                    type_comment: None,
+                },
+            ),
+            For(
+                StmtFor {
+                    range: 676..711,
+                    target: Name(
+                        ExprName {
+                            range: 680..681,
+                            id: "a",
+                            ctx: Store,
+                        },
+                    ),
+                    iter: Call(
+                        ExprCall {
+                            range: 685..693,
+                            func: Name(
+                                ExprName {
+                                    range: 685..690,
+                                    id: "range",
+                                    ctx: Load,
+                                },
+                            ),
+                            args: [
+                                Constant(
+                                    ExprConstant {
+                                        range: 691..692,
+                                        value: Int(
+                                            5,
+                                        ),
+                                        kind: None,
+                                    },
+                                ),
+                            ],
+                            keywords: [],
+                        },
+                    ),
+                    body: [
+                        Pass(
+                            StmtPass {
+                                range: 707..711,
+                            },
+                        ),
+                    ],
+                    orelse: [],
                     type_comment: None,
                 },
             ),

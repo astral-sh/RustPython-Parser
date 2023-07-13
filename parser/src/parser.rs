@@ -1172,6 +1172,11 @@ def foo():
 
 # Transforms into `foo()`
 /foo
+
+# Indented magic
+for a in range(5):
+    %ls
+    pass
 "#
             .trim(),
             Mode::Jupyter,

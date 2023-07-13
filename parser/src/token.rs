@@ -51,7 +51,8 @@ pub enum Tok {
     /// the token stream prior to parsing.
     #[cfg(feature = "full-lexer")]
     NonLogicalNewline,
-    /// Jupyter magic commands which can start with `%`, `!` or `?`.
+    /// Token value for a Jupyter magic commands which can start with `%`, `!`, `?` or '/'. These
+    /// are filtered out of the token stream prior to parsing when the mode is [`Mode::Jupyter`].
     MagicCommand(String),
     /// Token value for an indent.
     Indent,

@@ -503,6 +503,21 @@ where
         let mut value = String::new();
         loop {
             match self.window[0] {
+                Some('\\') => {
+                    // Only skip the line continuation if it is followed by a newline
+                    // otherwise it is a normal backslash which is part of the magic command:
+                    //
+                    //        Skip this backslash
+                    //        v
+                    //   !pwd \
+                    //      && ls -a | sed 's/^/\\    /'
+                    //                          ^^
+                    //                          Don't skip these backslashes
+                    if self.window[1] == Some('\n') {
+                        self.next_char();
+                        self.next_char();
+                    }
+                }
                 Some('\n' | '\r') | None => {
                     let end_pos = self.get_pos();
                     return Ok((Tok::MagicCommand(value), TextRange::new(start_pos, end_pos)));
@@ -669,7 +684,7 @@ where
                     spaces = 0;
                     tabs = 0;
                 }
-                Some('%' | '!' | '?') if self.mode == Mode::Jupyter => {
+                Some('%' | '!' | '?' | '/') if self.mode == Mode::Jupyter => {
                     self.lex_and_emit_magic_command()?;
                     spaces = 0;
                     tabs = 0;

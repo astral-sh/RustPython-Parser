@@ -1160,6 +1160,16 @@ class Abcd:
   && ls -a | sed 's/^/\\    /'
 !cd /Users/foo/Library/Application\ Support/
 
+# Let's add some Python code to make sure that earlier escapes were handled
+# correctly and that we didn't consume any of the following code as a result
+# of the escapes.
+def foo():
+    return (
+        a
+        !=
+        b
+    )
+
 # Transforms into `foo()`
 /foo
 "#

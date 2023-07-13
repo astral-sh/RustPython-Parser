@@ -4,7 +4,7 @@ expression: parse_ast
 ---
 Module(
     ModModule {
-        range: 0..43,
+        range: 0..657,
         body: [
             Expr(
                 StmtExpr {
@@ -29,6 +29,59 @@ Module(
                             ),
                         },
                     ),
+                },
+            ),
+            FunctionDef(
+                StmtFunctionDef {
+                    range: 565..625,
+                    name: Identifier {
+                        id: "foo",
+                        range: 569..572,
+                    },
+                    args: Arguments {
+                        range: 572..574,
+                        posonlyargs: [],
+                        args: [],
+                        vararg: None,
+                        kwonlyargs: [],
+                        kwarg: None,
+                    },
+                    body: [
+                        Return(
+                            StmtReturn {
+                                range: 580..625,
+                                value: Some(
+                                    Compare(
+                                        ExprCompare {
+                                            range: 597..619,
+                                            left: Name(
+                                                ExprName {
+                                                    range: 597..598,
+                                                    id: "a",
+                                                    ctx: Load,
+                                                },
+                                            ),
+                                            ops: [
+                                                NotEq,
+                                            ],
+                                            comparators: [
+                                                Name(
+                                                    ExprName {
+                                                        range: 618..619,
+                                                        id: "b",
+                                                        ctx: Load,
+                                                    },
+                                                ),
+                                            ],
+                                        },
+                                    ),
+                                ),
+                            },
+                        ),
+                    ],
+                    decorator_list: [],
+                    returns: None,
+                    type_comment: None,
                 },
             ),
         ],

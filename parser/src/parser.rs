@@ -433,7 +433,7 @@ pub fn parse_tokens(
     let lxr =
         lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::Comment { .. } | Tok::NonLogicalNewline));
     if mode == Mode::Jupyter {
-        let lxr = lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::MagicCommand(..)));
+        let lxr = lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::MagicCommand { .. }));
         parse_filtered_tokens(lxr, mode, source_path)
     } else {
         parse_filtered_tokens(lxr, mode, source_path)
@@ -1170,8 +1170,10 @@ def foo():
         b
     )
 
-# Transforms into `foo()`
-/foo
+# Transforms into `foo(..)`
+/foo 1 2
+;foo 1 2
+,foo 1 2
 
 # Indented magic
 for a in range(5):

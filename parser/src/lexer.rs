@@ -498,7 +498,7 @@ where
     }
 
     /// Lex a single magic command.
-    fn lex_magic_command(&mut self, kind: MagicKind) -> LexResult {
+    fn lex_magic_command(&mut self, kind: MagicKind) -> (Tok, TextRange) {
         let start_pos = self.get_pos();
         for _ in 0..u32::from(kind.prefix_len()) {
             self.next_char();
@@ -534,10 +534,10 @@ where
                 }
                 Some('\n' | '\r') | None => {
                     let end_pos = self.get_pos();
-                    return Ok((
+                    return (
                         Tok::MagicCommand { kind, value },
                         TextRange::new(start_pos, end_pos),
-                    ));
+                    );
                 }
                 Some(_) => {}
             }
@@ -545,16 +545,15 @@ where
         }
     }
 
-    fn lex_and_emit_magic_command(&mut self) -> Result<(), LexicalError> {
+    fn lex_and_emit_magic_command(&mut self) {
         if let [Some(c1), Some(c2)] = self.window[..2] {
             if let Ok(kind) =
                 MagicKind::try_from([c1, c2]).map_or_else(|_| MagicKind::try_from(c1), Ok)
             {
-                let magic_command = self.lex_magic_command(kind)?;
+                let magic_command = self.lex_magic_command(kind);
                 self.emit(magic_command);
             }
         }
-        Ok(())
     }
 
     /// Lex a string literal.
@@ -709,7 +708,7 @@ where
                 }
                 // https://github.com/ipython/ipython/blob/635815e8f1ded5b764d66cacc80bbe25e9e2587f/IPython/core/inputtransformer2.py#L345
                 Some('%' | '!' | '?' | '/' | ';' | ',') if self.mode == Mode::Jupyter => {
-                    self.lex_and_emit_magic_command()?;
+                    self.lex_and_emit_magic_command();
                     spaces = 0;
                     tabs = 0;
                 }

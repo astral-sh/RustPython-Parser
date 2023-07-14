@@ -516,9 +516,20 @@ where
                     //      && ls -a | sed 's/^/\\    /'
                     //                          ^^
                     //                          Don't skip these backslashes
-                    if matches!(self.window[1], Some('\n' | '\r')) {
-                        self.next_char();
-                        self.next_char();
+                    match self.window[1..3] {
+                        [Some('\n'), _] => {
+                            self.next_char(); // '\'
+                            self.next_char(); // '\n'
+                        }
+                        [Some('\r'), Some(ch)] => {
+                            self.next_char(); // '\'
+                            if matches!(ch, '\n') {
+                                self.next_char(); // '\r\n'
+                            } else {
+                                self.next_char(); // '\r'
+                            }
+                        }
+                        _ => (),
                     }
                 }
                 Some('\n' | '\r') | None => {
@@ -1439,6 +1450,11 @@ mod tests {
         lexer.map(|x| x.unwrap().0).collect()
     }
 
+    pub fn lex_jupyter_source(source: &str) -> Vec<Tok> {
+        let lexer = lex(source, Mode::Jupyter);
+        lexer.map(|x| x.unwrap().0).collect()
+    }
+
     fn str_tok(s: &str) -> Tok {
         Tok::String {
             value: s.to_owned(),
@@ -1453,6 +1469,30 @@ mod tests {
             kind: StringKind::RawString,
             triple_quoted: false,
         }
+    }
+
+    macro_rules! test_jupyter_magic_line_continuation_eol {
+        ($($name:ident: $eol:expr,)*) => {
+            $(
+            #[test]
+            fn $name() {
+                let source = format!("%matplotlib \\{}  --inline", $eol);
+                let tokens = lex_jupyter_source(&source);
+                assert_eq!(
+                    tokens,
+                    vec![
+                        Tok::MagicCommand { value: "matplotlib   --inline".to_string(), kind: MagicKind::Magic },
+                    ]
+                )
+            }
+            )*
+        };
+    }
+
+    test_jupyter_magic_line_continuation_eol! {
+        test_jupyter_magic_line_continuation_windows_eol: WINDOWS_EOL,
+        test_jupyter_magic_line_continuation_mac_eol: MAC_EOL,
+        test_jupyter_magic_line_continuation_unix_eol: UNIX_EOL,
     }
 
     #[test]

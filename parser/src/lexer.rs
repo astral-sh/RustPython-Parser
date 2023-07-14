@@ -516,20 +516,9 @@ where
                     //      && ls -a | sed 's/^/\\    /'
                     //                          ^^
                     //                          Don't skip these backslashes
-                    match self.window[1..3] {
-                        [Some('\n'), _] => {
-                            self.next_char(); // '\'
-                            self.next_char(); // '\n'
-                        }
-                        [Some('\r'), Some(ch)] => {
-                            self.next_char(); // '\'
-                            if matches!(ch, '\n') {
-                                self.next_char(); // '\r\n'
-                            } else {
-                                self.next_char(); // '\r'
-                            }
-                        }
-                        _ => (),
+                    if matches!(self.window[1], Some('\n' | '\r')) {
+                        self.next_char();
+                        self.next_char();
                     }
                 }
                 Some('\n' | '\r') | None => {

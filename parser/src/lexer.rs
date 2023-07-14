@@ -534,9 +534,15 @@ where
         }
     }
 
-    fn lex_and_emit_magic_command(&mut self, kind: MagicKind) -> Result<(), LexicalError> {
-        let magic_command = self.lex_magic_command(kind)?;
-        self.emit(magic_command);
+    fn lex_and_emit_magic_command(&mut self) -> Result<(), LexicalError> {
+        if let [Some(c1), Some(c2)] = self.window[..2] {
+            if let Ok(kind) =
+                MagicKind::try_from([c1, c2]).map_or_else(|_| MagicKind::try_from(c1), Ok)
+            {
+                let magic_command = self.lex_magic_command(kind)?;
+                self.emit(magic_command);
+            }
+        }
         Ok(())
     }
 
@@ -690,6 +696,12 @@ where
                     spaces = 0;
                     tabs = 0;
                 }
+                // https://github.com/ipython/ipython/blob/635815e8f1ded5b764d66cacc80bbe25e9e2587f/IPython/core/inputtransformer2.py#L345
+                Some('%' | '!' | '?' | '/' | ';' | ',') if self.mode == Mode::Jupyter => {
+                    self.lex_and_emit_magic_command()?;
+                    spaces = 0;
+                    tabs = 0;
+                }
                 Some('\x0C') => {
                     // Form feed character!
                     // Reset indentation for the Emacs user.
@@ -717,18 +729,6 @@ where
                 _ => {
                     self.at_begin_of_line = false;
                     break;
-                }
-            }
-        }
-
-        if self.mode == Mode::Jupyter {
-            if let [Some(c1), Some(c2)] = self.window[..2] {
-                if let Ok(kind) =
-                    MagicKind::try_from([c1, c2]).map_or_else(|_| MagicKind::try_from(c1), Ok)
-                {
-                    self.lex_and_emit_magic_command(kind)?;
-                    spaces = 0;
-                    tabs = 0;
                 }
             }
         }

@@ -4,7 +4,7 @@ expression: parse_ast
 ---
 Module(
     ModModule {
-        range: 0..711,
+        range: 0..735,
         body: [
             Expr(
                 StmtExpr {
@@ -86,20 +86,20 @@ Module(
             ),
             For(
                 StmtFor {
-                    range: 676..711,
+                    range: 700..735,
                     target: Name(
                         ExprName {
-                            range: 680..681,
+                            range: 704..705,
                             id: "a",
                             ctx: Store,
                         },
                     ),
                     iter: Call(
                         ExprCall {
-                            range: 685..693,
+                            range: 709..717,
                             func: Name(
                                 ExprName {
-                                    range: 685..690,
+                                    range: 709..714,
                                     id: "range",
                                     ctx: Load,
                                 },
@@ -107,7 +107,7 @@ Module(
                             args: [
                                 Constant(
                                     ExprConstant {
-                                        range: 691..692,
+                                        range: 715..716,
                                         value: Int(
                                             5,
                                         ),
@@ -121,7 +121,7 @@ Module(
                     body: [
                         Pass(
                             StmtPass {
-                                range: 707..711,
+                                range: 731..735,
                             },
                         ),
                     ],

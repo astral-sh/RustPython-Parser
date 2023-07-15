@@ -1488,6 +1488,141 @@ mod tests {
     }
 
     #[test]
+    fn test_empty_jupyter_magic() {
+        let source = "%\n%%\n!\n!!\n?\n??\n/\n,\n;";
+        let tokens = lex_jupyter_source(source);
+        assert_eq!(
+            tokens,
+            vec![
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Magic,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Magic2,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Shell,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::ShCap,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Help,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Help2,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Paren,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Quote,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "".to_string(),
+                    kind: MagicKind::Quote2,
+                },
+            ]
+        )
+    }
+
+    #[test]
+    fn test_jupyter_magic() {
+        let source = r"
+?foo
+??foo
+%timeit a = b
+%timeit a % 3
+%matplotlib \
+    --inline
+!pwd \
+  && ls -a | sed 's/^/\\    /'
+!!cd /Users/foo/Library/Application\ Support/
+/foo 1 2
+,foo 1 2
+;foo 1 2
+    !ls
+"
+        .trim();
+        let tokens = lex_jupyter_source(source);
+        assert_eq!(
+            tokens,
+            vec![
+                Tok::MagicCommand {
+                    value: "foo".to_string(),
+                    kind: MagicKind::Help,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "foo".to_string(),
+                    kind: MagicKind::Help2,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "timeit a = b".to_string(),
+                    kind: MagicKind::Magic,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "timeit a % 3".to_string(),
+                    kind: MagicKind::Magic,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "matplotlib     --inline".to_string(),
+                    kind: MagicKind::Magic,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "pwd   && ls -a | sed 's/^/\\\\    /'".to_string(),
+                    kind: MagicKind::Shell,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "cd /Users/foo/Library/Application\\ Support/".to_string(),
+                    kind: MagicKind::ShCap,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "foo 1 2".to_string(),
+                    kind: MagicKind::Paren,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "foo 1 2".to_string(),
+                    kind: MagicKind::Quote,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "foo 1 2".to_string(),
+                    kind: MagicKind::Quote2,
+                },
+                Tok::NonLogicalNewline,
+                Tok::MagicCommand {
+                    value: "ls".to_string(),
+                    kind: MagicKind::Shell,
+                },
+            ]
+        )
+    }
+
+    #[test]
     fn test_numbers() {
         let source = "0x2f 0o12 0b1101 0 123 123_45_67_890 0.2 1e+2 2.1e3 2j 2.2j";
         let tokens = lex_source(source);

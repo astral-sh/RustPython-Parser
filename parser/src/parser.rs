@@ -1158,7 +1158,7 @@ class Abcd:
 !pwd && ls -a | sed 's/^/\    /'
 !pwd \
   && ls -a | sed 's/^/\\    /'
-!cd /Users/foo/Library/Application\ Support/
+!!cd /Users/foo/Library/Application\ Support/
 
 # Let's add some Python code to make sure that earlier escapes were handled
 # correctly and that we didn't consume any of the following code as a result

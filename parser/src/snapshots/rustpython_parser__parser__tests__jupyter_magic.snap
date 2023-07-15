@@ -4,7 +4,7 @@ expression: parse_ast
 ---
 Module(
     ModModule {
-        range: 0..735,
+        range: 0..736,
         body: [
             Expr(
                 StmtExpr {
@@ -33,13 +33,13 @@ Module(
             ),
             FunctionDef(
                 StmtFunctionDef {
-                    range: 565..625,
+                    range: 566..626,
                     name: Identifier {
                         id: "foo",
-                        range: 569..572,
+                        range: 570..573,
                     },
                     args: Arguments {
-                        range: 572..574,
+                        range: 573..575,
                         posonlyargs: [],
                         args: [],
                         vararg: None,
@@ -49,14 +49,14 @@ Module(
                     body: [
                         Return(
                             StmtReturn {
-                                range: 580..625,
+                                range: 581..626,
                                 value: Some(
                                     Compare(
                                         ExprCompare {
-                                            range: 597..619,
+                                            range: 598..620,
                                             left: Name(
                                                 ExprName {
-                                                    range: 597..598,
+                                                    range: 598..599,
                                                     id: "a",
                                                     ctx: Load,
                                                 },
@@ -67,7 +67,7 @@ Module(
                                             comparators: [
                                                 Name(
                                                     ExprName {
-                                                        range: 618..619,
+                                                        range: 619..620,
                                                         id: "b",
                                                         ctx: Load,
                                                     },
@@ -86,20 +86,20 @@ Module(
             ),
             For(
                 StmtFor {
-                    range: 700..735,
+                    range: 701..736,
                     target: Name(
                         ExprName {
-                            range: 704..705,
+                            range: 705..706,
                             id: "a",
                             ctx: Store,
                         },
                     ),
                     iter: Call(
                         ExprCall {
-                            range: 709..717,
+                            range: 710..718,
                             func: Name(
                                 ExprName {
-                                    range: 709..714,
+                                    range: 710..715,
                                     id: "range",
                                     ctx: Load,
                                 },
@@ -107,7 +107,7 @@ Module(
                             args: [
                                 Constant(
                                     ExprConstant {
-                                        range: 715..716,
+                                        range: 716..717,
                                         value: Int(
                                             5,
                                         ),
@@ -121,7 +121,7 @@ Module(
                     body: [
                         Pass(
                             StmtPass {
-                                range: 731..735,
+                                range: 732..736,
                             },
                         ),
                     ],

@@ -1496,41 +1496,49 @@ mod tests {
                     value: "".to_string(),
                     kind: MagicKind::Magic,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Magic2,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Shell,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::ShCap,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Help,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Help2,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Paren,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Quote,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
@@ -1566,51 +1574,61 @@ mod tests {
                     value: "foo".to_string(),
                     kind: MagicKind::Help,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo".to_string(),
                     kind: MagicKind::Help2,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "timeit a = b".to_string(),
                     kind: MagicKind::Magic,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "timeit a % 3".to_string(),
                     kind: MagicKind::Magic,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "matplotlib     --inline".to_string(),
                     kind: MagicKind::Magic,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "pwd   && ls -a | sed 's/^/\\\\    /'".to_string(),
                     kind: MagicKind::Shell,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "cd /Users/foo/Library/Application\\ Support/".to_string(),
                     kind: MagicKind::ShCap,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Paren,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Quote,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Quote2,
                 },
+                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "ls".to_string(),

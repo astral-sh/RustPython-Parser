@@ -535,13 +535,17 @@ where
     }
 
     fn lex_and_emit_magic_command(&mut self) {
-        if let [Some(c1), Some(c2)] = self.window[..2] {
-            if let Ok(kind) =
+        let kind = match self.window[..2] {
+            [Some(c1), Some(c2)] => {
                 MagicKind::try_from([c1, c2]).map_or_else(|_| MagicKind::try_from(c1), Ok)
-            {
-                let magic_command = self.lex_magic_command(kind);
-                self.emit(magic_command);
             }
+            // When the escape character is the last character of the file.
+            [Some(c), None] => MagicKind::try_from(c),
+            _ => return,
+        };
+        if let Ok(kind) = kind {
+            let magic_command = self.lex_magic_command(kind);
+            self.emit(magic_command);
         }
     }
 

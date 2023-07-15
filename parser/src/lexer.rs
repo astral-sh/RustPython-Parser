@@ -702,8 +702,6 @@ where
                 // https://github.com/ipython/ipython/blob/635815e8f1ded5b764d66cacc80bbe25e9e2587f/IPython/core/inputtransformer2.py#L345
                 Some('%' | '!' | '?' | '/' | ';' | ',') if self.mode == Mode::Jupyter => {
                     self.lex_and_emit_magic_command();
-                    spaces = 0;
-                    tabs = 0;
                 }
                 Some('\x0C') => {
                     // Form feed character!

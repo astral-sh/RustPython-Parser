@@ -4,15 +4,14 @@
 // See also: https://greentreesnakes.readthedocs.io/en/latest/nodes.html#keyword
 
 use crate::{
-    ast::{self as ast, Ranged},
+    ast::{self as ast, Ranged, bigint::BigInt},
     lexer::{LexicalError, LexicalErrorType},
-    function::{ArgumentList, parse_args, parse_params, validate_arguments},
+    function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
     string::parse_strings,
     token::{self, StringKind},
     text_size::TextSize, parser::optional_range
 };
-use num_bigint::BigInt;
 
 grammar;
 
@@ -87,6 +86,7 @@ SmallStatement: ast::Stmt = {
     GlobalStatement,
     NonlocalStatement,
     AssertStatement,
+    TypeAliasStatement,
 };
 
 PassStatement: ast::Stmt = {
@@ -114,11 +114,11 @@ ExpressionStatement: ast::Stmt = {
             let mut targets = vec![set_context(expression, ast::ExprContext::Store)];
             let mut values = suffix;
 
-            while values.len() > 1 {
-                targets.push(set_context(values.remove(0), ast::ExprContext::Store));
-            }
+            let value = Box::new(values.pop().unwrap());
 
-            let value = Box::new(values.into_iter().next().unwrap());
+            for target in values {
+                targets.push(set_context(target, ast::ExprContext::Store));
+            }
 
             ast::Stmt::Assign(
                 ast::StmtAssign { targets, value, type_comment: None, range: (location..end_location).into() }
@@ -387,7 +387,9 @@ MatchStatement: ast::Stmt = {
 }
 
 MatchCase: ast::MatchCase = {
-    <start:@L> "case" <pattern:Patterns> <guard:(Guard)?> ":" <body:Suite> <end:@R> => {
+    <start:@L> "case" <pattern:Patterns> <guard:(Guard)?> ":" <body:Suite> => {
+        // SAFETY: `body` is never empty because it is non-optional and `Suite` matches one or more statements.
+        let end = body.last().unwrap().end();
         ast::MatchCase {
             pattern,
             guard: guard.map(Box::new),
@@ -508,7 +510,7 @@ ConstantExpr: ast::Expr = {
     ConstantAtom,
     <location:@L> "-" <operand:ConstantAtom> <end_location:@R> => ast::Expr::UnaryOp(
         ast::ExprUnaryOp {
-            op: ast::Unaryop::USub,
+            op: ast::UnaryOp::USub,
             operand: Box::new(operand),
             range: (location..end_location).into()
         }
@@ -874,11 +876,11 @@ TryStatement: ast::Stmt = {
     },
 };
 
-ExceptStarClause: ast::Excepthandler = {
+ExceptStarClause: ast::ExceptHandler = {
     <location:@L> "except" "*" <typ:Test<"all">> ":" <body:Suite> => {
         let end_location = body.last().unwrap().end();
-        ast::Excepthandler::ExceptHandler(
-            ast::ExcepthandlerExceptHandler {
+        ast::ExceptHandler::ExceptHandler(
+            ast::ExceptHandlerExceptHandler {
                 type_: Some(Box::new(typ)),
                 name: None,
                 body,
@@ -888,8 +890,8 @@ ExceptStarClause: ast::Excepthandler = {
     },
     <location:@L> "except" "*" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Suite> => {
         let end_location = body.last().unwrap().end();
-        ast::Excepthandler::ExceptHandler(
-            ast::ExcepthandlerExceptHandler {
+        ast::ExceptHandler::ExceptHandler(
+            ast::ExceptHandlerExceptHandler {
                 type_: Some(Box::new(x.0)),
                 name: Some(x.1),
                 body,
@@ -900,11 +902,11 @@ ExceptStarClause: ast::Excepthandler = {
 };
 
 
-ExceptClause: ast::Excepthandler = {
+ExceptClause: ast::ExceptHandler = {
     <location:@L> "except" <typ:Test<"all">?> ":" <body:Suite> => {
         let end_location = body.last().unwrap().end();
-        ast::Excepthandler::ExceptHandler(
-            ast::ExcepthandlerExceptHandler {
+        ast::ExceptHandler::ExceptHandler(
+            ast::ExceptHandlerExceptHandler {
                 type_: typ.map(Box::new),
                 name: None,
                 body,
@@ -914,8 +916,8 @@ ExceptClause: ast::Excepthandler = {
     },
     <location:@L> "except" <x:(<Test<"all">> "as" <Identifier>)> ":" <body:Suite> => {
         let end_location = body.last().unwrap().end();
-        ast::Excepthandler::ExceptHandler(
-            ast::ExcepthandlerExceptHandler {
+        ast::ExceptHandler::ExceptHandler(
+            ast::ExceptHandlerExceptHandler {
                 type_: Some(Box::new(x.0)),
                 name: Some(x.1),
                 body,
@@ -937,7 +939,7 @@ WithStatement: ast::Stmt = {
     },
 };
 
-WithItems: Vec<ast::Withitem> = {
+WithItems: Vec<ast::WithItem> = {
     "(" <WithItemsNoAs> ","? ")",
     "(" <left:(<WithItemsNoAs> ",")?> <mid:WithItem<"as">> <right:("," <WithItem<"all">>)*> ","? ")" => {
         left.into_iter().flatten().chain([mid]).chain(right).collect()
@@ -949,46 +951,58 @@ WithItems: Vec<ast::Withitem> = {
 };
 
 #[inline]
-WithItemsNoAs: Vec<ast::Withitem> = {
+WithItemsNoAs: Vec<ast::WithItem> = {
     <location:@L> <all:OneOrMore<Test<"all">>> <end_location:@R> => {
-        all.into_iter().map(|context_expr| ast::Withitem { context_expr, optional_vars: None, range: optional_range(location, end_location) }).collect()
+        all.into_iter().map(|context_expr| ast::WithItem { context_expr, optional_vars: None, range: optional_range(location, end_location) }).collect()
     },
 }
 
-WithItem<Goal>: ast::Withitem = {
-    <location:@L> <context_expr: Test<Goal>> <end_location:@R> if Goal != "as" => ast::Withitem { context_expr, optional_vars: None, range: optional_range(location, end_location) },
+WithItem<Goal>: ast::WithItem = {
+    <location:@L> <context_expr: Test<Goal>> <end_location:@R> if Goal != "as" => ast::WithItem { context_expr, optional_vars: None, range: optional_range(location, end_location) },
     <location:@L> <context_expr:Test<"all">> "as" <vars:Expression<"all">> <end_location:@R> => {
         let optional_vars = Some(Box::new(set_context(vars, ast::ExprContext::Store)));
-        ast::Withitem { context_expr, optional_vars, range: optional_range(location, end_location) }
+        ast::WithItem { context_expr, optional_vars, range: optional_range(location, end_location) }
     },
 };
 
 FuncDef: ast::Stmt = {
-    <location:@L> <decorator_list:Decorator*> <is_async:"async"?> "def" <name:Identifier> <args:Parameters> <r:("->" <Test<"all">>)?> ":" <body:Suite> => {
+    <location:@L> <decorator_list:Decorator*> <is_async:"async"?> "def" <name:Identifier> <type_params:TypeParamList?> <args:Parameters> <r:("->" <Test<"all">>)?> ":" <body:Suite> => {
         let args = Box::new(args);
         let returns = r.map(|x| Box::new(x));
         let end_location = body.last().unwrap().end();
         let type_comment = None;
         if is_async.is_some() {
-            ast::StmtAsyncFunctionDef { name, args, body, decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtAsyncFunctionDef { name, args, body, decorator_list, returns, type_comment, type_params: type_params.unwrap_or_default(), range: (location..end_location).into() }.into()
         } else {
-            ast::StmtFunctionDef { name, args, body, decorator_list, returns, type_comment, range: (location..end_location).into() }.into()
+            ast::StmtFunctionDef { name, args, body, decorator_list, returns, type_comment, type_params: type_params.unwrap_or_default(), range: (location..end_location).into() }.into()
         }
     },
 };
 
+TypeAliasName: ast::Expr = {
+    <location:@L> <name:Identifier> <end_location:@R> => ast::Expr::Name(
+        ast::ExprName { id: name, ctx: ast::ExprContext::Load, range: (location..end_location).into() },
+    ),
+}
+
+TypeAliasStatement: ast::Stmt = {
+    <location:@L> "type" <name:TypeAliasName> <type_params:TypeParamList?> "=" <value:Test<"all">> <end_location:@R> => {
+        ast::Stmt::TypeAlias(
+            ast::StmtTypeAlias {
+                name: Box::new(name),
+                value: Box::new(value),
+                type_params: type_params.unwrap_or_default(),
+                range: (location..end_location).into()
+            },
+        )
+    },
+};
+
 Parameters: ast::Arguments = {
-    <location:@L> "(" <a: (ParameterList<TypedParameter, StarTypedParameter>)?> ")" <end_location:@R> =>? {
-        let args = a.map(validate_arguments).transpose()?.unwrap_or_else(|| ast::Arguments {
-            posonlyargs: vec![],
-            args: vec![],
-            vararg: None,
-            kwonlyargs: vec![],
-            kw_defaults: vec![],
-            kwarg: None,
-            defaults: vec![],
-            range: optional_range(location, end_location)
-        });
+    <location:@L> "(" <a: (ParameterList<TypedParameter, StarTypedParameter, DoubleStarTypedParameter>)?> ")" <end_location:@R> =>? {
+        a.as_ref().map(validate_arguments).transpose()?;
+        let args = a
+            .unwrap_or_else(|| ast::Arguments::empty(optional_range(location, end_location)));
 
         Ok(args)
     }
@@ -996,12 +1010,13 @@ Parameters: ast::Arguments = {
 
 // Note that this is a macro which is used once for function defs, and
 // once for lambda defs.
-ParameterList<ArgType, StarArgType>: ast::Arguments = {
-    <location:@L> <param1:ParameterDefs<ArgType>> <args2:("," <ParameterListStarArgs<ArgType, StarArgType>>)?> ","? <end_location:@R> =>? {
-        let (posonlyargs, args, defaults) = parse_params(param1)?;
+ParameterList<ArgType, StarArgType, DoubleStarArgType>: ast::Arguments = {
+    <location:@L> <param1:ParameterDefs<ArgType>> <args2:("," <ParameterListStarArgs<ArgType, StarArgType, DoubleStarArgType>>)?> ","? <end_location:@R> =>? {
+        validate_pos_params(&param1)?;
+        let (posonlyargs, args) = param1;
 
         // Now gather rest of parameters:
-        let (vararg, kwonlyargs, kw_defaults, kwarg) = args2.unwrap_or((None, vec![], vec![], None));
+        let (vararg, kwonlyargs, kwarg) = args2.unwrap_or((None, vec![], None));
 
         Ok(ast::Arguments {
             posonlyargs,
@@ -1009,18 +1024,16 @@ ParameterList<ArgType, StarArgType>: ast::Arguments = {
             kwonlyargs,
             vararg,
             kwarg,
-            defaults,
-            kw_defaults,
             range: optional_range(location, end_location)
         })
     },
-    <location:@L> <param1:ParameterDefs<ArgType>> <kw:("," <KwargParameter<ArgType>>)> ","? <end_location:@R> =>? {
-        let (posonlyargs, args, defaults) = parse_params(param1)?;
+    <location:@L> <param1:ParameterDefs<ArgType>> <kw:("," <KwargParameter<DoubleStarArgType>>)> ","? <end_location:@R> =>? {
+        validate_pos_params(&param1)?;
+        let (posonlyargs, args) = param1;
 
         // Now gather rest of parameters:
         let vararg = None;
         let kwonlyargs = vec![];
-        let kw_defaults = vec![];
         let kwarg = kw;
 
         Ok(ast::Arguments {
@@ -1029,33 +1042,27 @@ ParameterList<ArgType, StarArgType>: ast::Arguments = {
             kwonlyargs,
             vararg,
             kwarg,
-            defaults,
-            kw_defaults,
             range: optional_range(location, end_location)
         })
     },
-    <location:@L> <params:ParameterListStarArgs<ArgType, StarArgType>> ","? <end_location:@R> => {
-        let (vararg, kwonlyargs, kw_defaults, kwarg) = params;
+    <location:@L> <params:ParameterListStarArgs<ArgType, StarArgType, DoubleStarArgType>> ","? <end_location:@R> => {
+        let (vararg, kwonlyargs, kwarg) = params;
         ast::Arguments {
             posonlyargs: vec![],
             args: vec![],
             kwonlyargs,
             vararg,
             kwarg,
-            defaults: vec![],
-            kw_defaults,
             range: optional_range(location, end_location)
         }
     },
-    <location:@L> <kwarg:KwargParameter<ArgType>> ","? <end_location:@R> => {
+    <location:@L> <kwarg:KwargParameter<DoubleStarArgType>> ","? <end_location:@R> => {
         ast::Arguments {
             posonlyargs: vec![],
             args: vec![],
             kwonlyargs: vec![],
             vararg: None,
             kwarg,
-            defaults: vec![],
-            kw_defaults: vec![],
             range: optional_range(location, end_location)
         }
     },
@@ -1063,34 +1070,51 @@ ParameterList<ArgType, StarArgType>: ast::Arguments = {
 
 // Use inline here to make sure the "," is not creating an ambiguity.
 #[inline]
-ParameterDefs<ArgType>: (Vec<(ast::Arg, Option<ast::Expr>)>, Vec<(ast::Arg, Option<ast::Expr>)>) = {
+ParameterDefs<ArgType>: (Vec<ast::ArgWithDefault>, Vec<ast::ArgWithDefault>) = {
     <args:OneOrMore<ParameterDef<ArgType>>> => {
         (vec![], args)
     },
-    <pos_args:OneOrMore<ParameterDef<ArgType>>> "," "/" <args:("," <ParameterDef<ArgType>>)*>  => {
-        (pos_args, args)
+    <posonlyargs:OneOrMore<ParameterDef<ArgType>>> "," "/" <args:("," <ParameterDef<ArgType>>)*>  => {
+        (posonlyargs, args)
     },
 };
 
-ParameterDef<ArgType>: (ast::Arg, Option<ast::Expr>) = {
-    <i:ArgType> => (i, None),
-    <i:ArgType> "=" <e:Test<"all">> => (i, Some(e)),
+ParameterDef<ArgType>: ast::ArgWithDefault = {
+    <i:ArgType> => i,
+    <mut i:ArgType> "=" <e:Test<"all">> => {
+        i.default = Some(Box::new(e));
+        i
+    },
 };
 
-UntypedParameter: ast::Arg = {
+UntypedParameter: ast::ArgWithDefault = {
+    <location:@L> <arg:Identifier> <end_location:@R> => {
+        let def = ast::Arg { arg, annotation: None, type_comment: None, range: (location..end_location).into() };
+        ast::ArgWithDefault { def, default: None, range: optional_range(location, end_location) }
+    },
+};
+StarUntypedParameter: ast::Arg = {
     <location:@L> <arg:Identifier> <end_location:@R> => ast::Arg { arg, annotation: None, type_comment: None, range: (location..end_location).into() },
 };
 
-TypedParameter: ast::Arg = {
+TypedParameter: ast::ArgWithDefault = {
     <location:@L> <arg:Identifier> <a:(":" <Test<"all">>)?> <end_location:@R> => {
-        let annotation = a.map(|x| Box::new(x));
-        ast::Arg { arg, annotation, type_comment: None, range: (location..end_location).into() }
+        let annotation = a.map(Box::new);
+        let def = ast::Arg { arg, annotation, type_comment: None, range: (location..end_location).into() };
+        ast::ArgWithDefault { def, default: None, range: optional_range(location, end_location) }
     },
 };
 
 StarTypedParameter: ast::Arg = {
     <location:@L> <arg:Identifier> <a:(":" <TestOrStarExpr>)?> <end_location:@R> => {
-        let annotation = a.map(|x| Box::new(x));
+        let annotation = a.map(Box::new);
+        ast::Arg { arg, annotation, type_comment: None, range: (location..end_location).into() }
+    },
+};
+
+DoubleStarTypedParameter: ast::Arg = {
+    <location:@L> <arg:Identifier> <a:(":" <Test<"all">>)?> <end_location:@R> => {
+        let annotation = a.map(Box::new);
         ast::Arg { arg, annotation, type_comment: None, range: (location..end_location).into() }
     },
 };
@@ -1098,23 +1122,9 @@ StarTypedParameter: ast::Arg = {
 // Use inline here to make sure the "," is not creating an ambiguity.
 // TODO: figure out another grammar that makes this inline no longer required.
 #[inline]
-ParameterListStarArgs<ArgType, StarArgType>: (Option<Box<ast::Arg>>, Vec<ast::Arg>, Vec<ast::Expr>, Option<Box<ast::Arg>>) = {
-    <location:@L> "*" <va:StarArgType?> <kw:("," <ParameterDef<ArgType>>)*> <kwarg:("," <KwargParameter<ArgType>>)?> =>? {
-        // Extract keyword arguments:
-        let mut kwonlyargs = Vec::new();
-        let mut kw_defaults = Vec::new();
-        let mut kwargs = Vec::with_capacity(kw.len());
-        for (name, value) in kw {
-            if let Some(value) = value {
-                kwonlyargs.push(name);
-                kw_defaults.push(value);
-            } else {
-                kwargs.push(name);
-            }
-        }
-        kwargs.extend(kwonlyargs.into_iter());
-
-        if va.is_none() && kwargs.is_empty() && kwarg.is_none() {
+ParameterListStarArgs<ArgType, StarArgType, DoubleStarArgType>: (Option<Box<ast::Arg>>, Vec<ast::ArgWithDefault>, Option<Box<ast::Arg>>) = {
+    <location:@L> "*" <va:StarArgType?> <kwonlyargs:("," <ParameterDef<ArgType>>)*> <kwarg:("," <KwargParameter<DoubleStarArgType>>)?> =>? {
+        if va.is_none() && kwonlyargs.is_empty() && kwarg.is_none() {
             Err(LexicalError {
                 error: LexicalErrorType::OtherError("named arguments must follow bare *".to_string()),
                 location,
@@ -1124,7 +1134,7 @@ ParameterListStarArgs<ArgType, StarArgType>: (Option<Box<ast::Arg>>, Vec<ast::Ar
         let kwarg = kwarg.flatten();
         let va = va.map(Box::new);
 
-        Ok((va, kwargs, kw_defaults, kwarg))
+        Ok((va, kwonlyargs, kwarg))
     }
 };
 
@@ -1135,7 +1145,7 @@ KwargParameter<ArgType>: Option<Box<ast::Arg>> = {
 };
 
 ClassDef: ast::Stmt = {
-    <location:@L> <decorator_list:Decorator*> "class" <name:Identifier> <a:("(" ArgumentList ")")?> ":" <body:Suite> => {
+    <location:@L> <decorator_list:Decorator*> "class" <name:Identifier> <type_params:TypeParamList?> <a:("(" ArgumentList ")")?> ":" <body:Suite> => {
         let (bases, keywords) = match a {
             Some((_, arg, _)) => (arg.args, arg.keywords),
             None => (vec![], vec![]),
@@ -1148,10 +1158,36 @@ ClassDef: ast::Stmt = {
                 keywords,
                 body,
                 decorator_list,
+                type_params: type_params.unwrap_or_default(),
                 range: (location..end_location).into()
             },
         )
     },
+};
+
+
+TypeParamList: Vec<ast::TypeParam> = {
+    <location:@L> "[" <vars:OneOrMore<TypeParam>> ","? "]" <end_location:@R> => {
+        vars
+    }
+};
+
+TypeParam: ast::TypeParam = {
+    <location:@L> <name:Identifier> <bound:(":" <Test<"all">>)?> <end_location:@R>  => {
+        ast::TypeParam::TypeVar(
+            ast::TypeParamTypeVar { name, bound: bound.map(Box::new), range: (location..end_location).into() }
+        )
+    },
+    <location:@L> "*" <name:Identifier> <end_location:@R>  => {
+        ast::TypeParam::TypeVarTuple(
+            ast::TypeParamTypeVarTuple { name, range: (location..end_location).into() }
+        )
+    },
+    <location:@L> "**" <name:Identifier> <end_location:@R>  => {
+        ast::TypeParam::ParamSpec(
+            ast::TypeParamParamSpec { name, range: (location..end_location).into() }
+        )
+    }
 };
 
 // Decorators:
@@ -1203,21 +1239,10 @@ NamedExpression: ast::Expr = {
 };
 
 LambdaDef: ast::Expr = {
-    <location:@L> "lambda" <p:ParameterList<UntypedParameter, UntypedParameter>?> ":" <body:Test<"all">> <end_location:@R> =>? {
-        let p = validate_arguments(
-            p.unwrap_or_else(|| {
-                ast::Arguments {
-                    posonlyargs: vec![],
-                    args: vec![],
-                    vararg: None,
-                    kwonlyargs: vec![],
-                    kw_defaults: vec![],
-                    kwarg: None,
-                    defaults: vec![],
-                    range: optional_range(location, end_location)
-                }
-            }
-        ))?;
+    <location:@L> "lambda" <p:ParameterList<UntypedParameter, StarUntypedParameter, StarUntypedParameter>?> ":" <body:Test<"all">> <end_location:@R> =>? {
+        p.as_ref().map(validate_arguments).transpose()?;
+        let p = p
+            .unwrap_or_else(|| ast::Arguments::empty(optional_range(location, end_location)));
 
         Ok(ast::Expr::Lambda(
             ast::ExprLambda {
@@ -1233,7 +1258,7 @@ OrTest<Goal>: ast::Expr = {
     <location:@L> <mut values:(<AndTest<"all">> "or")+> <last: AndTest<"all">> <end_location:@R> => {
         values.push(last);
         ast::Expr::BoolOp(
-            ast::ExprBoolOp { op: ast::Boolop::Or, values, range: (location..end_location).into() }
+            ast::ExprBoolOp { op: ast::BoolOp::Or, values, range: (location..end_location).into() }
         )
     },
     AndTest<Goal>,
@@ -1243,7 +1268,7 @@ AndTest<Goal>: ast::Expr = {
     <location:@L> <mut values:(<NotTest<"all">> "and")+> <last:NotTest<"all">> <end_location:@R> => {
         values.push(last);
         ast::Expr::BoolOp(
-            ast::ExprBoolOp { op: ast::Boolop::And, values, range: (location..end_location).into() }
+            ast::ExprBoolOp { op: ast::BoolOp::And, values, range: (location..end_location).into() }
         )
     },
     NotTest<Goal>,
@@ -1251,7 +1276,7 @@ AndTest<Goal>: ast::Expr = {
 
 NotTest<Goal>: ast::Expr = {
     <location:@L> "not" <e:NotTest<"all">> <end_location:@R> => ast::Expr::UnaryOp(
-        ast::ExprUnaryOp { operand: Box::new(e), op: ast::Unaryop::Not, range: (location..end_location).into() }
+        ast::ExprUnaryOp { operand: Box::new(e), op: ast::UnaryOp::Not, range: (location..end_location).into() }
     ),
     Comparison<Goal>,
 };
@@ -1266,17 +1291,17 @@ Comparison<Goal>: ast::Expr = {
     Expression<Goal>,
 };
 
-CompOp: ast::Cmpop = {
-    "==" => ast::Cmpop::Eq,
-    "!=" => ast::Cmpop::NotEq,
-    "<" => ast::Cmpop::Lt,
-    "<=" => ast::Cmpop::LtE,
-    ">" => ast::Cmpop::Gt,
-    ">=" => ast::Cmpop::GtE,
-    "in" => ast::Cmpop::In,
-    "not" "in" => ast::Cmpop::NotIn,
-    "is" => ast::Cmpop::Is,
-    "is" "not" => ast::Cmpop::IsNot,
+CompOp: ast::CmpOp = {
+    "==" => ast::CmpOp::Eq,
+    "!=" => ast::CmpOp::NotEq,
+    "<" => ast::CmpOp::Lt,
+    "<=" => ast::CmpOp::LtE,
+    ">" => ast::CmpOp::Gt,
+    ">=" => ast::CmpOp::GtE,
+    "in" => ast::CmpOp::In,
+    "not" "in" => ast::CmpOp::NotIn,
+    "is" => ast::CmpOp::Is,
+    "is" "not" => ast::CmpOp::IsNot,
 };
 
 Expression<Goal>: ast::Expr = {
@@ -1346,10 +1371,10 @@ Factor<Goal>: ast::Expr = {
     Power<Goal>,
 };
 
-UnaryOp: ast::Unaryop = {
-    "+" => ast::Unaryop::UAdd,
-    "-" => ast::Unaryop::USub,
-    "~" => ast::Unaryop::Invert,
+UnaryOp: ast::UnaryOp = {
+    "+" => ast::UnaryOp::UAdd,
+    "-" => ast::UnaryOp::USub,
+    "~" => ast::UnaryOp::Invert,
 };
 
 Power<Goal>: ast::Expr = {
@@ -1745,6 +1770,7 @@ extern {
         "raise" => token::Tok::Raise,
         "return" => token::Tok::Return,
         "try" => token::Tok::Try,
+        "type" => token::Tok::Type,
         "while" => token::Tok::While,
         "match" => token::Tok::Match,
         "case" => token::Tok::Case,

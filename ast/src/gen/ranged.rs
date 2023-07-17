@@ -66,6 +66,11 @@ impl Ranged for crate::generic::StmtAssign<TextRange> {
         self.range
     }
 }
+impl Ranged for crate::generic::StmtTypeAlias<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
 impl Ranged for crate::generic::StmtAugAssign<TextRange> {
     fn range(&self) -> TextRange {
         self.range
@@ -180,6 +185,7 @@ impl Ranged for crate::Stmt {
             Self::Return(node) => node.range(),
             Self::Delete(node) => node.range(),
             Self::Assign(node) => node.range(),
+            Self::TypeAlias(node) => node.range(),
             Self::AugAssign(node) => node.range(),
             Self::AnnAssign(node) => node.range(),
             Self::For(node) => node.range(),
@@ -380,12 +386,12 @@ impl Ranged for crate::generic::Comprehension<TextRange> {
         self.range
     }
 }
-impl Ranged for crate::generic::ExcepthandlerExceptHandler<TextRange> {
+impl Ranged for crate::generic::ExceptHandlerExceptHandler<TextRange> {
     fn range(&self) -> TextRange {
         self.range
     }
 }
-impl Ranged for crate::Excepthandler {
+impl Ranged for crate::ExceptHandler {
     fn range(&self) -> TextRange {
         match self {
             Self::ExceptHandler(node) => node.range(),
@@ -394,7 +400,7 @@ impl Ranged for crate::Excepthandler {
 }
 
 #[cfg(feature = "all-nodes-with-ranges")]
-impl Ranged for crate::generic::Arguments<TextRange> {
+impl Ranged for crate::generic::PythonArguments<TextRange> {
     fn range(&self) -> TextRange {
         self.range
     }
@@ -415,7 +421,7 @@ impl Ranged for crate::generic::Alias<TextRange> {
     }
 }
 #[cfg(feature = "all-nodes-with-ranges")]
-impl Ranged for crate::generic::Withitem<TextRange> {
+impl Ranged for crate::generic::WithItem<TextRange> {
     fn range(&self) -> TextRange {
         self.range
     }
@@ -493,5 +499,43 @@ impl Ranged for crate::TypeIgnore {
         match self {
             Self::TypeIgnore(node) => node.range(),
         }
+    }
+}
+
+impl Ranged for crate::generic::TypeParamTypeVar<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::generic::TypeParamParamSpec<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::generic::TypeParamTypeVarTuple<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::TypeParam {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::TypeVar(node) => node.range(),
+            Self::ParamSpec(node) => node.range(),
+            Self::TypeVarTuple(node) => node.range(),
+        }
+    }
+}
+
+#[cfg(feature = "all-nodes-with-ranges")]
+impl Ranged for crate::generic::Arguments<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+#[cfg(feature = "all-nodes-with-ranges")]
+impl Ranged for crate::generic::ArgWithDefault<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
     }
 }

@@ -25,7 +25,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 TypeVar(
                     TypeParamTypeVar {
@@ -37,6 +36,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
     ClassDef(
@@ -61,7 +61,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 TypeVar(
                     TypeParamTypeVar {
@@ -83,6 +82,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
     ClassDef(
@@ -107,7 +107,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 TypeVar(
                     TypeParamTypeVar {
@@ -146,6 +145,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
     ClassDef(
@@ -170,7 +170,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 TypeVar(
                     TypeParamTypeVar {
@@ -191,6 +190,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
     ClassDef(
@@ -215,7 +215,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 TypeVar(
                     TypeParamTypeVar {
@@ -236,6 +235,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
     ClassDef(
@@ -260,7 +260,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 TypeVarTuple(
                     TypeParamTypeVarTuple {
@@ -271,6 +270,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
     ClassDef(
@@ -295,7 +295,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 ParamSpec(
                     TypeParamParamSpec {
@@ -306,6 +305,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
     ClassDef(
@@ -323,7 +323,6 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [
                 TypeVar(
                     TypeParamTypeVar {
@@ -370,6 +369,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
+            decorator_list: [],
         },
     ),
 ]

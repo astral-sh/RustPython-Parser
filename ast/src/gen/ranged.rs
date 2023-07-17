@@ -528,6 +528,12 @@ impl Ranged for crate::TypeParam {
 }
 
 #[cfg(feature = "all-nodes-with-ranges")]
+impl Ranged for crate::generic::Decorator<TextRange> {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+#[cfg(feature = "all-nodes-with-ranges")]
 impl Ranged for crate::generic::Arguments<TextRange> {
     fn range(&self) -> TextRange {
         self.range

@@ -537,6 +537,12 @@ pub trait Fold<U> {
     ) -> Result<TypeParamTypeVarTuple<Self::TargetU>, Self::Error> {
         fold_type_param_type_var_tuple(self, node)
     }
+    fn fold_decorator(
+        &mut self,
+        node: Decorator<U>,
+    ) -> Result<Decorator<Self::TargetU>, Self::Error> {
+        fold_decorator(self, node)
+    }
     fn fold_arg_with_default(
         &mut self,
         node: ArgWithDefault<U>,
@@ -2864,14 +2870,14 @@ pub fn fold_type_ignore_type_ignore<U, F: Fold<U> + ?Sized>(
     Ok(TypeIgnoreTypeIgnore { lineno, tag, range })
 }
 impl<T, U> Foldable<T, U> for TypeParam<T> {
-    type Mapped = TypeParam<U>;
-    fn fold<F: Fold<T, TargetU = U> + ?Sized>(
+    type Mapped = TypeParam<U>;fn fold<F: Fold<T, TargetU = U> + ?Sized>(
         self,
         folder: &mut F,
     ) -> Result<Self::Mapped, F::Error> {
         folder.fold_type_param(self)
     }
 }
+
 pub fn fold_type_param<U, F: Fold<U> + ?Sized>(
     #[allow(unused)] folder: &mut F,
     node: TypeParam<U>,
@@ -2944,6 +2950,27 @@ pub fn fold_type_param_type_var_tuple<U, F: Fold<U> + ?Sized>(
     let range = folder.map_user(range, context)?;
     Ok(TypeParamTypeVarTuple { name, range })
 }
+
+impl<T, U> Foldable<T, U> for Decorator<T> {
+    type Mapped = Decorator<U>;
+    fn fold<F: Fold<T, TargetU = U> + ?Sized>(
+        self,
+        folder: &mut F,
+    ) -> Result<Self::Mapped, F::Error> {
+        folder.fold_decorator(self)
+    }
+}
+pub fn fold_decorator<U, F: Fold<U> + ?Sized>(
+    #[allow(unused)] folder: &mut F,
+    node: Decorator<U>,
+) -> Result<Decorator<F::TargetU>, F::Error> {
+    let Decorator { expression, range } = node;
+    let context = folder.will_map_user_cfg(&range);
+    let expression = Foldable::fold(expression, folder)?;
+    let range = folder.map_user_cfg(range, context)?;
+    Ok(Decorator { expression, range })
+}
+
 impl<T, U> Foldable<T, U> for ArgWithDefault<T> {
     type Mapped = ArgWithDefault<U>;
     fn fold<F: Fold<T, TargetU = U> + ?Sized>(
@@ -2953,6 +2980,7 @@ impl<T, U> Foldable<T, U> for ArgWithDefault<T> {
         folder.fold_arg_with_default(self)
     }
 }
+
 pub fn fold_arg_with_default<U, F: Fold<U> + ?Sized>(
     #[allow(unused)] folder: &mut F,
     node: ArgWithDefault<U>,

@@ -23,7 +23,9 @@ pub enum Ast<R = TextRange> {
     Pattern(Pattern<R>),
     TypeIgnore(TypeIgnore<R>),
     TypeParam(TypeParam<R>),
+    Decorator(Decorator<R>),
 }
+
 impl<R> Node for Ast<R> {
     const NAME: &'static str = "AST";
     const FIELD_NAMES: &'static [&'static str] = &[];
@@ -140,6 +142,12 @@ impl<R> From<TypeIgnore<R>> for Ast<R> {
 impl<R> From<TypeParam<R>> for Ast<R> {
     fn from(node: TypeParam<R>) -> Self {
         Ast::TypeParam(node)
+    }
+}
+
+impl<R> From<Decorator<R>> for Ast<R> {
+    fn from(node: Decorator<R>) -> Self {
+        Ast::Decorator(node)
     }
 }
 
@@ -315,7 +323,7 @@ pub struct StmtFunctionDef<R = TextRange> {
     pub name: Identifier,
     pub args: Box<Arguments<R>>,
     pub body: Vec<Stmt<R>>,
-    pub decorator_list: Vec<Expr<R>>,
+    pub decorator_list: Vec<Decorator<R>>,
     pub returns: Option<Box<Expr<R>>>,
     pub type_comment: Option<String>,
     pub type_params: Vec<TypeParam<R>>,
@@ -351,7 +359,7 @@ pub struct StmtAsyncFunctionDef<R = TextRange> {
     pub name: Identifier,
     pub args: Box<Arguments<R>>,
     pub body: Vec<Stmt<R>>,
-    pub decorator_list: Vec<Expr<R>>,
+    pub decorator_list: Vec<Decorator<R>>,
     pub returns: Option<Box<Expr<R>>>,
     pub type_comment: Option<String>,
     pub type_params: Vec<TypeParam<R>>,
@@ -388,8 +396,8 @@ pub struct StmtClassDef<R = TextRange> {
     pub bases: Vec<Expr<R>>,
     pub keywords: Vec<Keyword<R>>,
     pub body: Vec<Stmt<R>>,
-    pub decorator_list: Vec<Expr<R>>,
     pub type_params: Vec<TypeParam<R>>,
+    pub decorator_list: Vec<Decorator<R>>,
 }
 
 impl<R> Node for StmtClassDef<R> {
@@ -3195,6 +3203,18 @@ impl<R> From<TypeParamTypeVarTuple<R>> for Ast<R> {
 impl<R> Node for TypeParam<R> {
     const NAME: &'static str = "type_param";
     const FIELD_NAMES: &'static [&'static str] = &[];
+}
+
+/// See also [decorator](https://docs.python.org/3/library/ast.html#ast.decorator)
+#[derive(Clone, Debug, PartialEq)]
+pub struct Decorator<R = TextRange> {
+    pub range: OptionalRange<R>,
+    pub expression: Expr<R>,
+}
+
+impl<R> Node for Decorator<R> {
+    const NAME: &'static str = "decorator";
+    const FIELD_NAMES: &'static [&'static str] = &["expression"];
 }
 
 /// An alternative type of AST `arguments`. This is parser-friendly and human-friendly definition of function arguments.

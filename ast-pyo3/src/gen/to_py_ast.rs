@@ -984,6 +984,14 @@ impl<R> PyNode for ast::TypeParamTypeVarTuple<R> {
     }
 }
 
+impl<R> PyNode for ast::Decorator<R> {
+    #[inline]
+    fn py_type_cache() -> &'static OnceCell<(Py<PyAny>, Py<PyAny>)> {
+        static PY_TYPE: OnceCell<(Py<PyAny>, Py<PyAny>)> = OnceCell::new();
+        &PY_TYPE
+    }
+}
+
 impl ToPyAst for ast::ExprContext {
     #[inline]
     fn to_py_ast<'py>(&self, py: Python<'py>) -> PyResult<&'py PyAny> {
@@ -2731,6 +2739,23 @@ impl ToPyAst for ast::TypeParamTypeVarTuple<TextRange> {
         } = self;
 
         let instance = Py::<PyAny>::as_ref(&cache.0, py).call1((name.to_py_ast(py)?,))?;
+
+        Ok(instance)
+    }
+}
+
+
+impl ToPyAst for ast::Decorator<TextRange> {
+    #[inline]
+    fn to_py_ast<'py>(&self, py: Python<'py>) -> PyResult<&'py PyAny> {
+        let cache = Self::py_type_cache().get().unwrap();
+
+        let Self {
+            expression,
+            range: _range,
+        } = self;
+
+        let instance = Py::<PyAny>::as_ref(&cache.0, py).call1((expression.to_py_ast(py)?,))?;
 
         Ok(instance)
     }
@@ -4954,7 +4979,7 @@ impl ToPyAst for ast::TypeParamTypeVarTuple<SourceRange> {
 
         let Self {
             name,
-            range: _range,
+            range: _range
         } = self;
 
         let instance = Py::<PyAny>::as_ref(&cache.0, py).call1((name.to_py_ast(py)?,))?;
@@ -4966,6 +4991,21 @@ impl ToPyAst for ast::TypeParamTypeVarTuple<SourceRange> {
             instance.setattr(cache.end_lineno.as_ref(py), end.row.get())?;
             instance.setattr(cache.end_col_offset.as_ref(py), end.column.get())?;
         }
+        Ok(instance)
+    }
+}
+
+impl ToPyAst for ast::Decorator<SourceRange> {
+    #[inline]
+    fn to_py_ast<'py>(&self, py: Python<'py>) -> PyResult<&'py PyAny> {
+        let cache = Self::py_type_cache().get().unwrap();
+
+        let Self {
+            expression,
+            range: _range,
+        } = self;
+
+        let instance = Py::<PyAny>::as_ref(&cache.0, py).call1((expression.to_py_ast(py)?,))?;
 
         Ok(instance)
     }
@@ -5096,5 +5136,6 @@ fn init_types(py: Python) -> PyResult<()> {
     cache_py_type::<ast::TypeParamTypeVar>(ast_module)?;
     cache_py_type::<ast::TypeParamParamSpec>(ast_module)?;
     cache_py_type::<ast::TypeParamTypeVarTuple>(ast_module)?;
+    cache_py_type::<ast::Decorator>(ast_module)?;
     Ok(())
 }

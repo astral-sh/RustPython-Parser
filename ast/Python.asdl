@@ -1,5 +1,5 @@
 -- ASDL's 4 builtin types are:
--- identifier, int, string, constant
+-- identifier, int, string, constant, decorator
 
 module Python
 {
@@ -9,18 +9,18 @@ module Python
         | FunctionType(expr* argtypes, expr returns)
 
     stmt = FunctionDef(identifier name, arguments args,
-                       stmt* body, expr* decorator_list, expr? returns,
+                       stmt* body, decorator* decorator_list, expr? returns,
                        string? type_comment, type_param* type_params)
           | AsyncFunctionDef(identifier name, arguments args,
-                             stmt* body, expr* decorator_list, expr? returns,
+                             stmt* body, decorator* decorator_list, expr? returns,
                              string? type_comment, type_param* type_params)
 
           | ClassDef(identifier name,
              expr* bases,
              keyword* keywords,
              stmt* body,
-             expr* decorator_list,
              type_param* type_params)
+             decorator* decorator_list)
           | Return(expr? value)
 
           | Delete(expr* targets)
@@ -149,4 +149,6 @@ module Python
                | ParamSpec(identifier name)
                | TypeVarTuple(identifier name)
                attributes (int lineno, int col_offset, int end_lineno, int end_col_offset)
+               
+    decorator = (expr expression)
 }

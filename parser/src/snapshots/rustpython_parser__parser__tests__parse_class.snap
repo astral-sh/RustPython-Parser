@@ -134,8 +134,8 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     },
                 ),
             ],
-            decorator_list: [],
             type_params: [],
+            decorator_list: [],
         },
     ),
 ]

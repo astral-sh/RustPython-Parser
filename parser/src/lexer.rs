@@ -1461,28 +1461,31 @@ mod tests {
         }
     }
 
-    macro_rules! test_jupyter_magic_line_continuation_eol {
-        ($($name:ident: $eol:expr,)*) => {
-            $(
-            #[test]
-            fn $name() {
-                let source = format!("%matplotlib \\{}  --inline", $eol);
-                let tokens = lex_jupyter_source(&source);
-                assert_eq!(
-                    tokens,
-                    vec![
-                        Tok::MagicCommand { value: "matplotlib   --inline".to_string(), kind: MagicKind::Magic },
-                    ]
-                )
-            }
-            )*
-        };
+    fn assert_jupyter_magic_line_continuation_with_eol(eol: &str) {
+        let source = format!("%matplotlib \\{}  --inline", eol);
+        let tokens = lex_jupyter_source(&source);
+        assert_eq!(
+            tokens,
+            vec![Tok::MagicCommand {
+                value: "matplotlib   --inline".to_string(),
+                kind: MagicKind::Magic
+            },]
+        )
     }
 
-    test_jupyter_magic_line_continuation_eol! {
-        test_jupyter_magic_line_continuation_windows_eol: WINDOWS_EOL,
-        test_jupyter_magic_line_continuation_mac_eol: MAC_EOL,
-        test_jupyter_magic_line_continuation_unix_eol: UNIX_EOL,
+    #[test]
+    fn test_jupyter_magic_line_continuation_unix_eol() {
+        assert_jupyter_magic_line_continuation_with_eol(UNIX_EOL);
+    }
+
+    #[test]
+    fn test_jupyter_magic_line_continuation_mac_eol() {
+        assert_jupyter_magic_line_continuation_with_eol(MAC_EOL);
+    }
+
+    #[test]
+    fn test_jupyter_magic_line_continuation_windows_eol() {
+        assert_jupyter_magic_line_continuation_with_eol(WINDOWS_EOL);
     }
 
     #[test]

@@ -13,7 +13,7 @@
 //! [`Mode`]: crate::mode
 
 use crate::{
-    ast::{self, OptionalRange, Ranged},
+    ast::{self, Ranged},
     lexer::{self, LexResult, LexicalError, LexicalErrorType},
     python,
     text_size::TextSize,
@@ -23,7 +23,7 @@ use crate::{
 use itertools::Itertools;
 use std::iter;
 
-use crate::{lexer::Lexer, soft_keywords::SoftKeywordTransformer, text_size::TextRange};
+use crate::{lexer::Lexer, soft_keywords::SoftKeywordTransformer};
 pub(super) use lalrpop_util::ParseError as LalrpopError;
 
 /// Parse Python code string to implementor's type.
@@ -551,11 +551,6 @@ impl ParseErrorType {
     }
 }
 
-#[inline(always)]
-pub(super) fn optional_range(start: TextSize, end: TextSize) -> OptionalRange<TextRange> {
-    OptionalRange::<TextRange>::new(start, end)
-}
-
 include!("gen/parse.rs");
 
 #[cfg(test)]
@@ -612,7 +607,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_lambda() {
         let source = "lambda x, y: x * y"; // lambda(x, y): x * y";
         let parse_ast = ast::Suite::parse(source, "<test>").unwrap();
@@ -627,7 +621,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_class() {
         let source = "\
 class Foo(A, B):
@@ -640,7 +633,6 @@ class Foo(A, B):
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_class_generic_types() {
         let source = "\
 # TypeVar
@@ -671,7 +663,6 @@ class Foo[X, Y: str, *U, **P]():
         insta::assert_debug_snapshot!(ast::Suite::parse(source, "<test>").unwrap());
     }
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_function_definition() {
         let source = "\
 def func(a):
@@ -699,7 +690,6 @@ def func[T, U: str, *Ts, **P]():
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_dict_comprehension() {
         let source = "{x1: x2 for y in z}";
         let parse_ast = ast::Expr::parse(source, "<test>").unwrap();
@@ -707,7 +697,6 @@ def func[T, U: str, *Ts, **P]():
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_list_comprehension() {
         let source = "[x for y in z]";
         let parse_ast = ast::Expr::parse(source, "<test>").unwrap();
@@ -715,7 +704,6 @@ def func[T, U: str, *Ts, **P]():
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_double_list_comprehension() {
         let source = "[x for y, y2 in z for a in b if a < 5 if a > 10]";
         let parse_ast = ast::Expr::parse(source, "<test>").unwrap();
@@ -723,7 +711,6 @@ def func[T, U: str, *Ts, **P]():
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_generator_comprehension() {
         let source = "(x for y in z)";
         let parse_ast = ast::Expr::parse(source, "<test>").unwrap();
@@ -731,7 +718,6 @@ def func[T, U: str, *Ts, **P]():
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_named_expression_generator_comprehension() {
         let source = "(x := y + 1 for y in z)";
         let parse_ast = ast::Expr::parse(source, "<test>").unwrap();
@@ -739,7 +725,6 @@ def func[T, U: str, *Ts, **P]():
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_if_else_generator_comprehension() {
         let source = "(x if y else y for y in z)";
         let parse_ast = ast::Expr::parse(source, "<test>").unwrap();
@@ -768,7 +753,6 @@ def func[T, U: str, *Ts, **P]():
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_with_statement() {
         let source = "\
 with 0: pass
@@ -838,7 +822,6 @@ array[3:5, *indexes_to_select]
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_generator_expression_argument() {
         let source = r#"' '.join(
     sql
@@ -898,7 +881,6 @@ except* OSError as e:
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_parse_type_declaration() {
         let source = r#"
 type X = int
@@ -942,7 +924,6 @@ type X[T] \
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_type_as_identifier() {
         let source = r#"\
 type *a + b, c   # ((type * a) + b), c
@@ -980,7 +961,6 @@ x = type = 1
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_match_as_identifier() {
         let source = r#"\
 match *a + b, c   # ((match * a) + b), c
@@ -1009,7 +989,6 @@ print(match(12))
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_patma() {
         let source = r#"# Cases sampled from Lib/test/test_patma.py
 
@@ -1181,7 +1160,6 @@ match w := x,:
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_match() {
         let parse_ast = ast::Suite::parse(
             r#"
@@ -1212,7 +1190,6 @@ match x:
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn test_variadic_generics() {
         let parse_ast = ast::Suite::parse(
             r#"
@@ -1242,7 +1219,6 @@ def args_to_tuple(*args: *Ts) -> Tuple[*Ts]: ...
     }
 
     #[test]
-    #[cfg(feature = "all-nodes-with-ranges")]
     fn decorator_ranges() {
         let parse_ast = ast::Suite::parse(
             r#"

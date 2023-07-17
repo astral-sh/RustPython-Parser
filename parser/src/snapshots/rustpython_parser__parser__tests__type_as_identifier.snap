@@ -863,7 +863,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             arg: Some(
                                 Identifier {
                                     id: "X",
-                                    range: 607..614,
+                                    range: 607..608,
                                 },
                             ),
                             value: Name(

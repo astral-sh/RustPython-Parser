@@ -19,9 +19,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         left: Name(
                                             ExprName {
                                                 range: 2..6,
-                                                id: Identifier(
-                                                    "type",
-                                                ),
+                                                id: "type",
                                                 ctx: Load,
                                             },
                                         ),
@@ -29,9 +27,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         right: Name(
                                             ExprName {
                                                 range: 8..9,
-                                                id: Identifier(
-                                                    "a",
-                                                ),
+                                                id: "a",
                                                 ctx: Load,
                                             },
                                         ),
@@ -41,9 +37,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                 right: Name(
                                     ExprName {
                                         range: 12..13,
-                                        id: Identifier(
-                                            "b",
-                                        ),
+                                        id: "b",
                                         ctx: Load,
                                     },
                                 ),
@@ -52,9 +46,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                         Name(
                             ExprName {
                                 range: 15..16,
-                                id: Identifier(
-                                    "c",
-                                ),
+                                id: "c",
                                 ctx: Load,
                             },
                         ),
@@ -77,9 +69,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                 left: Name(
                                     ExprName {
                                         range: 41..45,
-                                        id: Identifier(
-                                            "type",
-                                        ),
+                                        id: "type",
                                         ctx: Load,
                                     },
                                 ),
@@ -90,9 +80,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         left: Name(
                                             ExprName {
                                                 range: 48..49,
-                                                id: Identifier(
-                                                    "a",
-                                                ),
+                                                id: "a",
                                                 ctx: Load,
                                             },
                                         ),
@@ -100,9 +88,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         right: Name(
                                             ExprName {
                                                 range: 52..53,
-                                                id: Identifier(
-                                                    "b",
-                                                ),
+                                                id: "b",
                                                 ctx: Load,
                                             },
                                         ),
@@ -113,9 +99,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                         Name(
                             ExprName {
                                 range: 56..57,
-                                id: Identifier(
-                                    "c",
-                                ),
+                                id: "c",
                                 ctx: Load,
                             },
                         ),
@@ -134,9 +118,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     func: Name(
                         ExprName {
                             range: 82..86,
-                            id: Identifier(
-                                "type",
-                            ),
+                            id: "type",
                             ctx: Load,
                         },
                     ),
@@ -150,9 +132,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         left: Name(
                                             ExprName {
                                                 range: 89..90,
-                                                id: Identifier(
-                                                    "a",
-                                                ),
+                                                id: "a",
                                                 ctx: Load,
                                             },
                                         ),
@@ -160,9 +140,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         right: Name(
                                             ExprName {
                                                 range: 93..94,
-                                                id: Identifier(
-                                                    "b",
-                                                ),
+                                                id: "b",
                                                 ctx: Load,
                                             },
                                         ),
@@ -174,9 +152,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                         Name(
                             ExprName {
                                 range: 96..97,
-                                id: Identifier(
-                                    "c",
-                                ),
+                                id: "c",
                                 ctx: Load,
                             },
                         ),
@@ -198,9 +174,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             left: Name(
                                 ExprName {
                                     range: 124..128,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -211,9 +185,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                     left: Name(
                                         ExprName {
                                             range: 130..131,
-                                            id: Identifier(
-                                                "a",
-                                            ),
+                                            id: "a",
                                             ctx: Load,
                                         },
                                     ),
@@ -221,9 +193,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                     right: Name(
                                         ExprName {
                                             range: 134..135,
-                                            id: Identifier(
-                                                "b",
-                                            ),
+                                            id: "b",
                                             ctx: Load,
                                         },
                                     ),
@@ -235,9 +205,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     right: Name(
                         ExprName {
                             range: 138..139,
-                            id: Identifier(
-                                "c",
-                            ),
+                            id: "c",
                             ctx: Load,
                         },
                     ),
@@ -257,9 +225,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             left: Name(
                                 ExprName {
                                     range: 165..169,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -270,9 +236,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                     left: Name(
                                         ExprName {
                                             range: 172..173,
-                                            id: Identifier(
-                                                "a",
-                                            ),
+                                            id: "a",
                                             ctx: Load,
                                         },
                                     ),
@@ -280,9 +244,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                     right: Name(
                                         ExprName {
                                             range: 176..177,
-                                            id: Identifier(
-                                                "b",
-                                            ),
+                                            id: "b",
                                             ctx: Load,
                                         },
                                     ),
@@ -294,9 +256,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     right: Name(
                         ExprName {
                             range: 181..182,
-                            id: Identifier(
-                                "c",
-                            ),
+                            id: "c",
                             ctx: Load,
                         },
                     ),
@@ -319,9 +279,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                     func: Name(
                                         ExprName {
                                             range: 208..212,
-                                            id: Identifier(
-                                                "type",
-                                            ),
+                                            id: "type",
                                             ctx: Load,
                                         },
                                     ),
@@ -333,9 +291,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                                 operand: Name(
                                                     ExprName {
                                                         range: 215..216,
-                                                        id: Identifier(
-                                                            "a",
-                                                        ),
+                                                        id: "a",
                                                         ctx: Load,
                                                     },
                                                 ),
@@ -349,9 +305,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             right: Name(
                                 ExprName {
                                     range: 220..221,
-                                    id: Identifier(
-                                        "b",
-                                    ),
+                                    id: "b",
                                     ctx: Load,
                                 },
                             ),
@@ -361,9 +315,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     right: Name(
                         ExprName {
                             range: 224..225,
-                            id: Identifier(
-                                "c",
-                            ),
+                            id: "c",
                             ctx: Load,
                         },
                     ),
@@ -383,9 +335,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             func: Name(
                                 ExprName {
                                     range: 252..256,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -393,9 +343,10 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             keywords: [],
                         },
                     ),
-                    attr: Identifier(
-                        "a",
-                    ),
+                    attr: Identifier {
+                        id: "a",
+                        range: 260..261,
+                    },
                     ctx: Load,
                 },
             ),
@@ -413,9 +364,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             func: Name(
                                 ExprName {
                                     range: 277..281,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -431,9 +380,10 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             keywords: [],
                         },
                     ),
-                    attr: Identifier(
-                        "a",
-                    ),
+                    attr: Identifier {
+                        id: "a",
+                        range: 287..288,
+                    },
                     ctx: Load,
                 },
             ),
@@ -451,9 +401,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             func: Name(
                                 ExprName {
                                     range: 306..310,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -469,9 +417,10 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             keywords: [],
                         },
                     ),
-                    attr: Identifier(
-                        "a",
-                    ),
+                    attr: Identifier {
+                        id: "a",
+                        range: 317..318,
+                    },
                     ctx: Load,
                 },
             ),
@@ -489,27 +438,24 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             value: Name(
                                 ExprName {
                                     range: 336..340,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
                             slice: Name(
                                 ExprName {
                                     range: 342..343,
-                                    id: Identifier(
-                                        "a",
-                                    ),
+                                    id: "a",
                                     ctx: Load,
                                 },
                             ),
                             ctx: Load,
                         },
                     ),
-                    attr: Identifier(
-                        "b",
-                    ),
+                    attr: Identifier {
+                        id: "b",
+                        range: 345..346,
+                    },
                     ctx: Load,
                 },
             ),
@@ -527,9 +473,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             value: Name(
                                 ExprName {
                                     range: 363..367,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -540,9 +484,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         Name(
                                             ExprName {
                                                 range: 369..370,
-                                                id: Identifier(
-                                                    "a",
-                                                ),
+                                                id: "a",
                                                 ctx: Load,
                                             },
                                         ),
@@ -553,9 +495,10 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             ctx: Load,
                         },
                     ),
-                    attr: Identifier(
-                        "b",
-                    ),
+                    attr: Identifier {
+                        id: "b",
+                        range: 373..374,
+                    },
                     ctx: Load,
                 },
             ),
@@ -573,9 +516,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             value: Name(
                                 ExprName {
                                     range: 413..417,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -586,9 +527,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                         Name(
                                             ExprName {
                                                 range: 420..421,
-                                                id: Identifier(
-                                                    "a",
-                                                ),
+                                                id: "a",
                                                 ctx: Load,
                                             },
                                         ),
@@ -599,9 +538,10 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             ctx: Load,
                         },
                     ),
-                    attr: Identifier(
-                        "b",
-                    ),
+                    attr: Identifier {
+                        id: "b",
+                        range: 425..426,
+                    },
                     ctx: Load,
                 },
             ),
@@ -619,9 +559,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             func: Name(
                                 ExprName {
                                     range: 446..450,
-                                    id: Identifier(
-                                        "type",
-                                    ),
+                                    id: "type",
                                     ctx: Load,
                                 },
                             ),
@@ -636,9 +574,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                 Name(
                                     ExprName {
                                         range: 453..454,
-                                        id: Identifier(
-                                            "a",
-                                        ),
+                                        id: "a",
                                         ctx: Load,
                                     },
                                 ),
@@ -647,9 +583,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                 Name(
                                     ExprName {
                                         range: 460..461,
-                                        id: Identifier(
-                                            "b",
-                                        ),
+                                        id: "b",
                                         ctx: Load,
                                     },
                                 ),
@@ -671,9 +605,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     target: Name(
                         ExprName {
                             range: 484..488,
-                            id: Identifier(
-                                "type",
-                            ),
+                            id: "type",
                             ctx: Store,
                         },
                     ),
@@ -705,9 +637,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 Name(
                     ExprName {
                         range: 500..504,
-                        id: Identifier(
-                            "type",
-                        ),
+                        id: "type",
                         ctx: Store,
                     },
                 ),
@@ -723,9 +653,10 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                 range: 514..519,
                                 def: Arg {
                                     range: 514..519,
-                                    arg: Identifier(
-                                        "query",
-                                    ),
+                                    arg: Identifier {
+                                        id: "query",
+                                        range: 514..519,
+                                    },
                                     annotation: None,
                                     type_comment: None,
                                 },
@@ -742,9 +673,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             left: Name(
                                 ExprName {
                                     range: 521..526,
-                                    id: Identifier(
-                                        "query",
-                                    ),
+                                    id: "query",
                                     ctx: Load,
                                 },
                             ),
@@ -755,9 +684,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                 Name(
                                     ExprName {
                                         range: 530..535,
-                                        id: Identifier(
-                                            "event",
-                                        ),
+                                        id: "event",
                                         ctx: Load,
                                     },
                                 ),
@@ -778,9 +705,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     func: Name(
                         ExprName {
                             range: 536..541,
-                            id: Identifier(
-                                "print",
-                            ),
+                            id: "print",
                             ctx: Load,
                         },
                     ),
@@ -791,9 +716,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                                 func: Name(
                                     ExprName {
                                         range: 542..546,
-                                        id: Identifier(
-                                            "type",
-                                        ),
+                                        id: "type",
                                         ctx: Load,
                                     },
                                 ),
@@ -826,9 +749,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     func: Name(
                         ExprName {
                             range: 552..556,
-                            id: Identifier(
-                                "type",
-                            ),
+                            id: "type",
                             ctx: Load,
                         },
                     ),
@@ -836,9 +757,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                         Name(
                             ExprName {
                                 range: 557..561,
-                                id: Identifier(
-                                    "type",
-                                ),
+                                id: "type",
                                 ctx: Load,
                             },
                         ),
@@ -855,9 +774,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 Name(
                     ExprName {
                         range: 563..564,
-                        id: Identifier(
-                            "a",
-                        ),
+                        id: "a",
                         ctx: Store,
                     },
                 ),
@@ -868,9 +785,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     left: Name(
                         ExprName {
                             range: 570..574,
-                            id: Identifier(
-                                "type",
-                            ),
+                            id: "type",
                             ctx: Load,
                         },
                     ),
@@ -881,9 +796,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                         Name(
                             ExprName {
                                 range: 578..579,
-                                id: Identifier(
-                                    "C",
-                                ),
+                                id: "C",
                                 ctx: Load,
                             },
                         ),
@@ -900,9 +813,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 Name(
                     ExprName {
                         range: 582..583,
-                        id: Identifier(
-                            "a",
-                        ),
+                        id: "a",
                         ctx: Store,
                     },
                 ),
@@ -913,9 +824,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     func: Name(
                         ExprName {
                             range: 589..593,
-                            id: Identifier(
-                                "type",
-                            ),
+                            id: "type",
                             ctx: Load,
                         },
                     ),
@@ -923,9 +832,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                         Name(
                             ExprName {
                                 range: 594..595,
-                                id: Identifier(
-                                    "b",
-                                ),
+                                id: "b",
                                 ctx: Load,
                             },
                         ),
@@ -945,9 +852,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                     func: Name(
                         ExprName {
                             range: 599..603,
-                            id: Identifier(
-                                "type",
-                            ),
+                            id: "type",
                             ctx: Load,
                         },
                     ),
@@ -956,16 +861,15 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                         Keyword {
                             range: 607..614,
                             arg: Some(
-                                Identifier(
-                                    "X",
-                                ),
+                                Identifier {
+                                    id: "X",
+                                    range: 607..614,
+                                },
                             ),
                             value: Name(
                                 ExprName {
                                     range: 611..614,
-                                    id: Identifier(
-                                        "int",
-                                    ),
+                                    id: "int",
                                     ctx: Load,
                                 },
                             ),
@@ -982,9 +886,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 Name(
                     ExprName {
                         range: 617..621,
-                        id: Identifier(
-                            "type",
-                        ),
+                        id: "type",
                         ctx: Store,
                     },
                 ),
@@ -1008,18 +910,14 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 Name(
                     ExprName {
                         range: 626..630,
-                        id: Identifier(
-                            "type",
-                        ),
+                        id: "type",
                         ctx: Store,
                     },
                 ),
                 Name(
                     ExprName {
                         range: 633..634,
-                        id: Identifier(
-                            "x",
-                        ),
+                        id: "x",
                         ctx: Store,
                     },
                 ),
@@ -1043,18 +941,14 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 Name(
                     ExprName {
                         range: 639..640,
-                        id: Identifier(
-                            "x",
-                        ),
+                        id: "x",
                         ctx: Store,
                     },
                 ),
                 Name(
                     ExprName {
                         range: 643..647,
-                        id: Identifier(
-                            "type",
-                        ),
+                        id: "type",
                         ctx: Store,
                     },
                 ),

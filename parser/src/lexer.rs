@@ -519,6 +519,7 @@ where
                     if matches!(self.window[1], Some('\n' | '\r')) {
                         self.next_char();
                         self.next_char();
+                        continue;
                     }
                 }
                 Some('\n' | '\r') | None => {
@@ -1486,6 +1487,33 @@ mod tests {
     #[test]
     fn test_jupyter_magic_line_continuation_windows_eol() {
         assert_jupyter_magic_line_continuation_with_eol(WINDOWS_EOL);
+    }
+
+    fn assert_jupyter_magic_line_continuation_with_eol_and_eof(eol: &str) {
+        let source = format!("%matplotlib \\{}", eol);
+        let tokens = lex_jupyter_source(&source);
+        assert_eq!(
+            tokens,
+            vec![Tok::MagicCommand {
+                value: "matplotlib ".to_string(),
+                kind: MagicKind::Magic
+            },]
+        )
+    }
+
+    #[test]
+    fn test_jupyter_magic_line_continuation_unix_eol_and_eof() {
+        assert_jupyter_magic_line_continuation_with_eol_and_eof(UNIX_EOL);
+    }
+
+    #[test]
+    fn test_jupyter_magic_line_continuation_mac_eol_and_eof() {
+        assert_jupyter_magic_line_continuation_with_eol_and_eof(MAC_EOL);
+    }
+
+    #[test]
+    fn test_jupyter_magic_line_continuation_windows_eol_and_eof() {
+        assert_jupyter_magic_line_continuation_with_eol_and_eof(WINDOWS_EOL);
     }
 
     #[test]

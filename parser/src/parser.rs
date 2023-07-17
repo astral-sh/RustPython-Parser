@@ -1222,26 +1222,6 @@ def args_to_tuple(*args: *Ts) -> Tuple[*Ts]: ...
     }
 
     #[test]
-    #[cfg(not(feature = "all-nodes-with-ranges"))]
-    fn decorator_ranges() {
-        let parse_ast = parse_program(
-            r#"
-@my_decorator
-def test():
-    pass
-    
-@class_decorator
-class Abcd:
-    pass
-"#
-            .trim(),
-            "<test>",
-        )
-        .unwrap();
-        insta::assert_debug_snapshot!(parse_ast);
-    }
-
-    #[test]
     fn test_parse_constant() {
         use num_traits::ToPrimitive;
 
@@ -1256,5 +1236,25 @@ class Abcd:
     fn test_parse_identifier() {
         let i = ast::Identifier::parse_without_path("test").unwrap();
         assert_eq!(i.as_str(), "test");
+    }
+
+    #[test]
+    #[cfg(not(feature = "all-nodes-with-ranges"))]
+    fn decorator_ranges() {
+        let parse_ast = parse_program(
+            r#"
+@my_decorator
+def test():
+    pass
+
+@class_decorator
+class Abcd:
+    pass
+"#
+                .trim(),
+            "<test>",
+        )
+            .unwrap();
+        insta::assert_debug_snapshot!(parse_ast);
     }
 }

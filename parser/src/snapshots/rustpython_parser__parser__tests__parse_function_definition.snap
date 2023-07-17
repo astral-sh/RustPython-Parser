@@ -10,7 +10,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 "func",
             ),
             args: Arguments {
-                range: 9..10,
+                range: 8..11,
                 posonlyargs: [],
                 args: [
                     ArgWithDefault {
@@ -57,7 +57,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 "func",
             ),
             args: Arguments {
-                range: 34..38,
+                range: 33..39,
                 posonlyargs: [],
                 args: [
                     ArgWithDefault {
@@ -134,7 +134,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 "func",
             ),
             args: Arguments {
-                range: 72..76,
+                range: 71..77,
                 posonlyargs: [],
                 args: [
                     ArgWithDefault {
@@ -221,7 +221,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 "func",
             ),
             args: Arguments {
-                range: 119..123,
+                range: 118..124,
                 posonlyargs: [],
                 args: [
                     ArgWithDefault {
@@ -325,7 +325,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 "func",
             ),
             args: Arguments {
-                range: 154..161,
+                range: 153..162,
                 posonlyargs: [],
                 args: [],
                 vararg: Some(
@@ -393,7 +393,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                 "func",
             ),
             args: Arguments {
-                range: 187..220,
+                range: 186..221,
                 posonlyargs: [],
                 args: [],
                 vararg: Some(

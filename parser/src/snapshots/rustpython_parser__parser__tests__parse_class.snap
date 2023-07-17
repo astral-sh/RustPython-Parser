@@ -38,7 +38,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             "__init__",
                         ),
                         args: Arguments {
-                            range: 31..35,
+                            range: 30..36,
                             posonlyargs: [],
                             args: [
                                 ArgWithDefault {
@@ -78,7 +78,7 @@ expression: "ast::Suite::parse(source, \"<test>\").unwrap()"
                             "method_with_default",
                         ),
                         args: Arguments {
-                            range: 70..89,
+                            range: 69..90,
                             posonlyargs: [],
                             args: [
                                 ArgWithDefault {

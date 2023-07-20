@@ -5,15 +5,16 @@
 
 use crate::{
     ast::{self as ast, Ranged, bigint::BigInt},
+    Mode,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
     string::parse_strings,
-    token::{self, StringKind},
+    token::{self, StringKind, MagicKind},
     text_size::TextSize
 };
 
-grammar;
+grammar(mode: Mode);
 
 // This is a hack to reduce the amount of lalrpop tables generated:
 // For each public entry point, a full parse table is generated.
@@ -150,7 +151,8 @@ ExpressionStatement: ast::Stmt = {
 };
 
 AssignSuffix: ast::Expr = {
-    "=" <e:TestListOrYieldExpr> => e
+    "=" <e:TestListOrYieldExpr> => e,
+    "=" <e:LineMagicExpr> => e
 };
 
 TestListOrYieldExpr: ast::Expr = {
@@ -319,6 +321,7 @@ AssertStatement: ast::Stmt = {
 };
 
 CompoundStatement: ast::Stmt = {
+    LineMagicStatement,
     MatchStatement,
     IfStatement,
     WhileStatement,
@@ -328,6 +331,52 @@ CompoundStatement: ast::Stmt = {
     FuncDef,
     ClassDef,
 };
+
+LineMagicStatement: ast::Stmt = {
+    <location:@L> <m:line_magic> <end_location:@R> =>? {
+        if mode == Mode::Jupyter {
+            Ok(ast::Stmt::LineMagic(
+                ast::StmtLineMagic {
+                    kind: format!("{}", m.0),
+                    value: m.1,
+                    range: (location..end_location).into()
+                }
+            ))
+        } else {
+            Err(LexicalError {
+                error: LexicalErrorType::OtherError("line magics are only allowed in Jupyter mode".to_string()),
+                location,
+            })?
+        }
+    }
+}
+
+LineMagicExpr: ast::Expr = {
+    <location:@L> <m:line_magic> <end_location:@R> =>? {
+        if mode == Mode::Jupyter {
+            let kind = format!("{}", m.0);
+            // This should never occur as the lexer won't allow it.
+            if !matches!(kind.as_str(), "%" | "!") {
+                Err(LexicalError {
+                    error: LexicalErrorType::OtherError("expr line magics are only allowed for % and !".to_string()),
+                    location,
+                })?
+            }
+            Ok(ast::Expr::LineMagic(
+                ast::ExprLineMagic {
+                    kind: kind,
+                    value: m.1,
+                    range: (location..end_location).into()
+                }
+            ))
+        } else {
+            Err(LexicalError {
+                error: LexicalErrorType::OtherError("line magics are only allowed in Jupyter mode".to_string()),
+                location,
+            })?
+        }
+    }
+}
 
 MatchStatement: ast::Stmt = {
     <location:@L> "match" <subject:TestOrStarNamedExpr> ":" "\n" Indent <cases:MatchCase+> Dedent => {
@@ -1794,6 +1843,10 @@ extern {
             triple_quoted: <bool>
         },
         name => token::Tok::Name { name: <String> },
+        line_magic => token::Tok::MagicCommand {
+            kind: <MagicKind>,
+            value: <String>
+        },
         "\n" => token::Tok::Newline,
         ";" => token::Tok::Semi,
         // "#" => token::Tok::Comment(_),

@@ -317,6 +317,32 @@ pub enum Stmt {
     Break(StmtBreak),
     #[is(name = "continue_stmt")]
     Continue(StmtContinue),
+
+    // Jupyter notebook specific
+    #[is(name = "line_magic_stmt")]
+    LineMagic(StmtLineMagic),
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct StmtLineMagic {
+    pub range: TextRange,
+    pub kind: String,
+    pub value: String,
+}
+
+impl Node for StmtLineMagic {
+    const NAME: &'static str = "LineMagic";
+    const FIELD_NAMES: &'static [&'static str] = &["kind", "value"];
+}
+impl From<StmtLineMagic> for Stmt {
+    fn from(payload: StmtLineMagic) -> Self {
+        Stmt::LineMagic(payload)
+    }
+}
+impl From<StmtLineMagic> for Ast {
+    fn from(payload: StmtLineMagic) -> Self {
+        Stmt::from(payload).into()
+    }
 }
 
 /// See also [FunctionDef](https://docs.python.org/3/library/ast.html#ast.FunctionDef)
@@ -1084,6 +1110,32 @@ pub enum Expr {
     Tuple(ExprTuple),
     #[is(name = "slice_expr")]
     Slice(ExprSlice),
+
+    // Jupyter notebook specific
+    #[is(name = "line_magic_expr")]
+    LineMagic(ExprLineMagic),
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct ExprLineMagic {
+    pub range: TextRange,
+    pub kind: String,
+    pub value: String,
+}
+
+impl Node for ExprLineMagic {
+    const NAME: &'static str = "LineMagic";
+    const FIELD_NAMES: &'static [&'static str] = &["kind", "value"];
+}
+impl From<ExprLineMagic> for Expr {
+    fn from(payload: ExprLineMagic) -> Self {
+        Expr::LineMagic(payload)
+    }
+}
+impl From<ExprLineMagic> for Ast {
+    fn from(payload: ExprLineMagic) -> Self {
+        Expr::from(payload).into()
+    }
 }
 
 /// See also [BoolOp](https://docs.python.org/3/library/ast.html#ast.BoolOp)

@@ -88,6 +88,7 @@ SmallStatement: ast::Stmt = {
     NonlocalStatement,
     AssertStatement,
     TypeAliasStatement,
+    LineMagicStatement,
 };
 
 PassStatement: ast::Stmt = {
@@ -320,18 +321,6 @@ AssertStatement: ast::Stmt = {
     },
 };
 
-CompoundStatement: ast::Stmt = {
-    LineMagicStatement,
-    MatchStatement,
-    IfStatement,
-    WhileStatement,
-    ForStatement,
-    TryStatement,
-    WithStatement,
-    FuncDef,
-    ClassDef,
-};
-
 LineMagicStatement: ast::Stmt = {
     <location:@L> <m:line_magic> <end_location:@R> =>? {
         if mode == Mode::Jupyter {
@@ -377,6 +366,17 @@ LineMagicExpr: ast::Expr = {
         }
     }
 }
+
+CompoundStatement: ast::Stmt = {
+    MatchStatement,
+    IfStatement,
+    WhileStatement,
+    ForStatement,
+    TryStatement,
+    WithStatement,
+    FuncDef,
+    ClassDef,
+};
 
 MatchStatement: ast::Stmt = {
     <location:@L> "match" <subject:TestOrStarNamedExpr> ":" "\n" Indent <cases:MatchCase+> Dedent => {

@@ -31,6 +31,97 @@ Module(
                     ),
                 },
             ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 66..73,
+                    kind: "??",
+                    value: "a.foo",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 74..80,
+                    kind: "?",
+                    value: "a.foo",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 81..88,
+                    kind: "?",
+                    value: "a.foo?",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 89..100,
+                    kind: "??",
+                    value: "a.foo()??",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 115..128,
+                    kind: "%",
+                    value: "timeit a = b",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 129..147,
+                    kind: "%",
+                    value: "timeit foo(b) % 3",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 148..176,
+                    kind: "%",
+                    value: "alias showPath pwd && ls -a",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 177..205,
+                    kind: "%",
+                    value: "timeit a =  foo(b); b = 2",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 206..226,
+                    kind: "%",
+                    value: "matplotlib --inline",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 227..253,
+                    kind: "%",
+                    value: "matplotlib     --inline",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 277..309,
+                    kind: "!",
+                    value: "pwd && ls -a | sed 's/^/\\    /'",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 310..347,
+                    kind: "!",
+                    value: "pwd   && ls -a | sed 's/^/\\\\    /'",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 348..393,
+                    kind: "!!",
+                    value: "cd /Users/foo/Library/Application\\ Support/",
+                },
+            ),
             FunctionDef(
                 StmtFunctionDef {
                     range: 566..626,
@@ -85,6 +176,27 @@ Module(
                     type_comment: None,
                 },
             ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 656..664,
+                    kind: "/",
+                    value: "foo 1 2",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 665..673,
+                    kind: ";",
+                    value: "foo 1 2",
+                },
+            ),
+            LineMagic(
+                StmtLineMagic {
+                    range: 674..682,
+                    kind: ",",
+                    value: "foo 1 2",
+                },
+            ),
             For(
                 StmtFor {
                     range: 701..736,
@@ -120,6 +232,13 @@ Module(
                         },
                     ),
                     body: [
+                        LineMagic(
+                            StmtLineMagic {
+                                range: 724..727,
+                                kind: "%",
+                                value: "ls",
+                            },
+                        ),
                         Pass(
                             StmtPass {
                                 range: 732..736,

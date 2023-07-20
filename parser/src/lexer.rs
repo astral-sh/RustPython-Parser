@@ -655,12 +655,6 @@ where
             // Detect indentation levels
             if self.at_begin_of_line {
                 self.handle_indentations()?;
-                if self.mode == Mode::Jupyter
-                    // https://github.com/ipython/ipython/blob/635815e8f1ded5b764d66cacc80bbe25e9e2587f/IPython/core/inputtransformer2.py#L345
-                    && matches!(self.window[0], Some('%' | '!' | '?' | '/' | ';' | ','))
-                {
-                    self.lex_and_emit_magic_command();
-                }
             }
 
             self.consume_normal()?;
@@ -708,6 +702,10 @@ where
                     self.lex_and_emit_comment()?;
                     spaces = 0;
                     tabs = 0;
+                }
+                // https://github.com/ipython/ipython/blob/635815e8f1ded5b764d66cacc80bbe25e9e2587f/IPython/core/inputtransformer2.py#L345
+                Some('%' | '!' | '?' | '/' | ';' | ',') if self.mode == Mode::Jupyter => {
+                    self.lex_and_emit_magic_command();
                 }
                 Some('\x0C') => {
                     // Form feed character!
@@ -1487,13 +1485,10 @@ mod tests {
         let tokens = lex_jupyter_source(&source);
         assert_eq!(
             tokens,
-            vec![
-                Tok::MagicCommand {
-                    value: "matplotlib   --inline".to_string(),
-                    kind: MagicKind::Magic
-                },
-                Tok::Newline
-            ]
+            vec![Tok::MagicCommand {
+                value: "matplotlib   --inline".to_string(),
+                kind: MagicKind::Magic
+            },]
         )
     }
 
@@ -1517,13 +1512,10 @@ mod tests {
         let tokens = lex_jupyter_source(&source);
         assert_eq!(
             tokens,
-            vec![
-                Tok::MagicCommand {
-                    value: "matplotlib ".to_string(),
-                    kind: MagicKind::Magic
-                },
-                Tok::Newline
-            ]
+            vec![Tok::MagicCommand {
+                value: "matplotlib ".to_string(),
+                kind: MagicKind::Magic
+            },]
         )
     }
 
@@ -1553,47 +1545,54 @@ mod tests {
                     value: "".to_string(),
                     kind: MagicKind::Magic,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Magic2,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Shell,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::ShCap,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Help,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Help2,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Paren,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Quote,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Quote2,
                 },
-                Tok::Newline,
             ]
         )
     }
@@ -1612,8 +1611,10 @@ mod tests {
 !!cd /Users/foo/Library/Application\ Support/
 /foo 1 2
 ,foo 1 2
-;foo 1 2"
-            .trim();
+;foo 1 2
+    !ls
+"
+        .trim();
         let tokens = lex_jupyter_source(source);
         assert_eq!(
             tokens,
@@ -1622,78 +1623,66 @@ mod tests {
                     value: "foo".to_string(),
                     kind: MagicKind::Help,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo".to_string(),
                     kind: MagicKind::Help2,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "timeit a = b".to_string(),
                     kind: MagicKind::Magic,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "timeit a % 3".to_string(),
                     kind: MagicKind::Magic,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "matplotlib     --inline".to_string(),
                     kind: MagicKind::Magic,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "pwd   && ls -a | sed 's/^/\\\\    /'".to_string(),
                     kind: MagicKind::Shell,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "cd /Users/foo/Library/Application\\ Support/".to_string(),
                     kind: MagicKind::ShCap,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Paren,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Quote,
                 },
-                Tok::Newline,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Quote2,
                 },
-                Tok::Newline,
-            ]
-        )
-    }
-
-    #[test]
-    fn test_jupyter_magic_indentation() {
-        let source = r"
-if True:
-    %matplotlib \
-        --inline"
-            .trim();
-        let tokens = lex_jupyter_source(source);
-        assert_eq!(
-            tokens,
-            vec![
-                Tok::If,
-                Tok::True,
-                Tok::Colon,
-                Tok::Newline,
-                Tok::Indent,
+                #[cfg(feature = "full-lexer")]
+                Tok::NonLogicalNewline,
                 Tok::MagicCommand {
-                    value: "matplotlib         --inline".to_string(),
-                    kind: MagicKind::Magic,
+                    value: "ls".to_string(),
+                    kind: MagicKind::Shell,
                 },
-                Tok::Newline,
-                Tok::Dedent,
             ]
         )
     }

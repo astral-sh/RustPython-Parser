@@ -1699,6 +1699,85 @@ if True:
     }
 
     #[test]
+    fn test_jupyter_magic_assignment() {
+        let source = r"
+pwd = !pwd
+foo = %timeit a = b
+bar = %timeit a % 3
+baz = %matplotlib \
+        inline"
+            .trim();
+        let tokens = lex_jupyter_source(source);
+        assert_eq!(
+            tokens,
+            vec![
+                Tok::Name {
+                    name: "pwd".to_string()
+                },
+                Tok::Equal,
+                Tok::MagicCommand {
+                    value: "pwd".to_string(),
+                    kind: MagicKind::Shell,
+                },
+                Tok::Newline,
+                Tok::Name {
+                    name: "foo".to_string()
+                },
+                Tok::Equal,
+                Tok::MagicCommand {
+                    value: "timeit a = b".to_string(),
+                    kind: MagicKind::Magic,
+                },
+                Tok::Newline,
+                Tok::Name {
+                    name: "bar".to_string()
+                },
+                Tok::Equal,
+                Tok::MagicCommand {
+                    value: "timeit a % 3".to_string(),
+                    kind: MagicKind::Magic,
+                },
+                Tok::Newline,
+                Tok::Name {
+                    name: "baz".to_string()
+                },
+                Tok::Equal,
+                Tok::MagicCommand {
+                    value: "matplotlib         inline".to_string(),
+                    kind: MagicKind::Magic,
+                },
+                Tok::Newline,
+            ]
+        )
+    }
+
+    fn assert_no_jupyter_magic(tokens: &[Tok]) {
+        for tok in tokens {
+            match tok {
+                Tok::MagicCommand { .. } => panic!("Unexpected magic command token: {:?}", tok),
+                _ => {}
+            }
+        }
+    }
+
+    #[test]
+    fn test_jupyter_magic_not_an_assignment() {
+        let source = r"
+# Other magic kinds are not valid here (can't test `foo = ?str` because '?' is not a valid token)
+foo = /func
+foo = ;func
+foo = ,func
+
+(foo == %timeit a = b)
+(foo := %timeit a = b)
+def f(arg=%timeit a = b):
+    pass"
+            .trim();
+        let tokens = lex_jupyter_source(source);
+        assert_no_jupyter_magic(&tokens);
+    }
+
+    #[test]
     fn test_numbers() {
         let source = "0x2f 0o12 0b1101 0 123 123_45_67_890 0.2 1e+2 2.1e3 2j 2.2j";
         let tokens = lex_source(source);

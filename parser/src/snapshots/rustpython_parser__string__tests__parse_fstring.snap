@@ -33,7 +33,7 @@ expression: parse_ast
     ),
     Constant(
         ExprConstant {
-            range: 0..18,
+            range: 10..17,
             value: Str(
                 "{foo}",
             ),

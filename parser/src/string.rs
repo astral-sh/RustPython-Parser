@@ -11,6 +11,7 @@ use crate::{
     token::{StringKind, Tok},
 };
 use itertools::Itertools;
+use rustpython_ast::Ranged;
 use rustpython_parser_core::{
     text_size::{TextLen, TextSize},
     ConversionFlag,
@@ -452,6 +453,7 @@ impl<'a> StringParser<'a> {
         }
 
         let mut content = String::new();
+        let mut content_start = self.location;
         let mut values = vec![];
 
         while let Some(&ch) = self.peek() {
@@ -477,7 +479,10 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: content.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range: self.range(),
+                                    range: TextRange::new(
+                                        std::mem::replace(&mut content_start, self.location),
+                                        self.location - TextSize::from(1),
+                                    ),
                                 }
                                 .into(),
                             ),
@@ -486,6 +491,7 @@ impl<'a> StringParser<'a> {
 
                     let parsed_values = self.parse_formatted_value(nested)?;
                     values.extend(parsed_values);
+                    content_start = self.location;
                 }
                 '}' => {
                     if nested > 0 {
@@ -516,7 +522,7 @@ impl<'a> StringParser<'a> {
                     ast::ExprConstant {
                         value: content.into(),
                         kind: None,
-                        range: self.range(),
+                        range: TextRange::new(content_start, self.location),
                     }
                     .into(),
                 ),
@@ -674,34 +680,43 @@ pub(crate) fn parse_strings(
     // De-duplicate adjacent constants.
     let mut deduped: Vec<Expr> = vec![];
     let mut current: Vec<String> = vec![];
+    let mut current_start = initial_start;
+    let mut current_end = last_end;
 
-    let take_current = |current: &mut Vec<String>| -> Expr {
+    let take_current = |current: &mut Vec<String>, start, end| -> Expr {
         Expr::Constant(ast::ExprConstant {
             value: Constant::Str(current.drain(..).join("")),
             kind: initial_kind.clone(),
-            range: TextRange::new(initial_start, last_end),
+            range: TextRange::new(start, end),
         })
     };
 
     for (start, (source, kind, triple_quoted), end) in values {
         for value in parse_string(&source, kind, triple_quoted, start, end)? {
+            let value_range = value.range();
             match value {
                 Expr::FormattedValue { .. } => {
                     if !current.is_empty() {
-                        deduped.push(take_current(&mut current));
+                        deduped.push(take_current(&mut current, current_start, current_end));
                     }
                     deduped.push(value)
                 }
                 Expr::Constant(ast::ExprConstant {
-                    value: Constant::Str(value),
+                    value: Constant::Str(inner),
                     ..
-                }) => current.push(value),
+                }) => {
+                    if current.is_empty() {
+                        current_start = value_range.start();
+                    }
+                    current_end = value_range.end();
+                    current.push(inner);
+                }
                 _ => unreachable!("Unexpected non-string expression."),
             }
         }
     }
     if !current.is_empty() {
-        deduped.push(take_current(&mut current));
+        deduped.push(take_current(&mut current, current_start, current_end));
     }
 
     Ok(Expr::JoinedStr(ast::ExprJoinedStr {
@@ -1066,6 +1081,14 @@ mod tests {
     fn test_fstring_escaped_newline() {
         let source = r#"f"\n{x}""#;
         let parse_ast = ast::Suite::parse(source, "<test>").unwrap();
+        insta::assert_debug_snapshot!(parse_ast);
+    }
+
+    #[test]
+    fn test_fstring_constant_range() {
+        let source = r#"f"aaa{bbb}ccc{ddd}eee""#;
+        let parse_ast = ast::Suite::parse(source, "<test>").unwrap();
+        // assert!(false);
         insta::assert_debug_snapshot!(parse_ast);
     }
 

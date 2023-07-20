@@ -5,7 +5,7 @@ expression: parse_ast
 [
     Constant(
         ExprConstant {
-            range: 0..38,
+            range: 2..6,
             value: Str(
                 "mix ",
             ),
@@ -46,7 +46,7 @@ expression: parse_ast
     ),
     Constant(
         ExprConstant {
-            range: 0..38,
+            range: 13..28,
             value: Str(
                 " with text and ",
             ),

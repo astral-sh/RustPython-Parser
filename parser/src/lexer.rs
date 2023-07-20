@@ -175,6 +175,8 @@ pub struct Lexer<T: Iterator<Item = char>> {
     pending: Vec<Spanned>,
     // The current location.
     location: TextSize,
+    // The last emitted token.
+    last_emitted: Option<Tok>,
     // Lexer mode.
     mode: Mode,
 }
@@ -233,6 +235,7 @@ where
             pending: Vec::with_capacity(5),
             location: start,
             window: CharWindow::new(input),
+            last_emitted: None,
             mode,
         };
         // Fill the window.
@@ -945,15 +948,22 @@ where
                 }
             }
             '%' => {
-                let tok_start = self.get_pos();
-                self.next_char();
-                if let Some('=') = self.window[0] {
-                    self.next_char();
-                    let tok_end = self.get_pos();
-                    self.emit((Tok::PercentEqual, TextRange::new(tok_start, tok_end)));
+                if self.mode == Mode::Jupyter
+                    && self.nesting == 0
+                    && matches!(self.last_emitted, Some(Tok::Equal))
+                {
+                    self.lex_and_emit_magic_command();
                 } else {
-                    let tok_end = self.get_pos();
-                    self.emit((Tok::Percent, TextRange::new(tok_start, tok_end)));
+                    let tok_start = self.get_pos();
+                    self.next_char();
+                    if let Some('=') = self.window[0] {
+                        self.next_char();
+                        let tok_end = self.get_pos();
+                        self.emit((Tok::PercentEqual, TextRange::new(tok_start, tok_end)));
+                    } else {
+                        let tok_end = self.get_pos();
+                        self.emit((Tok::Percent, TextRange::new(tok_start, tok_end)));
+                    }
                 }
             }
             '|' => {
@@ -1025,17 +1035,24 @@ where
                 }
             }
             '!' => {
-                let tok_start = self.get_pos();
-                self.next_char();
-                if let Some('=') = self.window[0] {
-                    self.next_char();
-                    let tok_end = self.get_pos();
-                    self.emit((Tok::NotEqual, TextRange::new(tok_start, tok_end)));
+                if self.mode == Mode::Jupyter
+                    && self.nesting == 0
+                    && matches!(self.last_emitted, Some(Tok::Equal))
+                {
+                    self.lex_and_emit_magic_command();
                 } else {
-                    return Err(LexicalError {
-                        error: LexicalErrorType::UnrecognizedToken { tok: '!' },
-                        location: tok_start,
-                    });
+                    let tok_start = self.get_pos();
+                    self.next_char();
+                    if let Some('=') = self.window[0] {
+                        self.next_char();
+                        let tok_end = self.get_pos();
+                        self.emit((Tok::NotEqual, TextRange::new(tok_start, tok_end)));
+                    } else {
+                        return Err(LexicalError {
+                            error: LexicalErrorType::UnrecognizedToken { tok: '!' },
+                            location: tok_start,
+                        });
+                    }
                 }
             }
             '~' => {
@@ -1292,6 +1309,7 @@ where
 
     // Helper function to emit a lexed token to the queue of tokens.
     fn emit(&mut self, spanned: Spanned) {
+        self.last_emitted = Some(spanned.0.clone());
         self.pending.push(spanned);
     }
 }

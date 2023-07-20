@@ -175,8 +175,8 @@ pub struct Lexer<T: Iterator<Item = char>> {
     pending: Vec<Spanned>,
     // The current location.
     location: TextSize,
-    // The last emitted token.
-    last_emitted: Option<Tok>,
+    // Is the last token an equal sign?
+    last_token_is_equal: bool,
     // Lexer mode.
     mode: Mode,
 }
@@ -235,7 +235,7 @@ where
             pending: Vec::with_capacity(5),
             location: start,
             window: CharWindow::new(input),
-            last_emitted: None,
+            last_token_is_equal: false,
             mode,
         };
         // Fill the window.
@@ -948,10 +948,7 @@ where
                 }
             }
             '%' => {
-                if self.mode == Mode::Jupyter
-                    && self.nesting == 0
-                    && matches!(self.last_emitted, Some(Tok::Equal))
-                {
+                if self.mode == Mode::Jupyter && self.nesting == 0 && self.last_token_is_equal {
                     self.lex_and_emit_magic_command();
                 } else {
                     let tok_start = self.get_pos();
@@ -1035,10 +1032,7 @@ where
                 }
             }
             '!' => {
-                if self.mode == Mode::Jupyter
-                    && self.nesting == 0
-                    && matches!(self.last_emitted, Some(Tok::Equal))
-                {
+                if self.mode == Mode::Jupyter && self.nesting == 0 && self.last_token_is_equal {
                     self.lex_and_emit_magic_command();
                 } else {
                     let tok_start = self.get_pos();
@@ -1309,7 +1303,7 @@ where
 
     // Helper function to emit a lexed token to the queue of tokens.
     fn emit(&mut self, spanned: Spanned) {
-        self.last_emitted = Some(spanned.0.clone());
+        self.last_token_is_equal = matches!(spanned.0, Tok::Equal);
         self.pending.push(spanned);
     }
 }

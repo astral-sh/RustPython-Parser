@@ -919,7 +919,7 @@ type X[T: int, *Ts, **P] = (T, Ts, P)
 type X[T: (int, str), *Ts, **P] = (T, Ts, P)
 
 # soft keyword as alias name
-type type = int  
+type type = int
 type match = int
 type case = int
 

@@ -4,7 +4,7 @@ expression: parse_ast
 ---
 Module(
     ModModule {
-        range: 0..736,
+        range: 0..760,
         body: [
             Expr(
                 StmtExpr {
@@ -199,7 +199,7 @@ Module(
             ),
             For(
                 StmtFor {
-                    range: 701..736,
+                    range: 701..727,
                     target: Name(
                         ExprName {
                             range: 705..706,
@@ -235,17 +235,56 @@ Module(
                         LineMagic(
                             StmtLineMagic {
                                 range: 724..727,
-                                kind: "%",
+                                kind: "!",
                                 value: "ls",
-                            },
-                        ),
-                        Pass(
-                            StmtPass {
-                                range: 732..736,
                             },
                         ),
                     ],
                     orelse: [],
+                    type_comment: None,
+                },
+            ),
+            Assign(
+                StmtAssign {
+                    range: 729..739,
+                    targets: [
+                        Name(
+                            ExprName {
+                                range: 729..732,
+                                id: "pwd",
+                                ctx: Store,
+                            },
+                        ),
+                    ],
+                    value: LineMagic(
+                        ExprLineMagic {
+                            range: 735..739,
+                            kind: "!",
+                            value: "pwd",
+                        },
+                    ),
+                    type_comment: None,
+                },
+            ),
+            Assign(
+                StmtAssign {
+                    range: 740..760,
+                    targets: [
+                        Name(
+                            ExprName {
+                                range: 740..743,
+                                id: "foo",
+                                ctx: Store,
+                            },
+                        ),
+                    ],
+                    value: LineMagic(
+                        ExprLineMagic {
+                            range: 746..760,
+                            kind: "%",
+                            value: "foo     bar",
+                        },
+                    ),
                     type_comment: None,
                 },
             ),

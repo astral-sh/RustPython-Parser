@@ -1315,8 +1315,11 @@ def foo():
 
 # Indented magic
 for a in range(5):
-    %ls
-    pass
+    !ls
+
+pwd = !pwd
+foo = %foo \
+    bar
 "#
             .trim(),
             Mode::Jupyter,

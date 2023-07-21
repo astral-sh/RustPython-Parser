@@ -1317,7 +1317,8 @@ def foo():
 for a in range(5):
     !ls
 
-pwd = !pwd
+p1 = !pwd
+p2: str = !pwd
 foo = %foo \
     bar
 "#

@@ -4,7 +4,7 @@ expression: parse_ast
 ---
 Module(
     ModModule {
-        range: 0..760,
+        range: 0..774,
         body: [
             Expr(
                 StmtExpr {
@@ -246,19 +246,19 @@ Module(
             ),
             Assign(
                 StmtAssign {
-                    range: 729..739,
+                    range: 729..738,
                     targets: [
                         Name(
                             ExprName {
-                                range: 729..732,
-                                id: "pwd",
+                                range: 729..731,
+                                id: "p1",
                                 ctx: Store,
                             },
                         ),
                     ],
                     value: LineMagic(
                         ExprLineMagic {
-                            range: 735..739,
+                            range: 734..738,
                             kind: "!",
                             value: "pwd",
                         },
@@ -266,13 +266,42 @@ Module(
                     type_comment: None,
                 },
             ),
+            AnnAssign(
+                StmtAnnAssign {
+                    range: 739..753,
+                    target: Name(
+                        ExprName {
+                            range: 739..741,
+                            id: "p2",
+                            ctx: Store,
+                        },
+                    ),
+                    annotation: Name(
+                        ExprName {
+                            range: 743..746,
+                            id: "str",
+                            ctx: Load,
+                        },
+                    ),
+                    value: Some(
+                        LineMagic(
+                            ExprLineMagic {
+                                range: 749..753,
+                                kind: "!",
+                                value: "pwd",
+                            },
+                        ),
+                    ),
+                    simple: true,
+                },
+            ),
             Assign(
                 StmtAssign {
-                    range: 740..760,
+                    range: 754..774,
                     targets: [
                         Name(
                             ExprName {
-                                range: 740..743,
+                                range: 754..757,
                                 id: "foo",
                                 ctx: Store,
                             },
@@ -280,7 +309,7 @@ Module(
                     ],
                     value: LineMagic(
                         ExprLineMagic {
-                            range: 746..760,
+                            range: 760..774,
                             kind: "%",
                             value: "foo     bar",
                         },

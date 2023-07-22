@@ -1,0 +1,48 @@
+---
+source: parser/src/lexer_v2/mod.rs
+expression: tokens
+---
+[
+    Token {
+        kind: Identifier,
+        length: 1,
+        value: String(
+            "x",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Nonlocal,
+        length: 8,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: EndOfFile,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+]

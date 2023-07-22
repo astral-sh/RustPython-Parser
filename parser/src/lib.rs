@@ -119,6 +119,7 @@ mod function;
 // Skip flattening lexer to distinguish from full parser
 mod context;
 pub mod lexer;
+mod lexer_v2;
 mod parser;
 mod soft_keywords;
 mod string;

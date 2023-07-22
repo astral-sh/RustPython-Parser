@@ -453,7 +453,6 @@ where
     }
 
     /// Lex a single comment.
-    #[cfg(feature = "full-lexer")]
     fn lex_comment(&mut self) -> LexResult {
         let start_pos = self.get_pos();
         let mut value = String::new();
@@ -469,31 +468,9 @@ where
         }
     }
 
-    #[cfg(feature = "full-lexer")]
     fn lex_and_emit_comment(&mut self) -> Result<(), LexicalError> {
         let comment = self.lex_comment()?;
         self.emit(comment);
-        Ok(())
-    }
-
-    /// Discard comment if full-lexer is not enabled.
-    #[cfg(not(feature = "full-lexer"))]
-    fn lex_comment(&mut self) {
-        loop {
-            match self.window[0] {
-                Some('\n' | '\r') | None => {
-                    return;
-                }
-                Some(_) => {}
-            }
-            self.next_char().unwrap();
-        }
-    }
-
-    #[cfg(not(feature = "full-lexer"))]
-    #[inline]
-    fn lex_and_emit_comment(&mut self) -> Result<(), LexicalError> {
-        self.lex_comment();
         Ok(())
     }
 
@@ -713,12 +690,9 @@ where
                 }
                 Some('\n' | '\r') => {
                     // Empty line!
-                    #[cfg(feature = "full-lexer")]
                     let tok_start = self.get_pos();
                     self.next_char();
-                    #[cfg(feature = "full-lexer")]
                     let tok_end = self.get_pos();
-                    #[cfg(feature = "full-lexer")]
                     self.emit((Tok::NonLogicalNewline, TextRange::new(tok_start, tok_end)));
                     spaces = 0;
                     tabs = 0;
@@ -1194,7 +1168,6 @@ where
                     self.at_begin_of_line = true;
                     self.emit((Tok::Newline, TextRange::new(tok_start, tok_end)));
                 } else {
-                    #[cfg(feature = "full-lexer")]
                     self.emit((Tok::NonLogicalNewline, TextRange::new(tok_start, tok_end)));
                 }
             }
@@ -1251,6 +1224,7 @@ where
     }
 
     // Used by single character tokens to advance the window and emit the correct token.
+    #[allow(unsafe_code)]
     fn eat_single_char(&mut self, ty: Tok) {
         let tok_start = self.get_pos();
         self.next_char().unwrap_or_else(|| unsafe {
@@ -1527,49 +1501,41 @@ mod tests {
                     value: "".to_string(),
                     kind: MagicKind::Magic,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Magic2,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Shell,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::ShCap,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Help,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Help2,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Paren,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
                     kind: MagicKind::Quote,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "".to_string(),
@@ -1605,61 +1571,51 @@ mod tests {
                     value: "foo".to_string(),
                     kind: MagicKind::Help,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo".to_string(),
                     kind: MagicKind::Help2,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "timeit a = b".to_string(),
                     kind: MagicKind::Magic,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "timeit a % 3".to_string(),
                     kind: MagicKind::Magic,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "matplotlib     --inline".to_string(),
                     kind: MagicKind::Magic,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "pwd   && ls -a | sed 's/^/\\\\    /'".to_string(),
                     kind: MagicKind::Shell,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "cd /Users/foo/Library/Application\\ Support/".to_string(),
                     kind: MagicKind::ShCap,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Paren,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Quote,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "foo 1 2".to_string(),
                     kind: MagicKind::Quote2,
                 },
-                #[cfg(feature = "full-lexer")]
                 Tok::NonLogicalNewline,
                 Tok::MagicCommand {
                     value: "ls".to_string(),
@@ -1714,7 +1670,6 @@ mod tests {
         ($($name:ident: $eol:expr,)*) => {
             $(
             #[test]
-            #[cfg(feature = "full-lexer")]
             fn $name() {
                 let source = format!(r"99232  # {}", $eol);
                 let tokens = lex_source(&source);
@@ -1735,7 +1690,6 @@ mod tests {
         ($($name:ident: $eol:expr,)*) => {
             $(
             #[test]
-            #[cfg(feature = "full-lexer")]
             fn $name() {
                 let source = format!("123  # Foo{}456", $eol);
                 let tokens = lex_source(&source);
@@ -1791,7 +1745,6 @@ mod tests {
         ($($name:ident: $eol:expr,)*) => {
             $(
             #[test]
-            #[cfg(feature = "full-lexer")]
             fn $name() {
                 let source = format!("def foo():{}   return 99{}{}", $eol, $eol, $eol);
                 let tokens = lex_source(&source);
@@ -1829,7 +1782,6 @@ mod tests {
         ($($name:ident: $eol:expr,)*) => {
         $(
             #[test]
-            #[cfg(feature = "full-lexer")]
             fn $name() {
                 let source = format!("def foo():{} if x:{}{}  return 99{}{}", $eol, $eol, $eol, $eol, $eol);
                 let tokens = lex_source(&source);
@@ -1870,7 +1822,6 @@ mod tests {
         ($($name:ident: $eol:expr,)*) => {
         $(
             #[test]
-            #[cfg(feature = "full-lexer")]
             fn $name() {
                 let source = format!("def foo():{}\tif x:{}{}\t return 99{}{}", $eol, $eol, $eol, $eol, $eol);
                 let tokens = lex_source(&source);
@@ -1923,7 +1874,6 @@ mod tests {
         ($($name:ident: $eol:expr,)*) => {
         $(
             #[test]
-            #[cfg(feature = "full-lexer")]
             fn $name() {
                 let source = r"x = [
 
@@ -1986,7 +1936,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "full-lexer")]
     fn test_non_logical_newline_in_string_continuation() {
         let source = r"(
     'a'
@@ -2016,7 +1965,6 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "full-lexer")]
     fn test_logical_newline_line_comment() {
         let source = "#Hello\n#World\n";
         let tokens = lex_source(source);
@@ -2130,3 +2078,5 @@ mod tests {
         test_triple_quoted_unix_eol: UNIX_EOL,
     }
 }
+
+static_assertions::assert_eq_size!(Tok, [u8; 40]);

@@ -1,0 +1,414 @@
+---
+source: parser/src/lexer_v2/mod.rs
+expression: tokens
+---
+[
+    Token {
+        kind: NonLogicalNewline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Def,
+        length: 3,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 7,
+        value: String(
+            "__new__",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Lpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 3,
+        value: String(
+            "cls",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Rpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Colon,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 4,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Comment,
+        length: 38,
+        value: String(
+            "# ensure that only one instance exists",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: NonLogicalNewline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Indent,
+        length: 4,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: If,
+        length: 2,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Not,
+        length: 3,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 3,
+        value: String(
+            "cls",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Dot,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 10,
+        value: String(
+            "__instance",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Colon,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Indent,
+        length: 8,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 3,
+        value: String(
+            "cls",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Dot,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 10,
+        value: String(
+            "__instance",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Equal,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 5,
+        value: String(
+            "super",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Lpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Rpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Dot,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 7,
+        value: String(
+            "__new__",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Lpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 3,
+        value: String(
+            "cls",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Rpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Dedent,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 4,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Return,
+        length: 6,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 3,
+        value: String(
+            "cls",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Dot,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 10,
+        value: String(
+            "__instance",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Dedent,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: EndOfFile,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+]

@@ -1,0 +1,116 @@
+---
+source: parser/src/lexer_v2/mod.rs
+expression: tokens
+---
+[
+    Token {
+        kind: Comment,
+        length: 21,
+        value: String(
+            "# multine definitions",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: NonLogicalNewline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Type,
+        length: 4,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: LineContinuation,
+        length: 2,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 1,
+        value: String(
+            "X",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Equal,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 3,
+        value: String(
+            "int",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: EndOfFile,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+]

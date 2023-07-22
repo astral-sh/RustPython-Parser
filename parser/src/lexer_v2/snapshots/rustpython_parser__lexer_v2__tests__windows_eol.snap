@@ -1,0 +1,130 @@
+---
+source: parser/src/lexer_v2/mod.rs
+expression: tokens
+---
+[
+    Token {
+        kind: Def,
+        length: 3,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Identifier,
+        length: 3,
+        value: String(
+            "foo",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Lpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Rpar,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Colon,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 2,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Indent,
+        length: 3,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Return,
+        length: 6,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Whitespace,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Int,
+        length: 2,
+        value: String(
+            "99",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 2,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: NonLogicalNewline,
+        length: 2,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Dedent,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: EndOfFile,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+]

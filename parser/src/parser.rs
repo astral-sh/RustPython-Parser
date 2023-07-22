@@ -15,7 +15,7 @@
 use crate::{
     ast::{self, Ranged},
     lexer::{self, LexResult, LexicalError, LexicalErrorType},
-    python,
+    lexer_v2, python,
     text_size::TextSize,
     token::Tok,
     Mode,
@@ -23,7 +23,8 @@ use crate::{
 use itertools::Itertools;
 use std::iter;
 
-use crate::{lexer::Lexer, soft_keywords::SoftKeywordTransformer};
+use crate::lexer_v2::compat_adapter::CompatAdapter;
+use crate::{soft_keywords::SoftKeywordTransformer};
 pub(super) use lalrpop_util::ParseError as LalrpopError;
 
 /// Parse Python code string to implementor's type.
@@ -68,15 +69,11 @@ where
         offset: TextSize,
     ) -> Result<Self, ParseError> {
         let lxr = Self::lex_starts_at(source, offset);
-        #[cfg(feature = "full-lexer")]
         let lxr =
             lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::Comment { .. } | Tok::NonLogicalNewline));
         Self::parse_tokens(lxr, source_path)
     }
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>>;
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter>;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -84,11 +81,11 @@ where
 }
 
 impl Parse for ast::ModModule {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        lexer::lex_starts_at(source, Mode::Module, offset)
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
+        SoftKeywordTransformer::new(
+            CompatAdapter::new(offset, lexer_v2::Lexer::new(source, offset)),
+            Mode::Module,
+        )
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -102,11 +99,11 @@ impl Parse for ast::ModModule {
 }
 
 impl Parse for ast::ModExpression {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        lexer::lex_starts_at(source, Mode::Expression, offset)
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
+        SoftKeywordTransformer::new(
+            CompatAdapter::new(offset, lexer_v2::Lexer::new(source, offset)),
+            Mode::Expression,
+        )
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -120,11 +117,11 @@ impl Parse for ast::ModExpression {
 }
 
 impl Parse for ast::ModInteractive {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        lexer::lex_starts_at(source, Mode::Interactive, offset)
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
+        SoftKeywordTransformer::new(
+            CompatAdapter::new(offset, lexer_v2::Lexer::new(source, offset)),
+            Mode::Interactive,
+        )
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -138,10 +135,7 @@ impl Parse for ast::ModInteractive {
 }
 
 impl Parse for ast::Suite {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
         ast::ModModule::lex_starts_at(source, offset)
     }
     fn parse_tokens(
@@ -153,10 +147,7 @@ impl Parse for ast::Suite {
 }
 
 impl Parse for ast::Stmt {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
         ast::ModModule::lex_starts_at(source, offset)
     }
     fn parse_tokens(
@@ -186,10 +177,7 @@ impl Parse for ast::Stmt {
 }
 
 impl Parse for ast::Expr {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
         ast::ModExpression::lex_starts_at(source, offset)
     }
     fn parse_tokens(
@@ -201,10 +189,7 @@ impl Parse for ast::Expr {
 }
 
 impl Parse for ast::Identifier {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
         ast::Expr::lex_starts_at(source, offset)
     }
     fn parse_tokens(
@@ -227,10 +212,7 @@ impl Parse for ast::Identifier {
 }
 
 impl Parse for ast::Constant {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
+    fn lex_starts_at(source: &str, offset: TextSize) -> SoftKeywordTransformer<CompatAdapter> {
         ast::Expr::lex_starts_at(source, offset)
     }
     fn parse_tokens(
@@ -429,7 +411,6 @@ pub fn parse_tokens(
     source_path: &str,
 ) -> Result<ast::Mod, ParseError> {
     let lxr = lxr.into_iter();
-    #[cfg(feature = "full-lexer")]
     let lxr =
         lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::Comment { .. } | Tok::NonLogicalNewline));
     if mode == Mode::Jupyter {

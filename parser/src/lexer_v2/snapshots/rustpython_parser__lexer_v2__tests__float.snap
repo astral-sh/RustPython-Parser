@@ -1,0 +1,158 @@
+---
+source: parser/src/lexer_v2/mod.rs
+expression: tokens
+---
+[
+    Token {
+        kind: Float,
+        length: 6,
+        value: String(
+            "0.0123",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Float,
+        length: 4,
+        value: String(
+            "0.123",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Float,
+        length: 9,
+        value: String(
+            "0.123345",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Float,
+        length: 13,
+        value: String(
+            "134344444.333",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Float,
+        length: 4,
+        value: String(
+            "1000000000000000000000000000000000000000000000",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Float,
+        length: 4,
+        value: String(
+            "1000000000000000000000000000000000000000000000",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Float,
+        length: 5,
+        value: String(
+            "1300",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 1,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Float,
+        length: 5,
+        value: String(
+            "33000",
+        ),
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: Newline,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+    Token {
+        kind: EndOfFile,
+        length: 0,
+        value: None,
+        flags: TokenFlags(
+            0x0,
+        ),
+    },
+]

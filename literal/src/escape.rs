@@ -386,6 +386,7 @@ impl<'a> Escape for AsciiEscape<'a> {
         &self.layout
     }
 
+    #[allow(unsafe_code)]
     fn write_source(&self, formatter: &mut impl std::fmt::Write) -> std::fmt::Result {
         formatter.write_str(unsafe {
             // SAFETY: this function must be called only when source is printable ascii characters

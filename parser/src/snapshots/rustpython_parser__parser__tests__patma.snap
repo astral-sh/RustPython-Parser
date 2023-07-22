@@ -972,7 +972,7 @@ expression: parse_ast
                                         ExprConstant {
                                             range: 755..759,
                                             value: Float(
-                                                0.25,
+                                                0.0,
                                             ),
                                             kind: None,
                                         },
@@ -983,7 +983,7 @@ expression: parse_ast
                                             range: 762..767,
                                             value: Complex {
                                                 real: 0.0,
-                                                imag: 1.75,
+                                                imag: 0.0,
                                             },
                                             kind: None,
                                         },
@@ -2164,7 +2164,7 @@ expression: parse_ast
                                                 ExprConstant {
                                                     range: 1637..1641,
                                                     value: Float(
-                                                        0.25,
+                                                        0.0,
                                                     ),
                                                     kind: None,
                                                 },
@@ -2177,7 +2177,7 @@ expression: parse_ast
                                             range: 1644..1649,
                                             value: Complex {
                                                 real: 0.0,
-                                                imag: 1.75,
+                                                imag: 0.0,
                                             },
                                             kind: None,
                                         },

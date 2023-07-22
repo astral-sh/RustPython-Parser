@@ -21,7 +21,7 @@ expression: parse_ast
                         ),
                         FormattedValue(
                             ExprFormattedValue {
-                                range: 0..22,
+                                range: 5..10,
                                 value: Name(
                                     ExprName {
                                         range: 6..9,
@@ -44,7 +44,7 @@ expression: parse_ast
                         ),
                         FormattedValue(
                             ExprFormattedValue {
-                                range: 0..22,
+                                range: 13..18,
                                 value: Name(
                                     ExprName {
                                         range: 14..17,

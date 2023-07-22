@@ -193,7 +193,7 @@ expression: parse_ast
                                                             ),
                                                             FormattedValue(
                                                                 ExprFormattedValue {
-                                                                    range: 133..179,
+                                                                    range: 142..151,
                                                                     value: Call(
                                                                         ExprCall {
                                                                             range: 143..150,
@@ -231,7 +231,7 @@ expression: parse_ast
                                                             ),
                                                             FormattedValue(
                                                                 ExprFormattedValue {
-                                                                    range: 133..179,
+                                                                    range: 164..178,
                                                                     value: Attribute(
                                                                         ExprAttribute {
                                                                             range: 165..177,
@@ -313,7 +313,7 @@ expression: parse_ast
                                                             ),
                                                             FormattedValue(
                                                                 ExprFormattedValue {
-                                                                    range: 213..259,
+                                                                    range: 222..231,
                                                                     value: Call(
                                                                         ExprCall {
                                                                             range: 223..230,
@@ -351,7 +351,7 @@ expression: parse_ast
                                                             ),
                                                             FormattedValue(
                                                                 ExprFormattedValue {
-                                                                    range: 213..259,
+                                                                    range: 244..258,
                                                                     value: Attribute(
                                                                         ExprAttribute {
                                                                             range: 245..257,

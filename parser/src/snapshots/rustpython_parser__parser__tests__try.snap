@@ -89,7 +89,7 @@ expression: parse_ast
                                                             ),
                                                             FormattedValue(
                                                                 ExprFormattedValue {
-                                                                    range: 62..81,
+                                                                    range: 71..80,
                                                                     value: Call(
                                                                         ExprCall {
                                                                             range: 72..79,
@@ -176,7 +176,7 @@ expression: parse_ast
                                                             ),
                                                             FormattedValue(
                                                                 ExprFormattedValue {
-                                                                    range: 114..133,
+                                                                    range: 123..132,
                                                                     value: Call(
                                                                         ExprCall {
                                                                             range: 124..131,

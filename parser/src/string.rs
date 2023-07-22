@@ -23,19 +23,11 @@ const MAX_UNICODE_NAME: usize = 88;
 struct StringParser<'a> {
     chars: std::iter::Peekable<std::str::Chars<'a>>,
     kind: StringKind,
-    start: TextSize,
-    end: TextSize,
     location: TextSize,
 }
 
 impl<'a> StringParser<'a> {
-    fn new(
-        source: &'a str,
-        kind: StringKind,
-        triple_quoted: bool,
-        start: TextSize,
-        end: TextSize,
-    ) -> Self {
+    fn new(source: &'a str, kind: StringKind, triple_quoted: bool, start: TextSize) -> Self {
         let offset = kind.prefix_len()
             + if triple_quoted {
                 TextSize::from(3)
@@ -45,8 +37,6 @@ impl<'a> StringParser<'a> {
         Self {
             chars: source.chars().peekable(),
             kind,
-            start,
-            end,
             location: start + offset,
         }
     }
@@ -69,12 +59,13 @@ impl<'a> StringParser<'a> {
     }
 
     #[inline]
-    fn expr(&self, node: Expr) -> Expr {
-        node
+    fn current_range(&self, current_location: TextSize) -> TextRange {
+        TextRange::new(current_location, self.location)
     }
 
-    fn range(&self) -> TextRange {
-        TextRange::new(self.start, self.end)
+    #[inline]
+    fn expr(&self, node: Expr) -> Expr {
+        node
     }
 
     fn parse_unicode_literal(&mut self, literal_number: usize) -> Result<char, LexicalError> {
@@ -192,7 +183,7 @@ impl<'a> StringParser<'a> {
         let mut conversion = ConversionFlag::None;
         let mut self_documenting = false;
         let mut trailing_seq = String::new();
-        let location = self.get_pos();
+        let location = self.get_pos() - TextSize::from(1);
 
         while let Some(ch) = self.next_char() {
             match ch {
@@ -237,13 +228,14 @@ impl<'a> StringParser<'a> {
                 }
 
                 ':' if delimiters.is_empty() => {
+                    let location = self.get_pos();
                     let parsed_spec = self.parse_spec(nested)?;
 
                     spec = Some(Box::new(
                         self.expr(
                             ast::ExprJoinedStr {
                                 values: parsed_spec,
-                                range: self.range(),
+                                range: self.current_range(location),
                             }
                             .into(),
                         ),
@@ -323,17 +315,19 @@ impl<'a> StringParser<'a> {
                                 ),
                                 conversion,
                                 format_spec: spec,
-                                range: self.range(),
+                                range: self.current_range(location),
                             }
                             .into(),
                         )]
                     } else {
+                        // TODO: range is wrong but `self_documenting` needs revisiting beyond
+                        // ranges
                         vec![
                             self.expr(
                                 ast::ExprConstant {
                                     value: Constant::Str(expression.to_owned() + "="),
                                     kind: None,
-                                    range: self.range(),
+                                    range: self.current_range(location),
                                 }
                                 .into(),
                             ),
@@ -341,7 +335,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: trailing_seq.into(),
                                     kind: None,
-                                    range: self.range(),
+                                    range: self.current_range(location),
                                 }
                                 .into(),
                             ),
@@ -363,7 +357,7 @@ impl<'a> StringParser<'a> {
                                         conversion
                                     },
                                     format_spec: spec,
-                                    range: self.range(),
+                                    range: self.current_range(location),
                                 }
                                 .into(),
                             ),
@@ -402,6 +396,7 @@ impl<'a> StringParser<'a> {
     fn parse_spec(&mut self, nested: u8) -> Result<Vec<Expr>, LexicalError> {
         let mut spec_constructor = Vec::new();
         let mut constant_piece = String::new();
+        let mut location = self.get_pos();
         while let Some(&next) = self.peek() {
             match next {
                 '{' => {
@@ -411,7 +406,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: constant_piece.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range: self.range(),
+                                    range: self.current_range(location),
                                 }
                                 .into(),
                             ),
@@ -419,6 +414,7 @@ impl<'a> StringParser<'a> {
                     }
                     let parsed_expr = self.parse_fstring(nested + 1)?;
                     spec_constructor.extend(parsed_expr);
+                    location = self.get_pos();
                     continue;
                 }
                 '}' => {
@@ -436,7 +432,7 @@ impl<'a> StringParser<'a> {
                     ast::ExprConstant {
                         value: constant_piece.drain(..).collect::<String>().into(),
                         kind: None,
-                        range: self.range(),
+                        range: self.current_range(location),
                     }
                     .into(),
                 ),
@@ -453,7 +449,7 @@ impl<'a> StringParser<'a> {
         }
 
         let mut content = String::new();
-        let mut content_start = self.location;
+        let mut location = self.get_pos();
         let mut values = vec![];
 
         while let Some(&ch) = self.peek() {
@@ -474,15 +470,13 @@ impl<'a> StringParser<'a> {
                         }
                     }
                     if !content.is_empty() {
+                        let range = self.current_range(location).sub_end(1.into());
                         values.push(
                             self.expr(
                                 ast::ExprConstant {
                                     value: content.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range: TextRange::new(
-                                        std::mem::replace(&mut content_start, self.location),
-                                        self.location - TextSize::from(1),
-                                    ),
+                                    range,
                                 }
                                 .into(),
                             ),
@@ -491,7 +485,7 @@ impl<'a> StringParser<'a> {
 
                     let parsed_values = self.parse_formatted_value(nested)?;
                     values.extend(parsed_values);
-                    content_start = self.location;
+                    location = self.get_pos();
                 }
                 '}' => {
                     if nested > 0 {
@@ -522,7 +516,7 @@ impl<'a> StringParser<'a> {
                     ast::ExprConstant {
                         value: content.into(),
                         kind: None,
-                        range: TextRange::new(content_start, self.location),
+                        range: self.current_range(location),
                     }
                     .into(),
                 ),
@@ -534,6 +528,7 @@ impl<'a> StringParser<'a> {
 
     fn parse_bytes(&mut self) -> Result<Expr, LexicalError> {
         let mut content = String::new();
+        let location = self.get_pos();
         while let Some(ch) = self.next_char() {
             match ch {
                 '\\' if !self.kind.is_raw() => {
@@ -557,7 +552,7 @@ impl<'a> StringParser<'a> {
             ast::ExprConstant {
                 value: Constant::Bytes(content.chars().map(|c| c as u8).collect()),
                 kind: None,
-                range: self.range(),
+                range: self.current_range(location),
             }
             .into(),
         ))
@@ -565,6 +560,7 @@ impl<'a> StringParser<'a> {
 
     fn parse_string(&mut self) -> Result<Expr, LexicalError> {
         let mut content = String::new();
+        let location = self.get_pos();
         while let Some(ch) = self.next_char() {
             match ch {
                 '\\' if !self.kind.is_raw() => {
@@ -577,7 +573,7 @@ impl<'a> StringParser<'a> {
             ast::ExprConstant {
                 value: Constant::Str(content),
                 kind: self.kind.is_unicode().then(|| "u".to_string()),
-                range: self.range(),
+                range: self.current_range(location),
             }
             .into(),
         ))
@@ -589,15 +585,14 @@ impl<'a> StringParser<'a> {
         } else if self.kind.is_any_bytes() {
             self.parse_bytes().map(|expr| vec![expr])
         } else {
-            self.parse_string().map(|expr| vec![expr])
+            dbg!(self.parse_string().map(|expr| vec![expr]))
         }
     }
 }
 
 fn parse_fstring_expr(source: &str, location: TextSize) -> Result<Expr, ParseError> {
     let fstring_body = format!("({source})");
-    let start = location - TextSize::from(1);
-    ast::Expr::parse_starts_at(&fstring_body, "<fstring>", start)
+    ast::Expr::parse_starts_at(&fstring_body, "<fstring>", location)
 }
 
 fn parse_string(
@@ -605,9 +600,8 @@ fn parse_string(
     kind: StringKind,
     triple_quoted: bool,
     start: TextSize,
-    end: TextSize,
 ) -> Result<Vec<Expr>, LexicalError> {
-    StringParser::new(source, kind, triple_quoted, start, end).parse()
+    StringParser::new(source, kind, triple_quoted, start).parse()
 }
 
 pub(crate) fn parse_strings(
@@ -637,8 +631,8 @@ pub(crate) fn parse_strings(
 
     if has_bytes {
         let mut content: Vec<u8> = vec![];
-        for (start, (source, kind, triple_quoted), end) in values {
-            for value in parse_string(&source, kind, triple_quoted, start, end)? {
+        for (start, (source, kind, triple_quoted), _) in values {
+            for value in parse_string(&source, kind, triple_quoted, start)? {
                 match value {
                     Expr::Constant(ast::ExprConstant {
                         value: Constant::Bytes(value),
@@ -658,8 +652,8 @@ pub(crate) fn parse_strings(
 
     if !has_fstring {
         let mut content: Vec<String> = vec![];
-        for (start, (source, kind, triple_quoted), end) in values {
-            for value in parse_string(&source, kind, triple_quoted, start, end)? {
+        for (start, (source, kind, triple_quoted), _) in values {
+            for value in parse_string(&source, kind, triple_quoted, start)? {
                 match value {
                     Expr::Constant(ast::ExprConstant {
                         value: Constant::Str(value),
@@ -691,8 +685,8 @@ pub(crate) fn parse_strings(
         })
     };
 
-    for (start, (source, kind, triple_quoted), end) in values {
-        for value in parse_string(&source, kind, triple_quoted, start, end)? {
+    for (start, (source, kind, triple_quoted), _) in values {
+        for value in parse_string(&source, kind, triple_quoted, start)? {
             let value_range = value.range();
             match value {
                 Expr::FormattedValue { .. } => {
@@ -833,14 +827,7 @@ mod tests {
     use crate::{ast, Parse};
 
     fn parse_fstring(source: &str) -> Result<Vec<Expr>, LexicalError> {
-        StringParser::new(
-            source,
-            StringKind::FString,
-            false,
-            TextSize::default(),
-            TextSize::default() + source.text_len() + TextSize::from(3), // 3 for prefix and quotes
-        )
-        .parse()
+        StringParser::new(source, StringKind::FString, false, TextSize::default()).parse()
     }
 
     #[test]
@@ -1088,7 +1075,6 @@ mod tests {
     fn test_fstring_constant_range() {
         let source = r#"f"aaa{bbb}ccc{ddd}eee""#;
         let parse_ast = ast::Suite::parse(source, "<test>").unwrap();
-        // assert!(false);
         insta::assert_debug_snapshot!(parse_ast);
     }
 

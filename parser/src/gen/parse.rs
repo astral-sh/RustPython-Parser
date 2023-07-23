@@ -1,12 +1,10 @@
 // This file was originally generated from asdl by a python script, but we now edit it manually
 
 impl Parse for ast::StmtFunctionDef {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
+
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -24,11 +22,8 @@ impl Parse for ast::StmtFunctionDef {
 }
 
 impl Parse for ast::StmtAsyncFunctionDef {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -47,11 +42,8 @@ impl Parse for ast::StmtAsyncFunctionDef {
 }
 
 impl Parse for ast::StmtClassDef {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -70,11 +62,8 @@ impl Parse for ast::StmtClassDef {
 }
 
 impl Parse for ast::StmtReturn {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -93,11 +82,8 @@ impl Parse for ast::StmtReturn {
 }
 
 impl Parse for ast::StmtDelete {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -116,11 +102,8 @@ impl Parse for ast::StmtDelete {
 }
 
 impl Parse for ast::StmtAssign {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -139,11 +122,8 @@ impl Parse for ast::StmtAssign {
 }
 
 impl Parse for ast::StmtTypeAlias {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -162,11 +142,8 @@ impl Parse for ast::StmtTypeAlias {
 }
 
 impl Parse for ast::StmtAugAssign {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -185,11 +162,8 @@ impl Parse for ast::StmtAugAssign {
 }
 
 impl Parse for ast::StmtAnnAssign {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -208,11 +182,8 @@ impl Parse for ast::StmtAnnAssign {
 }
 
 impl Parse for ast::StmtFor {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -231,11 +202,8 @@ impl Parse for ast::StmtFor {
 }
 
 impl Parse for ast::StmtAsyncFor {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -254,11 +222,8 @@ impl Parse for ast::StmtAsyncFor {
 }
 
 impl Parse for ast::StmtWhile {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -277,11 +242,8 @@ impl Parse for ast::StmtWhile {
 }
 
 impl Parse for ast::StmtIf {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -300,11 +262,8 @@ impl Parse for ast::StmtIf {
 }
 
 impl Parse for ast::StmtWith {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -323,11 +282,8 @@ impl Parse for ast::StmtWith {
 }
 
 impl Parse for ast::StmtAsyncWith {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -346,11 +302,8 @@ impl Parse for ast::StmtAsyncWith {
 }
 
 impl Parse for ast::StmtMatch {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -369,11 +322,8 @@ impl Parse for ast::StmtMatch {
 }
 
 impl Parse for ast::StmtRaise {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -392,11 +342,8 @@ impl Parse for ast::StmtRaise {
 }
 
 impl Parse for ast::StmtTry {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -415,11 +362,8 @@ impl Parse for ast::StmtTry {
 }
 
 impl Parse for ast::StmtTryStar {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -438,11 +382,8 @@ impl Parse for ast::StmtTryStar {
 }
 
 impl Parse for ast::StmtAssert {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -461,11 +402,8 @@ impl Parse for ast::StmtAssert {
 }
 
 impl Parse for ast::StmtImport {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -484,11 +422,8 @@ impl Parse for ast::StmtImport {
 }
 
 impl Parse for ast::StmtImportFrom {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -507,11 +442,8 @@ impl Parse for ast::StmtImportFrom {
 }
 
 impl Parse for ast::StmtGlobal {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -530,11 +462,8 @@ impl Parse for ast::StmtGlobal {
 }
 
 impl Parse for ast::StmtNonlocal {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -553,11 +482,8 @@ impl Parse for ast::StmtNonlocal {
 }
 
 impl Parse for ast::StmtExpr {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -576,11 +502,8 @@ impl Parse for ast::StmtExpr {
 }
 
 impl Parse for ast::StmtPass {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -599,11 +522,8 @@ impl Parse for ast::StmtPass {
 }
 
 impl Parse for ast::StmtBreak {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -622,11 +542,8 @@ impl Parse for ast::StmtBreak {
 }
 
 impl Parse for ast::StmtContinue {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Stmt::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Module
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -645,11 +562,8 @@ impl Parse for ast::StmtContinue {
 }
 
 impl Parse for ast::ExprBoolOp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -668,11 +582,8 @@ impl Parse for ast::ExprBoolOp {
 }
 
 impl Parse for ast::ExprNamedExpr {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -691,11 +602,8 @@ impl Parse for ast::ExprNamedExpr {
 }
 
 impl Parse for ast::ExprBinOp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -714,11 +622,8 @@ impl Parse for ast::ExprBinOp {
 }
 
 impl Parse for ast::ExprUnaryOp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -737,11 +642,8 @@ impl Parse for ast::ExprUnaryOp {
 }
 
 impl Parse for ast::ExprLambda {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -760,11 +662,8 @@ impl Parse for ast::ExprLambda {
 }
 
 impl Parse for ast::ExprIfExp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -783,11 +682,8 @@ impl Parse for ast::ExprIfExp {
 }
 
 impl Parse for ast::ExprDict {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -806,11 +702,8 @@ impl Parse for ast::ExprDict {
 }
 
 impl Parse for ast::ExprSet {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -829,11 +722,8 @@ impl Parse for ast::ExprSet {
 }
 
 impl Parse for ast::ExprListComp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -852,11 +742,8 @@ impl Parse for ast::ExprListComp {
 }
 
 impl Parse for ast::ExprSetComp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -875,11 +762,8 @@ impl Parse for ast::ExprSetComp {
 }
 
 impl Parse for ast::ExprDictComp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -898,11 +782,8 @@ impl Parse for ast::ExprDictComp {
 }
 
 impl Parse for ast::ExprGeneratorExp {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -921,11 +802,8 @@ impl Parse for ast::ExprGeneratorExp {
 }
 
 impl Parse for ast::ExprAwait {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -944,11 +822,8 @@ impl Parse for ast::ExprAwait {
 }
 
 impl Parse for ast::ExprYield {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -967,11 +842,8 @@ impl Parse for ast::ExprYield {
 }
 
 impl Parse for ast::ExprYieldFrom {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -990,11 +862,8 @@ impl Parse for ast::ExprYieldFrom {
 }
 
 impl Parse for ast::ExprCompare {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1013,11 +882,8 @@ impl Parse for ast::ExprCompare {
 }
 
 impl Parse for ast::ExprCall {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1036,11 +902,8 @@ impl Parse for ast::ExprCall {
 }
 
 impl Parse for ast::ExprFormattedValue {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1059,11 +922,8 @@ impl Parse for ast::ExprFormattedValue {
 }
 
 impl Parse for ast::ExprJoinedStr {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1082,11 +942,8 @@ impl Parse for ast::ExprJoinedStr {
 }
 
 impl Parse for ast::ExprConstant {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1105,11 +962,8 @@ impl Parse for ast::ExprConstant {
 }
 
 impl Parse for ast::ExprAttribute {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1128,11 +982,8 @@ impl Parse for ast::ExprAttribute {
 }
 
 impl Parse for ast::ExprSubscript {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1151,11 +1002,8 @@ impl Parse for ast::ExprSubscript {
 }
 
 impl Parse for ast::ExprStarred {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1174,11 +1022,8 @@ impl Parse for ast::ExprStarred {
 }
 
 impl Parse for ast::ExprName {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1197,11 +1042,8 @@ impl Parse for ast::ExprName {
 }
 
 impl Parse for ast::ExprList {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1220,11 +1062,8 @@ impl Parse for ast::ExprList {
 }
 
 impl Parse for ast::ExprTuple {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -1243,11 +1082,8 @@ impl Parse for ast::ExprTuple {
 }
 
 impl Parse for ast::ExprSlice {
-    fn lex_starts_at(
-        source: &str,
-        offset: TextSize,
-    ) -> SoftKeywordTransformer<Lexer<std::str::Chars>> {
-        ast::Expr::lex_starts_at(source, offset)
+    fn mode() -> Mode {
+        Mode::Expression
     }
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,

@@ -1,7 +1,8 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: fa57e02e9e5bfceb811748310e8d17940d15b6c6e2d6191d9ae71b2e4dc435d8
+// sha3: 6a6e10102ca4897f12ff5ed33ef5aad928e18e86753214e39d3f3495951fc631
+use num_bigint::BigInt;
 use crate::{
-    ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
+    ast::{self as ast, Ranged, MagicKind},
     Mode,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
@@ -21,8 +22,9 @@ extern crate alloc;
 #[allow(non_snake_case, non_camel_case_types, unused_mut, unused_variables, unused_imports, unused_parens, clippy::all)]
 mod __parse__Top {
 
+    use num_bigint::BigInt;
     use crate::{
-    ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
+    ast::{self as ast, Ranged, MagicKind},
     Mode,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},

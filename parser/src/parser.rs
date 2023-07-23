@@ -412,9 +412,29 @@ pub fn parse_tokens(
 ) -> Result<ast::Mod, ParseError> {
     let lxr = lxr.into_iter();
 
+<<<<<<< HEAD
     let lxr =
         lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::Comment { .. } | Tok::NonLogicalNewline));
     parse_filtered_tokens(lxr, mode, source_path)
+=======
+    match mode {
+        Mode::Module | Mode::Interactive | Mode::Expression => parse_filtered_tokens(
+            lxr.filter_ok(|(tok, _)| !matches!(tok, Tok::Comment { .. } | Tok::NonLogicalNewline)),
+            mode,
+            source_path,
+        ),
+        Mode::Jupyter => parse_filtered_tokens(
+            lxr.filter_ok(|(tok, _)| {
+                !matches!(
+                    tok,
+                    Tok::Comment { .. } | Tok::NonLogicalNewline | Tok::MagicCommand { .. }
+                )
+            }),
+            mode,
+            source_path,
+        ),
+    }
+>>>>>>> 58ac178 (Use single filter call)
 }
 
 fn parse_filtered_tokens(

@@ -2,6 +2,10 @@ use static_assertions::assert_eq_size;
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
+/// The column index of an indentation.
+///
+/// A space increments the column by one. A tab adds up to 2 (if tab size is 2) indices, but just one
+/// if the column isn't even.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Default)]
 pub(super) struct Column(u32);
 
@@ -11,6 +15,7 @@ impl Column {
     }
 }
 
+/// The number of characters in an indentation. Each character accounts for 1.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Default)]
 pub(super) struct Character(u32);
 
@@ -20,6 +25,7 @@ impl Character {
     }
 }
 
+/// The [Indentation](https://docs.python.org/3/reference/lexical_analysis.html#indentation) of a logical line.
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Default)]
 pub(super) struct Indentation {
     column: Column,
@@ -27,6 +33,8 @@ pub(super) struct Indentation {
 }
 
 impl Indentation {
+    const TAB_SIZE: u32 = 2;
+
     pub(super) const fn root() -> Self {
         Self {
             column: Column::new(0),
@@ -51,7 +59,11 @@ impl Indentation {
     pub(super) fn add_tab(self) -> Self {
         Self {
             character: Character(self.character.0 + 1),
-            column: Column((self.column.0 / 2 + 1) * 2),
+            // Compute the column index:
+            // * Adds `TAB_SIZE` if `column` is a multiple of `TAB_SIZE`
+            // * Rounds `column` up to the next multiple of `TAB_SIZE` otherwise.
+            // https://github.com/python/cpython/blob/2cf99026d6320f38937257da1ab014fc873a11a6/Parser/tokenizer.c#L1818
+            column: Column((self.column.0 / Self::TAB_SIZE + 1) * Self::TAB_SIZE),
         }
     }
 
@@ -73,43 +85,27 @@ impl Indentation {
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub(super) struct UnexpectedIndentation;
 
-// The indentations stack is used to keep track of the current indentation level.
-// Similar to the CPython implementation, the Indentations stack always has at
-// least one level which is never popped. See Reference 2.1.8.
-#[derive(Debug, Clone)]
+// The indentations stack is used to keep track of the current indentation level
+// [See Indentation](docs.python.org/3/reference/lexical_analysis.html#indentation).
+#[derive(Debug, Clone, Default)]
 pub(super) struct Indentations {
     stack: Vec<Indentation>,
 }
 
 impl Indentations {
-    pub fn is_empty(&self) -> bool {
-        self.stack.len() == 1
-    }
-
-    pub fn push(&mut self, indent: Indentation) {
+    pub(super) fn push(&mut self, indent: Indentation) {
         debug_assert_eq!(self.current().try_compare(&indent), Ok(Ordering::Less));
 
         self.stack.push(indent);
     }
 
-    pub fn pop(&mut self) -> Option<Indentation> {
-        if self.is_empty() {
-            None
-        } else {
-            self.stack.pop()
-        }
+    pub(super) fn pop(&mut self) -> Option<Indentation> {
+        self.stack.pop()
     }
 
-    pub fn current(&self) -> &Indentation {
-        self.stack.last().expect("Expected indentation")
-    }
-}
-
-impl Default for Indentations {
-    fn default() -> Self {
-        Self {
-            stack: vec![Indentation::root()],
-        }
+    pub(super) fn current(&self) -> &Indentation {
+        static ROOT: Indentation = Indentation::root();
+        self.stack.last().unwrap_or(&ROOT)
     }
 }
 

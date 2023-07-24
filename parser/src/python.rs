@@ -1,5 +1,5 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: 6a6e10102ca4897f12ff5ed33ef5aad928e18e86753214e39d3f3495951fc631
+// sha3: 263bb187f0a83dfe2a024fa0eed0ad8cb855da5991584b5040fa7d870fdb84af
 use num_bigint::BigInt;
 use crate::{
     ast::{self as ast, Ranged, MagicKind},
@@ -11490,19 +11490,19 @@ mod __parse__Top {
             _ => panic!("invalid reduction index {}", __reduce_index)
         }
     }
-    pub struct TopParser {
+    pub(crate) struct TopParser {
         _priv: (),
     }
 
     impl TopParser {
-        pub fn new() -> TopParser {
+        pub(crate) fn new() -> TopParser {
             TopParser {
                 _priv: (),
             }
         }
 
         #[allow(dead_code)]
-        pub fn parse<
+        pub(crate) fn parse<
             __TOKEN: __ToTriple<>,
             __TOKENS: IntoIterator<Item=__TOKEN>,
         >(
@@ -30746,7 +30746,7 @@ mod __parse__Top {
         (3, 276)
     }
 }
-pub use self::__parse__Top::TopParser;
+pub(crate) use self::__parse__Top::TopParser;
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments)]

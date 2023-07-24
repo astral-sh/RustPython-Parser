@@ -57,8 +57,10 @@ pub trait Parse
 where
     Self: Sized,
 {
+    const MODE: Mode;
+
     fn parse(source: &str, source_path: &str) -> Result<Self, ParseError> {
-        let tokens = lex(source, Self::mode());
+        let tokens = lex(source, Self::MODE);
 
         Self::parse_tokens(tokens, source_path)
     }
@@ -72,7 +74,7 @@ where
         source_path: &str,
         offset: TextSize,
     ) -> Result<Self, ParseError> {
-        let tokens = lex_starts_at(source, Self::mode(), offset);
+        let tokens = lex_starts_at(source, Self::MODE, offset);
 
         Self::parse_tokens(tokens, source_path)
     }
@@ -81,14 +83,10 @@ where
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
     ) -> Result<Self, ParseError>;
-
-    fn mode() -> Mode;
 }
 
 impl Parse for ast::ModModule {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -102,9 +100,7 @@ impl Parse for ast::ModModule {
 }
 
 impl Parse for ast::ModExpression {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -118,9 +114,7 @@ impl Parse for ast::ModExpression {
 }
 
 impl Parse for ast::ModInteractive {
-    fn mode() -> Mode {
-        Mode::Interactive
-    }
+    const MODE: Mode = Mode::Interactive;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -133,9 +127,7 @@ impl Parse for ast::ModInteractive {
 }
 
 impl Parse for ast::Suite {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -146,9 +138,7 @@ impl Parse for ast::Suite {
 }
 
 impl Parse for ast::Stmt {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -177,9 +167,7 @@ impl Parse for ast::Stmt {
 }
 
 impl Parse for ast::Expr {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -190,9 +178,7 @@ impl Parse for ast::Expr {
 }
 
 impl Parse for ast::Identifier {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -214,9 +200,7 @@ impl Parse for ast::Identifier {
 }
 
 impl Parse for ast::Constant {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -423,16 +407,28 @@ pub fn parse_tokens(
             mode,
             source_path,
         ),
-        Mode::Jupyter => parse_filtered_tokens(
-            lxr.filter_ok(|(tok, _)| {
-                !matches!(
-                    tok,
-                    Tok::Comment { .. } | Tok::NonLogicalNewline | Tok::MagicCommand { .. }
-                )
-            }),
-            mode,
-            source_path,
-        ),
+        Mode::Jupyter => {
+            let mut after_magic = false;
+            parse_filtered_tokens(
+                lxr.filter_ok(|(tok, _)| match tok {
+                    Tok::Comment(..) | Tok::NonLogicalNewline => {
+                        after_magic = false;
+                        false
+                    }
+                    Tok::Newline => !after_magic,
+                    Tok::MagicCommand { .. } => {
+                        after_magic = true;
+                        false
+                    }
+                    _ => {
+                        after_magic = false;
+                        true
+                    }
+                }),
+                mode,
+                source_path,
+            )
+        }
     }
 >>>>>>> 58ac178 (Use single filter call)
 }

@@ -12,7 +12,7 @@ pub(super) struct Cursor<'a> {
 }
 
 impl<'a> Cursor<'a> {
-    pub fn new(source: &'a str) -> Self {
+    pub(crate) fn new(source: &'a str) -> Self {
         Self {
             source_length: source.text_len(),
             chars: source.chars(),
@@ -41,13 +41,12 @@ impl<'a> Cursor<'a> {
         chars.next().unwrap_or(EOF_CHAR)
     }
 
-    /// Peeks the third character from the input stream without consuming it.
-    /// Returns [EOF_CHAR] if the position is past the end of the file.
+    /// Returns the remaining text to lex.
     pub(super) fn rest(&self) -> &'a str {
         self.chars.as_str()
     }
 
-    // SAFETY: THe `source.text_len` call in `new` would panic if the string length is larger than a `u32`.
+    // SAFETY: The `source.text_len` call in `new` would panic if the string length is larger than a `u32`.
     #[allow(clippy::cast_possible_truncation)]
     pub(super) fn text_len(&self) -> TextSize {
         TextSize::new(self.chars.as_str().len() as u32)

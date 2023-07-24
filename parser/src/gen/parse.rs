@@ -1,9 +1,7 @@
 // This file was originally generated from asdl by a python script, but we now edit it manually
 
 impl Parse for ast::StmtFunctionDef {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
 
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
@@ -22,9 +20,7 @@ impl Parse for ast::StmtFunctionDef {
 }
 
 impl Parse for ast::StmtAsyncFunctionDef {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -42,9 +38,7 @@ impl Parse for ast::StmtAsyncFunctionDef {
 }
 
 impl Parse for ast::StmtClassDef {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -62,9 +56,7 @@ impl Parse for ast::StmtClassDef {
 }
 
 impl Parse for ast::StmtReturn {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -82,9 +74,7 @@ impl Parse for ast::StmtReturn {
 }
 
 impl Parse for ast::StmtDelete {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -102,9 +92,7 @@ impl Parse for ast::StmtDelete {
 }
 
 impl Parse for ast::StmtAssign {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -122,9 +110,7 @@ impl Parse for ast::StmtAssign {
 }
 
 impl Parse for ast::StmtTypeAlias {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -142,9 +128,7 @@ impl Parse for ast::StmtTypeAlias {
 }
 
 impl Parse for ast::StmtAugAssign {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -162,9 +146,7 @@ impl Parse for ast::StmtAugAssign {
 }
 
 impl Parse for ast::StmtAnnAssign {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -182,9 +164,7 @@ impl Parse for ast::StmtAnnAssign {
 }
 
 impl Parse for ast::StmtFor {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -202,9 +182,7 @@ impl Parse for ast::StmtFor {
 }
 
 impl Parse for ast::StmtAsyncFor {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -222,9 +200,7 @@ impl Parse for ast::StmtAsyncFor {
 }
 
 impl Parse for ast::StmtWhile {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -242,9 +218,7 @@ impl Parse for ast::StmtWhile {
 }
 
 impl Parse for ast::StmtIf {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -262,9 +236,7 @@ impl Parse for ast::StmtIf {
 }
 
 impl Parse for ast::StmtWith {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -282,9 +254,7 @@ impl Parse for ast::StmtWith {
 }
 
 impl Parse for ast::StmtAsyncWith {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -302,9 +272,7 @@ impl Parse for ast::StmtAsyncWith {
 }
 
 impl Parse for ast::StmtMatch {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -322,9 +290,7 @@ impl Parse for ast::StmtMatch {
 }
 
 impl Parse for ast::StmtRaise {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -342,9 +308,7 @@ impl Parse for ast::StmtRaise {
 }
 
 impl Parse for ast::StmtTry {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -362,9 +326,7 @@ impl Parse for ast::StmtTry {
 }
 
 impl Parse for ast::StmtTryStar {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -382,9 +344,7 @@ impl Parse for ast::StmtTryStar {
 }
 
 impl Parse for ast::StmtAssert {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -402,9 +362,7 @@ impl Parse for ast::StmtAssert {
 }
 
 impl Parse for ast::StmtImport {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -422,9 +380,7 @@ impl Parse for ast::StmtImport {
 }
 
 impl Parse for ast::StmtImportFrom {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -442,9 +398,7 @@ impl Parse for ast::StmtImportFrom {
 }
 
 impl Parse for ast::StmtGlobal {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -462,9 +416,7 @@ impl Parse for ast::StmtGlobal {
 }
 
 impl Parse for ast::StmtNonlocal {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -482,9 +434,7 @@ impl Parse for ast::StmtNonlocal {
 }
 
 impl Parse for ast::StmtExpr {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -502,9 +452,7 @@ impl Parse for ast::StmtExpr {
 }
 
 impl Parse for ast::StmtPass {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -522,9 +470,7 @@ impl Parse for ast::StmtPass {
 }
 
 impl Parse for ast::StmtBreak {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -542,9 +488,7 @@ impl Parse for ast::StmtBreak {
 }
 
 impl Parse for ast::StmtContinue {
-    fn mode() -> Mode {
-        Mode::Module
-    }
+    const MODE: Mode = Mode::Module;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -562,9 +506,7 @@ impl Parse for ast::StmtContinue {
 }
 
 impl Parse for ast::ExprBoolOp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -582,9 +524,7 @@ impl Parse for ast::ExprBoolOp {
 }
 
 impl Parse for ast::ExprNamedExpr {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -602,9 +542,7 @@ impl Parse for ast::ExprNamedExpr {
 }
 
 impl Parse for ast::ExprBinOp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -622,9 +560,7 @@ impl Parse for ast::ExprBinOp {
 }
 
 impl Parse for ast::ExprUnaryOp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -642,9 +578,7 @@ impl Parse for ast::ExprUnaryOp {
 }
 
 impl Parse for ast::ExprLambda {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -662,9 +596,7 @@ impl Parse for ast::ExprLambda {
 }
 
 impl Parse for ast::ExprIfExp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -682,9 +614,7 @@ impl Parse for ast::ExprIfExp {
 }
 
 impl Parse for ast::ExprDict {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -702,9 +632,7 @@ impl Parse for ast::ExprDict {
 }
 
 impl Parse for ast::ExprSet {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -722,9 +650,7 @@ impl Parse for ast::ExprSet {
 }
 
 impl Parse for ast::ExprListComp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -742,9 +668,7 @@ impl Parse for ast::ExprListComp {
 }
 
 impl Parse for ast::ExprSetComp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -762,9 +686,7 @@ impl Parse for ast::ExprSetComp {
 }
 
 impl Parse for ast::ExprDictComp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -782,9 +704,7 @@ impl Parse for ast::ExprDictComp {
 }
 
 impl Parse for ast::ExprGeneratorExp {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -802,9 +722,7 @@ impl Parse for ast::ExprGeneratorExp {
 }
 
 impl Parse for ast::ExprAwait {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -822,9 +740,7 @@ impl Parse for ast::ExprAwait {
 }
 
 impl Parse for ast::ExprYield {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -842,9 +758,7 @@ impl Parse for ast::ExprYield {
 }
 
 impl Parse for ast::ExprYieldFrom {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -862,9 +776,7 @@ impl Parse for ast::ExprYieldFrom {
 }
 
 impl Parse for ast::ExprCompare {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -882,9 +794,7 @@ impl Parse for ast::ExprCompare {
 }
 
 impl Parse for ast::ExprCall {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -902,9 +812,7 @@ impl Parse for ast::ExprCall {
 }
 
 impl Parse for ast::ExprFormattedValue {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -922,9 +830,7 @@ impl Parse for ast::ExprFormattedValue {
 }
 
 impl Parse for ast::ExprJoinedStr {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -942,9 +848,7 @@ impl Parse for ast::ExprJoinedStr {
 }
 
 impl Parse for ast::ExprConstant {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -962,9 +866,7 @@ impl Parse for ast::ExprConstant {
 }
 
 impl Parse for ast::ExprAttribute {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -982,9 +884,7 @@ impl Parse for ast::ExprAttribute {
 }
 
 impl Parse for ast::ExprSubscript {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -1002,9 +902,7 @@ impl Parse for ast::ExprSubscript {
 }
 
 impl Parse for ast::ExprStarred {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -1022,9 +920,7 @@ impl Parse for ast::ExprStarred {
 }
 
 impl Parse for ast::ExprName {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -1042,9 +938,7 @@ impl Parse for ast::ExprName {
 }
 
 impl Parse for ast::ExprList {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -1062,9 +956,7 @@ impl Parse for ast::ExprList {
 }
 
 impl Parse for ast::ExprTuple {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,
@@ -1082,9 +974,7 @@ impl Parse for ast::ExprTuple {
 }
 
 impl Parse for ast::ExprSlice {
-    fn mode() -> Mode {
-        Mode::Expression
-    }
+    const MODE: Mode = Mode::Expression;
     fn parse_tokens(
         lxr: impl IntoIterator<Item = LexResult>,
         source_path: &str,

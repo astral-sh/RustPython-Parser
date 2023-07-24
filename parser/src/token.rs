@@ -234,7 +234,6 @@ impl fmt::Display for Tok {
             }
             MagicCommand { kind, value } => write!(f, "{kind}{value}"),
             Newline => f.write_str("Newline"),
-
             NonLogicalNewline => f.write_str("NonLogicalNewline"),
             Indent => f.write_str("Indent"),
             Dedent => f.write_str("Dedent"),
@@ -248,7 +247,6 @@ impl fmt::Display for Tok {
             Rsqb => f.write_str("']'"),
             Colon => f.write_str("':'"),
             Comma => f.write_str("','"),
-
             Comment(value) => f.write_str(value),
             Semi => f.write_str("';'"),
             Plus => f.write_str("'+'"),

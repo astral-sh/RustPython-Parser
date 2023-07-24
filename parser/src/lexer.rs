@@ -573,8 +573,12 @@ impl<'source> Lexer<'source> {
                 self.consume_ascii_character(c)
             } else if is_unicode_identifier_start(c) {
                 let identifier = self.lex_identifier(c)?;
+                self.state = State::Other;
+
                 Ok((identifier, self.token_range()))
             } else if is_emoji_presentation(c) {
+                self.state = State::Other;
+
                 Ok((
                     Tok::Name {
                         name: c.to_string(),
@@ -1426,9 +1430,8 @@ baz = %matplotlib \
 
     fn assert_no_jupyter_magic(tokens: &[Tok]) {
         for tok in tokens {
-            match tok {
-                Tok::MagicCommand { .. } => panic!("Unexpected magic command token: {:?}", tok),
-                _ => {}
+            if let Tok::MagicCommand { .. } = tok {
+                panic!("Unexpected magic command token: {:?}", tok)
             }
         }
     }

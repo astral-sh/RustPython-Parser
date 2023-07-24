@@ -1,5 +1,5 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
-use crate::text_size::TextRange;
+use crate::text_size::{TextRange, TextSize};
 pub(crate) use crate::{builtin::*, ConversionFlag, Node};
 use std::fmt::{self, Debug};
 

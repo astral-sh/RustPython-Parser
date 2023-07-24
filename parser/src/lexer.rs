@@ -538,19 +538,28 @@ where
         }
     }
 
-    fn lex_and_emit_magic_command(&mut self) {
+    fn lex_and_emit_magic_command(&mut self) -> bool {
         let kind = match self.window[..2] {
             [Some(c1), Some(c2)] => {
                 MagicKind::try_from([c1, c2]).map_or_else(|_| MagicKind::try_from(c1), Ok)
             }
             // When the escape character is the last character of the file.
             [Some(c), None] => MagicKind::try_from(c),
-            _ => return,
+            _ => return false,
         };
         if let Ok(kind) = kind {
+            // If the magic prefix is not followed by a valid identifier start
+            // we don't lex it as a magic command.
+            if let Some(c) = self.window[usize::from(kind.prefix_len())] {
+                if !self.is_identifier_start(c) {
+                    return false;
+                }
+            }
             let magic_command = self.lex_magic_command(kind);
             self.emit(magic_command);
+            return true;
         }
+        false
     }
 
     /// Lex a string literal.
@@ -705,7 +714,9 @@ where
                 }
                 // https://github.com/ipython/ipython/blob/635815e8f1ded5b764d66cacc80bbe25e9e2587f/IPython/core/inputtransformer2.py#L345
                 Some('%' | '!' | '?' | '/' | ';' | ',') if self.mode == Mode::Jupyter => {
-                    self.lex_and_emit_magic_command();
+                    if !self.lex_and_emit_magic_command() {
+                        break;
+                    }
                 }
                 Some('\x0C') => {
                     // Form feed character!
@@ -948,9 +959,15 @@ where
                 }
             }
             '%' => {
-                if self.mode == Mode::Jupyter && self.nesting == 0 && self.last_token_is_equal {
-                    self.lex_and_emit_magic_command();
+                let lexed_magic_command = if self.mode == Mode::Jupyter
+                    && self.nesting == 0
+                    && self.last_token_is_equal
+                {
+                    self.lex_and_emit_magic_command()
                 } else {
+                    false
+                };
+                if !lexed_magic_command {
                     let tok_start = self.get_pos();
                     self.next_char();
                     if let Some('=') = self.window[0] {
@@ -1032,9 +1049,15 @@ where
                 }
             }
             '!' => {
-                if self.mode == Mode::Jupyter && self.nesting == 0 && self.last_token_is_equal {
-                    self.lex_and_emit_magic_command();
+                let lexed_magic_command = if self.mode == Mode::Jupyter
+                    && self.nesting == 0
+                    && self.last_token_is_equal
+                {
+                    self.lex_and_emit_magic_command()
                 } else {
+                    false
+                };
+                if !lexed_magic_command {
                     let tok_start = self.get_pos();
                     self.next_char();
                     if let Some('=') = self.window[0] {
@@ -1736,9 +1759,8 @@ baz = %matplotlib \
 
     fn assert_no_jupyter_magic(tokens: &[Tok]) {
         for tok in tokens {
-            match tok {
-                Tok::MagicCommand { .. } => panic!("Unexpected magic command token: {:?}", tok),
-                _ => {}
+            if let Tok::MagicCommand { .. } = tok {
+                panic!("Unexpected magic command token: {:?}", tok)
             }
         }
     }
@@ -1750,6 +1772,10 @@ baz = %matplotlib \
 foo = /func
 foo = ;func
 foo = ,func
+
+# Magic prefix is not followed by a valid identifier start
+% timeit
+foo = % timeit
 
 (foo == %timeit a = b)
 (foo := %timeit a = b)

@@ -1329,4 +1329,19 @@ foo = %foo  # comment
         .unwrap();
         insta::assert_debug_snapshot!(parse_ast);
     }
+
+    #[test]
+    fn test_jupyter_magic_parse_error() {
+        let source = r#"
+a = 1
+%timeit a == 1
+    "#
+        .trim();
+        let lxr = lexer::lex_starts_at(source, Mode::Jupyter, TextSize::default());
+        let parse_err = parse_tokens(lxr, Mode::Module, "<test>").unwrap_err();
+        assert_eq!(
+            parse_err.to_string(),
+            "line magics are only allowed in Jupyter mode at byte offset 6".to_string()
+        );
+    }
 }

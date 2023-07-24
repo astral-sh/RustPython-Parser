@@ -409,9 +409,6 @@ pub fn parse_starts_at(
 ///
 /// This could allow you to perform some preprocessing on the tokens before parsing them.
 ///
-/// When in [`Mode::Jupyter`], this will filter out all the Jupyter magic commands
-/// before parsing the tokens.
-///
 /// # Example
 ///
 /// As an example, instead of parsing a string, we can parse a list of tokens after we generate

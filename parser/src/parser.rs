@@ -1321,6 +1321,9 @@ p1 = !pwd
 p2: str = !pwd
 foo = %foo \
     bar
+
+% foo
+foo = %foo  # comment
 "#
             .trim(),
             Mode::Jupyter,

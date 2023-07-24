@@ -6,7 +6,6 @@
 use crate::{
     ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
     Mode,
-    parser::LalrpopError,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
@@ -333,7 +332,10 @@ LineMagicStatement: ast::Stmt = {
                 }
             ))
         } else {
-            Err(LalrpopError::InvalidToken { location })?
+            Err(LexicalError {
+                error: LexicalErrorType::OtherError("line magics are only allowed in Jupyter mode".to_string()),
+                location,
+            })?
         }
     }
 }
@@ -356,7 +358,10 @@ LineMagicExpr: ast::Expr = {
                 }
             ))
         } else {
-            Err(LalrpopError::InvalidToken { location })?
+            Err(LexicalError {
+                error: LexicalErrorType::OtherError("line magics are only allowed in Jupyter mode".to_string()),
+                location,
+            })?
         }
     }
 }

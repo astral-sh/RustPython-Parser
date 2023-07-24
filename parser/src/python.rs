@@ -1,9 +1,8 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: f577e238123b1e3694d0258c359abddbbd1d90199c30d12b08ee952de3a85ba3
+// sha3: fa57e02e9e5bfceb811748310e8d17940d15b6c6e2d6191d9ae71b2e4dc435d8
 use crate::{
     ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
     Mode,
-    parser::LalrpopError,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
@@ -25,7 +24,6 @@ mod __parse__Top {
     use crate::{
     ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
     Mode,
-    parser::LalrpopError,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
@@ -31811,7 +31809,10 @@ fn __action74<
                 }
             ))
         } else {
-            Err(LalrpopError::InvalidToken { location })?
+            Err(LexicalError {
+                error: LexicalErrorType::OtherError("line magics are only allowed in Jupyter mode".to_string()),
+                location,
+            })?
         }
     }
 }
@@ -31843,7 +31844,10 @@ fn __action75<
                 }
             ))
         } else {
-            Err(LalrpopError::InvalidToken { location })?
+            Err(LexicalError {
+                error: LexicalErrorType::OtherError("line magics are only allowed in Jupyter mode".to_string()),
+                location,
+            })?
         }
     }
 }

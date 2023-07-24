@@ -34,91 +34,91 @@ Module(
             LineMagic(
                 StmtLineMagic {
                     range: 66..73,
-                    kind: "??",
+                    kind: Help2,
                     value: "a.foo",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 74..80,
-                    kind: "?",
+                    kind: Help,
                     value: "a.foo",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 81..88,
-                    kind: "?",
+                    kind: Help,
                     value: "a.foo?",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 89..100,
-                    kind: "??",
+                    kind: Help2,
                     value: "a.foo()??",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 115..128,
-                    kind: "%",
+                    kind: Magic,
                     value: "timeit a = b",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 129..147,
-                    kind: "%",
+                    kind: Magic,
                     value: "timeit foo(b) % 3",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 148..176,
-                    kind: "%",
+                    kind: Magic,
                     value: "alias showPath pwd && ls -a",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 177..205,
-                    kind: "%",
+                    kind: Magic,
                     value: "timeit a =  foo(b); b = 2",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 206..226,
-                    kind: "%",
+                    kind: Magic,
                     value: "matplotlib --inline",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 227..253,
-                    kind: "%",
+                    kind: Magic,
                     value: "matplotlib     --inline",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 277..309,
-                    kind: "!",
+                    kind: Shell,
                     value: "pwd && ls -a | sed 's/^/\\    /'",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 310..347,
-                    kind: "!",
+                    kind: Shell,
                     value: "pwd   && ls -a | sed 's/^/\\\\    /'",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 348..393,
-                    kind: "!!",
+                    kind: ShCap,
                     value: "cd /Users/foo/Library/Application\\ Support/",
                 },
             ),
@@ -179,21 +179,21 @@ Module(
             LineMagic(
                 StmtLineMagic {
                     range: 656..664,
-                    kind: "/",
+                    kind: Paren,
                     value: "foo 1 2",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 665..673,
-                    kind: ";",
+                    kind: Quote2,
                     value: "foo 1 2",
                 },
             ),
             LineMagic(
                 StmtLineMagic {
                     range: 674..682,
-                    kind: ",",
+                    kind: Quote,
                     value: "foo 1 2",
                 },
             ),
@@ -235,7 +235,7 @@ Module(
                         LineMagic(
                             StmtLineMagic {
                                 range: 724..727,
-                                kind: "!",
+                                kind: Shell,
                                 value: "ls",
                             },
                         ),
@@ -259,7 +259,7 @@ Module(
                     value: LineMagic(
                         ExprLineMagic {
                             range: 734..738,
-                            kind: "!",
+                            kind: Shell,
                             value: "pwd",
                         },
                     ),
@@ -287,7 +287,7 @@ Module(
                         LineMagic(
                             ExprLineMagic {
                                 range: 749..753,
-                                kind: "!",
+                                kind: Shell,
                                 value: "pwd",
                             },
                         ),
@@ -310,7 +310,7 @@ Module(
                     value: LineMagic(
                         ExprLineMagic {
                             range: 760..774,
-                            kind: "%",
+                            kind: Magic,
                             value: "foo     bar",
                         },
                     ),
@@ -320,7 +320,7 @@ Module(
             LineMagic(
                 StmtLineMagic {
                     range: 776..781,
-                    kind: "%",
+                    kind: Magic,
                     value: " foo",
                 },
             ),
@@ -339,7 +339,7 @@ Module(
                     value: LineMagic(
                         ExprLineMagic {
                             range: 788..803,
-                            kind: "%",
+                            kind: Magic,
                             value: "foo  # comment",
                         },
                     ),

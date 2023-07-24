@@ -4,13 +4,13 @@
 // See also: https://greentreesnakes.readthedocs.io/en/latest/nodes.html#keyword
 
 use crate::{
-    ast::{self as ast, Ranged, bigint::BigInt},
+    ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
     Mode,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
     string::parse_strings,
-    token::{self, StringKind, MagicKind},
+    token::{self, StringKind},
     text_size::TextSize
 };
 
@@ -326,7 +326,7 @@ LineMagicStatement: ast::Stmt = {
         if mode == Mode::Jupyter {
             Ok(ast::Stmt::LineMagic(
                 ast::StmtLineMagic {
-                    kind: format!("{}", m.0),
+                    kind: m.0,
                     value: m.1,
                     range: (location..end_location).into()
                 }
@@ -343,9 +343,8 @@ LineMagicStatement: ast::Stmt = {
 LineMagicExpr: ast::Expr = {
     <location:@L> <m:line_magic> <end_location:@R> =>? {
         if mode == Mode::Jupyter {
-            let kind = format!("{}", m.0);
             // This should never occur as the lexer won't allow it.
-            if !matches!(kind.as_str(), "%" | "!") {
+            if !matches!(m.0, MagicKind::Magic | MagicKind::Shell) {
                 Err(LexicalError {
                     error: LexicalErrorType::OtherError("expr line magics are only allowed for % and !".to_string()),
                     location,
@@ -353,7 +352,7 @@ LineMagicExpr: ast::Expr = {
             }
             Ok(ast::Expr::LineMagic(
                 ast::ExprLineMagic {
-                    kind: kind,
+                    kind: m.0,
                     value: m.1,
                     range: (location..end_location).into()
                 }

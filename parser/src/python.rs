@@ -1,13 +1,13 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: 0154d8e2b509c07312085b4b0f812994995ba9fa896b5f19c151d9a14b552e65
+// sha3: fa57e02e9e5bfceb811748310e8d17940d15b6c6e2d6191d9ae71b2e4dc435d8
 use crate::{
-    ast::{self as ast, Ranged, bigint::BigInt},
+    ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
     Mode,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
     string::parse_strings,
-    token::{self, StringKind, MagicKind},
+    token::{self, StringKind},
     text_size::TextSize
 };
 #[allow(unused_extern_crates)]
@@ -22,13 +22,13 @@ extern crate alloc;
 mod __parse__Top {
 
     use crate::{
-    ast::{self as ast, Ranged, bigint::BigInt},
+    ast::{self as ast, Ranged, bigint::BigInt, MagicKind},
     Mode,
     lexer::{LexicalError, LexicalErrorType},
     function::{ArgumentList, parse_args, validate_pos_params, validate_arguments},
     context::set_context,
     string::parse_strings,
-    token::{self, StringKind, MagicKind},
+    token::{self, StringKind},
     text_size::TextSize
 };
     #[allow(unused_extern_crates)]
@@ -31803,7 +31803,7 @@ fn __action74<
         if mode == Mode::Jupyter {
             Ok(ast::Stmt::LineMagic(
                 ast::StmtLineMagic {
-                    kind: format!("{}", m.0),
+                    kind: m.0,
                     value: m.1,
                     range: (location..end_location).into()
                 }
@@ -31829,9 +31829,8 @@ fn __action75<
 {
     {
         if mode == Mode::Jupyter {
-            let kind = format!("{}", m.0);
             // This should never occur as the lexer won't allow it.
-            if !matches!(kind.as_str(), "%" | "!") {
+            if !matches!(m.0, MagicKind::Magic | MagicKind::Shell) {
                 Err(LexicalError {
                     error: LexicalErrorType::OtherError("expr line magics are only allowed for % and !".to_string()),
                     location,
@@ -31839,7 +31838,7 @@ fn __action75<
             }
             Ok(ast::Expr::LineMagic(
                 ast::ExprLineMagic {
-                    kind: kind,
+                    kind: m.0,
                     value: m.1,
                     range: (location..end_location).into()
                 }

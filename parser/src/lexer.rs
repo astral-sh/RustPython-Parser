@@ -29,10 +29,11 @@
 //! [Lexical analysis]: https://docs.python.org/3/reference/lexical_analysis.html
 use crate::{
     ast::bigint::BigInt,
+    ast::MagicKind,
     soft_keywords::SoftKeywordTransformer,
     string::FStringErrorType,
     text_size::{TextLen, TextRange, TextSize},
-    token::{MagicKind, StringKind, Tok},
+    token::{StringKind, Tok},
     Mode,
 };
 use log::trace;
@@ -1747,9 +1748,8 @@ baz = %matplotlib \
 
     fn assert_no_jupyter_magic(tokens: &[Tok]) {
         for tok in tokens {
-            match tok {
-                Tok::MagicCommand { .. } => panic!("Unexpected magic command token: {:?}", tok),
-                _ => {}
+            if let Tok::MagicCommand { .. } = tok {
+                panic!("Unexpected magic command token: {:?}", tok)
             }
         }
     }

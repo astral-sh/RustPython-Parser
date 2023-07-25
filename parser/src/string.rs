@@ -11,7 +11,6 @@ use crate::{
     token::{StringKind, Tok},
 };
 use itertools::Itertools;
-use multipeek::{multipeek, MultiPeek};
 use rustpython_ast::Ranged;
 use rustpython_parser_core::{
     text_size::{TextLen, TextSize},
@@ -22,7 +21,7 @@ use rustpython_parser_core::{
 const MAX_UNICODE_NAME: usize = 88;
 
 struct StringParser<'a> {
-    chars: MultiPeek<std::str::Chars<'a>>,
+    chars: std::str::Chars<'a>,
     kind: StringKind,
     location: TextSize,
 }
@@ -36,9 +35,7 @@ impl<'a> StringParser<'a> {
                 TextSize::from(1)
             };
         Self {
-            // use `multipeek::multipeek` instead of `chars().multipeek` from itertools because we
-            // want peek to be idempotent and only rarely need to peek one extra char
-            chars: multipeek(source.chars()),
+            chars: source.chars(),
             kind,
             location: start + offset,
         }
@@ -52,13 +49,15 @@ impl<'a> StringParser<'a> {
     }
 
     #[inline]
-    fn peek(&mut self) -> Option<&char> {
-        self.chars.peek()
+    fn peek(&mut self) -> Option<char> {
+        self.chars.clone().next()
     }
 
     #[inline]
-    fn peek2(&mut self) -> Option<&char> {
-        self.chars.peek_nth(1)
+    fn peek2(&mut self) -> Option<char> {
+        let mut chars = self.chars.clone();
+        chars.next();
+        chars.next()
     }
 
     #[inline]
@@ -199,12 +198,12 @@ impl<'a> StringParser<'a> {
             match ch {
                 // can be integrated better with the remaining code, but as a starting point ok
                 // in general I would do here a tokenizing of the fstrings to omit this peeking.
-                '!' | '=' | '>' | '<' if self.peek() == Some(&'=') => {
+                '!' | '=' | '>' | '<' if self.peek() == Some('=') => {
                     expression.push(ch);
                     expression.push('=');
                     self.next_char();
                 }
-                '!' if delimiters.is_empty() && self.peek() != Some(&'=') => {
+                '!' if delimiters.is_empty() && self.peek() != Some('=') => {
                     if expression.trim().is_empty() {
                         return Err(FStringError::new(EmptyExpression, self.get_pos()).into());
                     }
@@ -233,7 +232,7 @@ impl<'a> StringParser<'a> {
 
                 // match a python 3.8 self documenting expression
                 // format '{' PYTHON_EXPRESSION '=' FORMAT_SPECIFIER? '}'
-                '=' if self.peek() != Some(&'=') && delimiters.is_empty() => {
+                '=' if self.peek() != Some('=') && delimiters.is_empty() => {
                     self_documenting = true;
                 }
 
@@ -411,7 +410,7 @@ impl<'a> StringParser<'a> {
         let mut spec_constructor = Vec::new();
         let mut constant_piece = String::new();
         let mut start_location = self.get_pos();
-        while let Some(&next) = self.peek() {
+        while let Some(next) = self.peek() {
             match next {
                 '{' => {
                     if !constant_piece.is_empty() {
@@ -466,7 +465,7 @@ impl<'a> StringParser<'a> {
         let mut start_location = self.get_pos();
         let mut values = vec![];
 
-        while let Some(&ch) = self.peek() {
+        while let Some(ch) = self.peek() {
             match ch {
                 '{' => {
                     if nested == 0 {

@@ -67,7 +67,7 @@ impl<'a> StringParser<'a> {
     }
 
     #[inline]
-    fn current_range(&self, start_location: TextSize) -> TextRange {
+    fn range(&self, start_location: TextSize) -> TextRange {
         TextRange::new(start_location, self.location)
     }
 
@@ -245,7 +245,7 @@ impl<'a> StringParser<'a> {
                         self.expr(
                             ast::ExprJoinedStr {
                                 values: parsed_spec,
-                                range: self.current_range(start_location),
+                                range: self.range(start_location),
                             }
                             .into(),
                         ),
@@ -327,7 +327,7 @@ impl<'a> StringParser<'a> {
                                 ),
                                 conversion,
                                 format_spec: spec,
-                                range: self.current_range(start_location),
+                                range: self.range(start_location),
                             }
                             .into(),
                         )]
@@ -339,7 +339,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: Constant::Str(expression.to_owned() + "="),
                                     kind: None,
-                                    range: self.current_range(start_location),
+                                    range: self.range(start_location),
                                 }
                                 .into(),
                             ),
@@ -347,7 +347,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: trailing_seq.into(),
                                     kind: None,
-                                    range: self.current_range(start_location),
+                                    range: self.range(start_location),
                                 }
                                 .into(),
                             ),
@@ -371,7 +371,7 @@ impl<'a> StringParser<'a> {
                                         conversion
                                     },
                                     format_spec: spec,
-                                    range: self.current_range(start_location),
+                                    range: self.range(start_location),
                                 }
                                 .into(),
                             ),
@@ -420,7 +420,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: constant_piece.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range: self.current_range(start_location),
+                                    range: self.range(start_location),
                                 }
                                 .into(),
                             ),
@@ -446,7 +446,7 @@ impl<'a> StringParser<'a> {
                     ast::ExprConstant {
                         value: constant_piece.drain(..).collect::<String>().into(),
                         kind: None,
-                        range: self.current_range(start_location),
+                        range: self.range(start_location),
                     }
                     .into(),
                 ),
@@ -489,7 +489,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: content.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range: self.current_range(start_location),
+                                    range: self.range(start_location),
                                 }
                                 .into(),
                             ),
@@ -529,7 +529,7 @@ impl<'a> StringParser<'a> {
                     ast::ExprConstant {
                         value: content.into(),
                         kind: None,
-                        range: self.current_range(start_location),
+                        range: self.range(start_location),
                     }
                     .into(),
                 ),
@@ -565,7 +565,7 @@ impl<'a> StringParser<'a> {
             ast::ExprConstant {
                 value: Constant::Bytes(content.chars().map(|c| c as u8).collect()),
                 kind: None,
-                range: self.current_range(start_location),
+                range: self.range(start_location),
             }
             .into(),
         ))
@@ -586,7 +586,7 @@ impl<'a> StringParser<'a> {
             ast::ExprConstant {
                 value: Constant::Str(content),
                 kind: self.kind.is_unicode().then(|| "u".to_string()),
-                range: self.current_range(start_location),
+                range: self.range(start_location),
             }
             .into(),
         ))

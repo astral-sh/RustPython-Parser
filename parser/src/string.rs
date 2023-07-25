@@ -67,8 +67,8 @@ impl<'a> StringParser<'a> {
     }
 
     #[inline]
-    fn current_range(&self, current_location: TextSize) -> TextRange {
-        TextRange::new(current_location, self.location)
+    fn current_range(&self, start_location: TextSize) -> TextRange {
+        TextRange::new(start_location, self.location)
     }
 
     #[inline]
@@ -191,7 +191,7 @@ impl<'a> StringParser<'a> {
         let mut conversion = ConversionFlag::None;
         let mut self_documenting = false;
         let mut trailing_seq = String::new();
-        let location = self.get_pos();
+        let start_location = self.get_pos();
 
         assert_eq!(self.next_char(), Some('{'));
 
@@ -238,14 +238,14 @@ impl<'a> StringParser<'a> {
                 }
 
                 ':' if delimiters.is_empty() => {
-                    let location = self.get_pos();
+                    let start_location = self.get_pos();
                     let parsed_spec = self.parse_spec(nested)?;
 
                     spec = Some(Box::new(
                         self.expr(
                             ast::ExprJoinedStr {
                                 values: parsed_spec,
-                                range: self.current_range(location),
+                                range: self.current_range(start_location),
                             }
                             .into(),
                         ),
@@ -316,16 +316,18 @@ impl<'a> StringParser<'a> {
                         vec![self.expr(
                             ast::ExprFormattedValue {
                                 value: Box::new(
-                                    parse_fstring_expr(&expression, location).map_err(|e| {
-                                        FStringError::new(
-                                            InvalidExpression(Box::new(e.error)),
-                                            location,
-                                        )
-                                    })?,
+                                    parse_fstring_expr(&expression, start_location).map_err(
+                                        |e| {
+                                            FStringError::new(
+                                                InvalidExpression(Box::new(e.error)),
+                                                start_location,
+                                            )
+                                        },
+                                    )?,
                                 ),
                                 conversion,
                                 format_spec: spec,
-                                range: self.current_range(location),
+                                range: self.current_range(start_location),
                             }
                             .into(),
                         )]
@@ -337,7 +339,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: Constant::Str(expression.to_owned() + "="),
                                     kind: None,
-                                    range: self.current_range(location),
+                                    range: self.current_range(start_location),
                                 }
                                 .into(),
                             ),
@@ -345,19 +347,21 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: trailing_seq.into(),
                                     kind: None,
-                                    range: self.current_range(location),
+                                    range: self.current_range(start_location),
                                 }
                                 .into(),
                             ),
                             self.expr(
                                 ast::ExprFormattedValue {
                                     value: Box::new(
-                                        parse_fstring_expr(&expression, location).map_err(|e| {
-                                            FStringError::new(
-                                                InvalidExpression(Box::new(e.error)),
-                                                location,
-                                            )
-                                        })?,
+                                        parse_fstring_expr(&expression, start_location).map_err(
+                                            |e| {
+                                                FStringError::new(
+                                                    InvalidExpression(Box::new(e.error)),
+                                                    start_location,
+                                                )
+                                            },
+                                        )?,
                                     ),
                                     conversion: if conversion == ConversionFlag::None
                                         && spec.is_none()
@@ -367,7 +371,7 @@ impl<'a> StringParser<'a> {
                                         conversion
                                     },
                                     format_spec: spec,
-                                    range: self.current_range(location),
+                                    range: self.current_range(start_location),
                                 }
                                 .into(),
                             ),
@@ -406,7 +410,7 @@ impl<'a> StringParser<'a> {
     fn parse_spec(&mut self, nested: u8) -> Result<Vec<Expr>, LexicalError> {
         let mut spec_constructor = Vec::new();
         let mut constant_piece = String::new();
-        let mut location = self.get_pos();
+        let mut start_location = self.get_pos();
         while let Some(&next) = self.peek() {
             match next {
                 '{' => {
@@ -416,7 +420,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: constant_piece.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range: self.current_range(location),
+                                    range: self.current_range(start_location),
                                 }
                                 .into(),
                             ),
@@ -424,7 +428,7 @@ impl<'a> StringParser<'a> {
                     }
                     let parsed_expr = self.parse_fstring(nested + 1)?;
                     spec_constructor.extend(parsed_expr);
-                    location = self.get_pos();
+                    start_location = self.get_pos();
                     continue;
                 }
                 '}' => {
@@ -442,7 +446,7 @@ impl<'a> StringParser<'a> {
                     ast::ExprConstant {
                         value: constant_piece.drain(..).collect::<String>().into(),
                         kind: None,
-                        range: self.current_range(location),
+                        range: self.current_range(start_location),
                     }
                     .into(),
                 ),
@@ -459,7 +463,7 @@ impl<'a> StringParser<'a> {
         }
 
         let mut content = String::new();
-        let mut location = self.get_pos();
+        let mut start_location = self.get_pos();
         let mut values = vec![];
 
         while let Some(&ch) = self.peek() {
@@ -485,7 +489,7 @@ impl<'a> StringParser<'a> {
                                 ast::ExprConstant {
                                     value: content.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range: self.current_range(location),
+                                    range: self.current_range(start_location),
                                 }
                                 .into(),
                             ),
@@ -494,7 +498,7 @@ impl<'a> StringParser<'a> {
 
                     let parsed_values = self.parse_formatted_value(nested)?;
                     values.extend(parsed_values);
-                    location = self.get_pos();
+                    start_location = self.get_pos();
                 }
                 '}' => {
                     if nested > 0 {
@@ -525,7 +529,7 @@ impl<'a> StringParser<'a> {
                     ast::ExprConstant {
                         value: content.into(),
                         kind: None,
-                        range: self.current_range(location),
+                        range: self.current_range(start_location),
                     }
                     .into(),
                 ),
@@ -537,7 +541,7 @@ impl<'a> StringParser<'a> {
 
     fn parse_bytes(&mut self) -> Result<Expr, LexicalError> {
         let mut content = String::new();
-        let location = self.get_pos();
+        let start_location = self.get_pos();
         while let Some(ch) = self.next_char() {
             match ch {
                 '\\' if !self.kind.is_raw() => {
@@ -561,7 +565,7 @@ impl<'a> StringParser<'a> {
             ast::ExprConstant {
                 value: Constant::Bytes(content.chars().map(|c| c as u8).collect()),
                 kind: None,
-                range: self.current_range(location),
+                range: self.current_range(start_location),
             }
             .into(),
         ))
@@ -569,7 +573,7 @@ impl<'a> StringParser<'a> {
 
     fn parse_string(&mut self) -> Result<Expr, LexicalError> {
         let mut content = String::new();
-        let location = self.get_pos();
+        let start_location = self.get_pos();
         while let Some(ch) = self.next_char() {
             match ch {
                 '\\' if !self.kind.is_raw() => {
@@ -582,7 +586,7 @@ impl<'a> StringParser<'a> {
             ast::ExprConstant {
                 value: Constant::Str(content),
                 kind: self.kind.is_unicode().then(|| "u".to_string()),
-                range: self.current_range(location),
+                range: self.current_range(start_location),
             }
             .into(),
         ))

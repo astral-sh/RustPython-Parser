@@ -585,7 +585,7 @@ impl<'a> StringParser<'a> {
         } else if self.kind.is_any_bytes() {
             self.parse_bytes().map(|expr| vec![expr])
         } else {
-            dbg!(self.parse_string().map(|expr| vec![expr]))
+            self.parse_string().map(|expr| vec![expr])
         }
     }
 }

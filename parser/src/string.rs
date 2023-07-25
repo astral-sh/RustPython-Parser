@@ -11,6 +11,7 @@ use crate::{
     token::{StringKind, Tok},
 };
 use itertools::Itertools;
+use multipeek::{multipeek, MultiPeek};
 use rustpython_ast::Ranged;
 use rustpython_parser_core::{
     text_size::{TextLen, TextSize},
@@ -21,7 +22,7 @@ use rustpython_parser_core::{
 const MAX_UNICODE_NAME: usize = 88;
 
 struct StringParser<'a> {
-    chars: std::iter::Peekable<std::str::Chars<'a>>,
+    chars: MultiPeek<std::str::Chars<'a>>,
     kind: StringKind,
     location: TextSize,
 }
@@ -35,7 +36,9 @@ impl<'a> StringParser<'a> {
                 TextSize::from(1)
             };
         Self {
-            chars: source.chars().peekable(),
+            // use `multipeek::multipeek` instead of `chars().multipeek` from itertools because we
+            // want peek to be idempotent and only rarely need to peek one extra char
+            chars: multipeek(source.chars()),
             kind,
             location: start + offset,
         }
@@ -51,6 +54,11 @@ impl<'a> StringParser<'a> {
     #[inline]
     fn peek(&mut self) -> Option<&char> {
         self.chars.peek()
+    }
+
+    #[inline]
+    fn peek2(&mut self) -> Option<&char> {
+        self.chars.peek_nth(1)
     }
 
     #[inline]
@@ -183,7 +191,9 @@ impl<'a> StringParser<'a> {
         let mut conversion = ConversionFlag::None;
         let mut self_documenting = false;
         let mut trailing_seq = String::new();
-        let location = self.get_pos() - TextSize::from(1);
+        let location = self.get_pos();
+
+        assert_eq!(self.next_char(), Some('{'));
 
         while let Some(ch) = self.next_char() {
             match ch {
@@ -321,7 +331,7 @@ impl<'a> StringParser<'a> {
                         )]
                     } else {
                         // TODO: range is wrong but `self_documenting` needs revisiting beyond
-                        // ranges
+                        // ranges: https://github.com/astral-sh/ruff/issues/5970
                         vec![
                             self.expr(
                                 ast::ExprConstant {
@@ -455,10 +465,10 @@ impl<'a> StringParser<'a> {
         while let Some(&ch) = self.peek() {
             match ch {
                 '{' => {
-                    self.next_char();
                     if nested == 0 {
-                        match self.peek() {
+                        match self.peek2() {
                             Some('{') => {
+                                self.next_char();
                                 self.next_char();
                                 content.push('{');
                                 continue;
@@ -470,13 +480,12 @@ impl<'a> StringParser<'a> {
                         }
                     }
                     if !content.is_empty() {
-                        let range = self.current_range(location).sub_end(1.into());
                         values.push(
                             self.expr(
                                 ast::ExprConstant {
                                     value: content.drain(..).collect::<String>().into(),
                                     kind: None,
-                                    range,
+                                    range: self.current_range(location),
                                 }
                                 .into(),
                             ),

@@ -11,17 +11,17 @@ include = ["LICENSE", "Cargo.toml", "src/**/*.rs"]
 [workspace]
 resolver = "2"
 members = [
-    "ast", "format", "literal", "parser", "ruff_text_size",
+    "ast", "literal", "parser", "ruff_text_size",
 ]
 
 [workspace.dependencies]
 ruff-python-ast = { path = "ast"  }
 rustpython-literal = { path = "literal" }
-rustpython-format = { path = "format" }
 rustpython-parser = { path = "parser" }
 ruff_text_size = { path = "ruff_text_size" }
 
 anyhow = "1.0.45"
+bitflags = "2.3.3"
 cfg-if = "1.0"
 insta = "1.14.0"
 itertools = "0.10.3"

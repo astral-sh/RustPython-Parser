@@ -2,13 +2,13 @@
 //! as per the [Python Docs](https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting).
 use bitflags::bitflags;
 use num_traits::Signed;
-use rustpython_literal::{float, format::Case};
 use std::{
     cmp, fmt,
     iter::{Enumerate, Peekable},
     str::FromStr,
 };
 
+use crate::{float, Case};
 use num_bigint::{BigInt, Sign};
 
 #[derive(Debug, PartialEq)]
@@ -690,9 +690,7 @@ impl FromStr for CFormatString {
 }
 
 impl CFormatString {
-    pub(crate) fn parse<I: Iterator<Item = char>>(
-        iter: &mut ParseIter<I>,
-    ) -> Result<Self, CFormatError> {
+    pub fn parse<I: Iterator<Item = char>>(iter: &mut ParseIter<I>) -> Result<Self, CFormatError> {
         let mut parts = vec![];
         let mut literal = String::new();
         let mut part_index = 0;

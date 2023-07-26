@@ -2,6 +2,3 @@
 #![doc(html_root_url = "https://docs.rs/rustpython-parser-core/")]
 
 mod format;
-pub mod mode;
-
-pub use mode::Mode;

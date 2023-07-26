@@ -1,4 +1,4 @@
-use crate::text_size::TextSize;
+use ruff_text_size::TextSize;
 use std::fmt::Display;
 
 #[derive(Debug, PartialEq, Eq)]

@@ -15,11 +15,12 @@ members = [
 ]
 
 [workspace.dependencies]
-ruff-python-ast = { path = "ast", default-features = false }
+ruff-python-ast = { path = "ast"  }
 rustpython-parser-core = { path = "core", features = [] }
 rustpython-literal = { path = "literal" }
 rustpython-format = { path = "format" }
-rustpython-parser = { path = "parser", default-features = false }
+rustpython-parser = { path = "parser" }
+ruff_text_size = { path = "ruff_text_size" }
 
 anyhow = "1.0.45"
 cfg-if = "1.0"

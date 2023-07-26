@@ -1,9 +1,9 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
 
-use crate::text_size::TextRange;
+pub use crate::ConversionFlag;
 use crate::Ranged;
-pub use crate::{text_size::TextSize, ConversionFlag};
 use num_bigint::BigInt;
+use ruff_text_size::{TextRange, TextSize};
 use std::fmt;
 use std::fmt::Debug;
 

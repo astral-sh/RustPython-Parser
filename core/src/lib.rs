@@ -8,6 +8,3 @@ pub mod mode;
 pub use error::BaseError;
 pub use format::ConversionFlag;
 pub use mode::Mode;
-
-// re-export our public interface
-pub use ruff_text_size as text_size;

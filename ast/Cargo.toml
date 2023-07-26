@@ -9,8 +9,8 @@ license = "MIT"
 
 [dependencies]
 rustpython-parser-core = { workspace = true }
-rustpython-literal = { workspace = true, optional = true }
+ruff_text_size = { workspace = true }
 
 is-macro = { workspace = true }
 num-bigint = { workspace = true }
-static_assertions = "1.1.0"
+static_assertions = { workspace = true }

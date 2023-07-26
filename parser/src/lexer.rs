@@ -35,16 +35,15 @@ use std::{char, cmp::Ordering, str::FromStr};
 use num_bigint::BigInt;
 use num_traits::{Num, Zero};
 use ruff_python_ast::MagicKind;
+use ruff_text_size::{TextLen, TextRange, TextSize};
 use unic_emoji_char::is_emoji_presentation;
 use unic_ucd_ident::{is_xid_continue, is_xid_start};
 
 use crate::lexer::cursor::{Cursor, EOF_CHAR};
 use crate::lexer::indentation::{Indentation, Indentations};
-use crate::text_size::TextLen;
 use crate::{
     soft_keywords::SoftKeywordTransformer,
     string::FStringErrorType,
-    text_size::{TextRange, TextSize},
     token::{StringKind, Tok},
     Mode,
 };

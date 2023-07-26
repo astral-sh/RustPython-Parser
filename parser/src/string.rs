@@ -3,7 +3,6 @@
 // The lexer doesn't do any special handling of f-strings, it just treats them as
 // regular strings. Since the parser has no definition of f-string formats (Pending PEP 701)
 // we have to do the parsing here, manually.
-use crate::text_size::TextRange;
 use crate::{
     ast::{self, Constant, Expr},
     lexer::{LexicalError, LexicalErrorType},
@@ -12,10 +11,8 @@ use crate::{
 };
 use itertools::Itertools;
 use ruff_python_ast::Ranged;
-use rustpython_parser_core::{
-    text_size::{TextLen, TextSize},
-    ConversionFlag,
-};
+use ruff_text_size::{TextLen, TextRange, TextSize};
+use rustpython_parser_core::ConversionFlag;
 
 // unicode_name2 does not expose `MAX_NAME_LENGTH`, so we replicate that constant here, fix #3798
 const MAX_UNICODE_NAME: usize = 88;

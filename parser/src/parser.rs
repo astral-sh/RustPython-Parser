@@ -16,13 +16,13 @@ use std::iter;
 
 use itertools::Itertools;
 pub(super) use lalrpop_util::ParseError as LalrpopError;
+use ruff_text_size::TextSize;
 
 use crate::lexer::{lex, lex_starts_at};
 use crate::{
     ast::{self, Ranged},
     lexer::{self, LexResult, LexicalError, LexicalErrorType},
     python,
-    text_size::TextSize,
     token::Tok,
     Mode,
 };
@@ -49,7 +49,8 @@ use crate::{
 /// somewhat silly, location:
 ///
 /// ```
-/// use rustpython_parser::{self as parser, ast, Parse, text_size::TextSize};
+/// # use ruff_text_size::TextSize;
+/// # use rustpython_parser::{self as parser, ast, Parse};
 ///
 /// let expr = ast::Expr::parse_starts_at("1 + 2", "<embedded>", TextSize::from(400));
 /// assert!(expr.is_ok());
@@ -278,7 +279,8 @@ pub fn parse_expression(source: &str, path: &str) -> Result<ast::Expr, ParseErro
 /// somewhat silly, location:
 ///
 /// ```
-/// use rustpython_parser::{text_size::TextSize, parse_expression_starts_at};
+/// use rustpython_parser::{parse_expression_starts_at};
+/// # use ruff_text_size::TextSize;
 ///
 /// let expr = parse_expression_starts_at("1 + 2", "<embedded>", TextSize::from(400));
 /// assert!(expr.is_ok());
@@ -350,7 +352,8 @@ pub fn parse(source: &str, mode: Mode, source_path: &str) -> Result<ast::Mod, Pa
 /// # Example
 ///
 /// ```
-/// use rustpython_parser::{text_size::TextSize, Mode, parse_starts_at};
+/// # use ruff_text_size::TextSize;
+/// use rustpython_parser::{Mode, parse_starts_at};
 ///
 /// let source = r#"
 /// def fib(i):

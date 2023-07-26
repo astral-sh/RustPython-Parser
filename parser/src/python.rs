@@ -1,6 +1,7 @@
 // auto-generated: "lalrpop 0.20.0"
-// sha3: 263bb187f0a83dfe2a024fa0eed0ad8cb855da5991584b5040fa7d870fdb84af
+// sha3: 44f1432ea449af8f70398fcbc3e641e2fd720734693a493e635795dd681954e0
 use num_bigint::BigInt;
+use ruff_text_size::TextSize;
 use crate::{
     ast::{self as ast, Ranged, MagicKind},
     Mode,
@@ -9,7 +10,6 @@ use crate::{
     context::set_context,
     string::parse_strings,
     token::{self, StringKind},
-    text_size::TextSize
 };
 #[allow(unused_extern_crates)]
 extern crate lalrpop_util as __lalrpop_util;
@@ -23,6 +23,7 @@ extern crate alloc;
 mod __parse__Top {
 
     use num_bigint::BigInt;
+    use ruff_text_size::TextSize;
     use crate::{
     ast::{self as ast, Ranged, MagicKind},
     Mode,
@@ -31,7 +32,6 @@ mod __parse__Top {
     context::set_context,
     string::parse_strings,
     token::{self, StringKind},
-    text_size::TextSize
 };
     #[allow(unused_extern_crates)]
     extern crate lalrpop_util as __lalrpop_util;

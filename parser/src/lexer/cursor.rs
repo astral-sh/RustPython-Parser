@@ -1,4 +1,4 @@
-use crate::text_size::{TextLen, TextSize};
+use ruff_text_size::{TextLen, TextSize};
 use std::str::Chars;
 
 pub(crate) const EOF_CHAR: char = '\0';

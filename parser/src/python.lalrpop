@@ -4,6 +4,7 @@
 // See also: https://greentreesnakes.readthedocs.io/en/latest/nodes.html#keyword
 
 use num_bigint::BigInt;
+use ruff_text_size::TextSize;
 use crate::{
     ast::{self as ast, Ranged, MagicKind},
     Mode,
@@ -12,7 +13,6 @@ use crate::{
     context::set_context,
     string::parse_strings,
     token::{self, StringKind},
-    text_size::TextSize
 };
 
 grammar(mode: Mode);

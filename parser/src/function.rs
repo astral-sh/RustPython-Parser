@@ -1,12 +1,11 @@
 // Contains functions that perform validation and parsing of arguments and parameters.
 // Checks apply both to functions and to lambdas.
-use crate::text_size::TextRange;
 use crate::{
     ast,
     lexer::{LexicalError, LexicalErrorType},
-    text_size::TextSize,
 };
 use ruff_python_ast::Ranged;
+use ruff_text_size::{TextRange, TextSize};
 use rustc_hash::FxHashSet;
 
 pub(crate) struct ArgumentList {

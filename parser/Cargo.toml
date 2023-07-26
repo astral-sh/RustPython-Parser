@@ -9,7 +9,7 @@ license = "MIT"
 edition = "2021"
 
 [features]
-serde = ["dep:serde", "rustpython-parser-core/serde"]
+serde = ["dep:serde"]
 
 [build-dependencies]
 anyhow = { workspace = true }
@@ -18,7 +18,6 @@ tiny-keccak = { version = "2", features = ["sha3"] }
 
 [dependencies]
 ruff-python-ast = { workspace = true }
-rustpython-parser-core = { workspace = true }
 ruff_text_size = { workspace = true }
 
 itertools = { workspace = true }

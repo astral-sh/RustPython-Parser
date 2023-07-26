@@ -8,7 +8,6 @@ repository = "https://github.com/astral-sh/ruff"
 license = "MIT"
 
 [dependencies]
-rustpython-parser-core = { workspace = true }
 ruff_text_size = { workspace = true }
 
 is-macro = { workspace = true }

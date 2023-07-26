@@ -11,12 +11,11 @@ include = ["LICENSE", "Cargo.toml", "src/**/*.rs"]
 [workspace]
 resolver = "2"
 members = [
-    "ast", "core", "format", "literal", "parser", "ruff_text_size",
+    "ast", "format", "literal", "parser", "ruff_text_size",
 ]
 
 [workspace.dependencies]
 ruff-python-ast = { path = "ast"  }
-rustpython-parser-core = { path = "core", features = [] }
 rustpython-literal = { path = "literal" }
 rustpython-format = { path = "format" }
 rustpython-parser = { path = "parser" }

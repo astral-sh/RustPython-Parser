@@ -112,7 +112,7 @@
 #![doc(html_logo_url = "https://raw.githubusercontent.com/RustPython/RustPython/main/logo.png")]
 #![doc(html_root_url = "https://docs.rs/rustpython-parser/")]
 
-pub use rustpython_ast as ast;
+pub use ruff_python_ast as ast;
 pub use rustpython_parser_core::{text_size, Mode};
 
 mod function;

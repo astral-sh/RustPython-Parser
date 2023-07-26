@@ -1,10 +1,10 @@
 [package]
-name = "rustpython-ast"
+name = "ruff-python-ast"
 version = "0.2.0"
-description = "AST definitions for RustPython"
-authors = ["RustPython Team"]
+description = "AST definitions for Ruff"
+authors = ["Charlie Marsh <charlie.r.marsh@gmail.com>"]
 edition = "2021"
-repository = "https://github.com/RustPython/Parser/"
+repository = "https://github.com/astral-sh/ruff"
 license = "MIT"
 
 [dependencies]

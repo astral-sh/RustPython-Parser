@@ -6,8 +6,8 @@ use crate::{
     lexer::{LexicalError, LexicalErrorType},
     text_size::TextSize,
 };
+use ruff_python_ast::Ranged;
 use rustc_hash::FxHashSet;
-use rustpython_ast::Ranged;
 
 pub(crate) struct ArgumentList {
     pub(crate) args: Vec<ast::Expr>,

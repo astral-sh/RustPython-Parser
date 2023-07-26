@@ -17,7 +17,7 @@ lalrpop = { version = "0.20.0", default-features = false, optional = true }
 tiny-keccak = { version = "2", features = ["sha3"] }
 
 [dependencies]
-rustpython-ast = { workspace = true }
+ruff-python-ast = { workspace = true }
 rustpython-parser-core = { workspace = true }
 
 itertools = { workspace = true }

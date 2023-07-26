@@ -11,7 +11,7 @@ use crate::{
     token::{StringKind, Tok},
 };
 use itertools::Itertools;
-use rustpython_ast::Ranged;
+use ruff_python_ast::Ranged;
 use rustpython_parser_core::{
     text_size::{TextLen, TextSize},
     ConversionFlag,

@@ -34,7 +34,7 @@ use std::{char, cmp::Ordering, str::FromStr};
 
 use num_bigint::BigInt;
 use num_traits::{Num, Zero};
-use rustpython_ast::MagicKind;
+use ruff_python_ast::MagicKind;
 use unic_emoji_char::is_emoji_presentation;
 use unic_ucd_ident::{is_xid_continue, is_xid_start};
 
@@ -1119,7 +1119,7 @@ fn is_identifier_continuation(c: char) -> bool {
 #[cfg(test)]
 mod tests {
     use num_bigint::BigInt;
-    use rustpython_ast::MagicKind;
+    use ruff_python_ast::MagicKind;
 
     use super::*;
 

@@ -6,5 +6,4 @@ mod format;
 pub mod mode;
 
 pub use error::BaseError;
-pub use format::ConversionFlag;
 pub use mode::Mode;

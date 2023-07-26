@@ -10,9 +10,8 @@ use crate::{
     token::{StringKind, Tok},
 };
 use itertools::Itertools;
-use ruff_python_ast::Ranged;
+use ruff_python_ast::{ConversionFlag, Ranged};
 use ruff_text_size::{TextLen, TextRange, TextSize};
-use rustpython_parser_core::ConversionFlag;
 
 // unicode_name2 does not expose `MAX_NAME_LENGTH`, so we replicate that constant here, fix #3798
 const MAX_UNICODE_NAME: usize = 88;

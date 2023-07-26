@@ -19,7 +19,6 @@ mod nodes;
 
 pub use nodes::*;
 use ruff_text_size::{TextRange, TextSize};
-pub use rustpython_parser_core::ConversionFlag;
 
 pub trait Ranged {
     fn range(&self) -> TextRange;

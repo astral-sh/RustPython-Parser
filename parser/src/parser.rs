@@ -12,7 +12,7 @@
 //! [Abstract Syntax Tree]: https://en.wikipedia.org/wiki/Abstract_syntax_tree
 //! [`Mode`]: crate::mode
 
-use std::iter;
+use std::{fmt, iter};
 
 use itertools::Itertools;
 pub(super) use lalrpop_util::ParseError as LalrpopError;
@@ -425,7 +425,44 @@ fn parse_filtered_tokens(
 
 /// Represents represent errors that occur during parsing and are
 /// returned by the `parse_*` functions.
-pub type ParseError = rustpython_parser_core::BaseError<ParseErrorType>;
+
+#[derive(Debug, PartialEq)]
+pub struct ParseError {
+    pub error: ParseErrorType,
+    pub offset: TextSize,
+    pub source_path: String,
+}
+
+impl std::ops::Deref for ParseError {
+    type Target = ParseErrorType;
+
+    fn deref(&self) -> &Self::Target {
+        &self.error
+    }
+}
+
+impl std::error::Error for ParseError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        Some(&self.error)
+    }
+}
+
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{} at byte offset {}",
+            &self.error,
+            u32::from(self.offset)
+        )
+    }
+}
+
+impl ParseError {
+    pub fn error(self) -> ParseErrorType {
+        self.error
+    }
+}
 
 /// Represents the different types of errors that can occur during parsing.
 #[derive(Debug, PartialEq)]

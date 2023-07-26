@@ -15,17 +15,35 @@
 //! [ExceptHandler] refers `excepthandler`
 //!
 
-mod builtin;
-mod generic;
-mod impls;
-mod ranged;
+mod nodes;
 
-pub use builtin::*;
-pub use generic::*;
-pub use ranged::Ranged;
+use crate::text_size::TextRange;
+pub use nodes::*;
 pub use rustpython_parser_core::{text_size, ConversionFlag};
 
-pub trait Node {
-    const NAME: &'static str;
-    const FIELD_NAMES: &'static [&'static str];
+pub trait Ranged {
+    fn range(&self) -> TextRange;
+
+    fn start(&self) -> TextSize {
+        self.range().start()
+    }
+
+    fn end(&self) -> TextSize {
+        self.range().end()
+    }
+}
+
+impl Ranged for TextRange {
+    fn range(&self) -> TextRange {
+        *self
+    }
+}
+
+impl<T> Ranged for &T
+where
+    T: Ranged,
+{
+    fn range(&self) -> TextRange {
+        T::range(self)
+    }
 }

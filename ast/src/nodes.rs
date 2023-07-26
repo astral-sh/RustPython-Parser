@@ -1,158 +1,11 @@
 #![allow(clippy::derive_partial_eq_without_eq)]
-use crate::text_size::{TextRange, TextSize};
-pub(crate) use crate::{builtin::*, ConversionFlag, Node};
-use std::fmt::{self, Debug};
 
-// This file was originally generated from asdl by a python script, but we now edit it manually
-
-#[derive(Clone, Debug, PartialEq, is_macro::Is)]
-pub enum Ast {
-    #[is(name = "module")]
-    Mod(Mod),
-    Stmt(Stmt),
-    Expr(Expr),
-    ExprContext(ExprContext),
-    BoolOp(BoolOp),
-    Operator(Operator),
-    UnaryOp(UnaryOp),
-    CmpOp(CmpOp),
-    Comprehension(Comprehension),
-    ExceptHandler(ExceptHandler),
-    Arguments(Arguments),
-    Arg(Arg),
-    Keyword(Keyword),
-    Alias(Alias),
-    WithItem(WithItem),
-    MatchCase(MatchCase),
-    Pattern(Pattern),
-    TypeIgnore(TypeIgnore),
-    TypeParam(TypeParam),
-    Decorator(Decorator),
-}
-impl Node for Ast {
-    const NAME: &'static str = "AST";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
-
-impl From<Mod> for Ast {
-    fn from(node: Mod) -> Self {
-        Ast::Mod(node)
-    }
-}
-
-impl From<Stmt> for Ast {
-    fn from(node: Stmt) -> Self {
-        Ast::Stmt(node)
-    }
-}
-
-impl From<Expr> for Ast {
-    fn from(node: Expr) -> Self {
-        Ast::Expr(node)
-    }
-}
-
-impl From<ExprContext> for Ast {
-    fn from(node: ExprContext) -> Self {
-        Ast::ExprContext(node)
-    }
-}
-
-impl From<BoolOp> for Ast {
-    fn from(node: BoolOp) -> Self {
-        Ast::BoolOp(node)
-    }
-}
-
-impl From<Operator> for Ast {
-    fn from(node: Operator) -> Self {
-        Ast::Operator(node)
-    }
-}
-
-impl From<UnaryOp> for Ast {
-    fn from(node: UnaryOp) -> Self {
-        Ast::UnaryOp(node)
-    }
-}
-
-impl From<CmpOp> for Ast {
-    fn from(node: CmpOp) -> Self {
-        Ast::CmpOp(node)
-    }
-}
-
-impl From<Comprehension> for Ast {
-    fn from(node: Comprehension) -> Self {
-        Ast::Comprehension(node)
-    }
-}
-
-impl From<ExceptHandler> for Ast {
-    fn from(node: ExceptHandler) -> Self {
-        Ast::ExceptHandler(node)
-    }
-}
-
-impl From<Arguments> for Ast {
-    fn from(node: Arguments) -> Self {
-        Ast::Arguments(node)
-    }
-}
-
-impl From<Arg> for Ast {
-    fn from(node: Arg) -> Self {
-        Ast::Arg(node)
-    }
-}
-
-impl From<Keyword> for Ast {
-    fn from(node: Keyword) -> Self {
-        Ast::Keyword(node)
-    }
-}
-
-impl From<Alias> for Ast {
-    fn from(node: Alias) -> Self {
-        Ast::Alias(node)
-    }
-}
-
-impl From<WithItem> for Ast {
-    fn from(node: WithItem) -> Self {
-        Ast::WithItem(node)
-    }
-}
-
-impl From<MatchCase> for Ast {
-    fn from(node: MatchCase) -> Self {
-        Ast::MatchCase(node)
-    }
-}
-
-impl From<Pattern> for Ast {
-    fn from(node: Pattern) -> Self {
-        Ast::Pattern(node)
-    }
-}
-
-impl From<TypeIgnore> for Ast {
-    fn from(node: TypeIgnore) -> Self {
-        Ast::TypeIgnore(node)
-    }
-}
-
-impl From<TypeParam> for Ast {
-    fn from(node: TypeParam) -> Self {
-        Ast::TypeParam(node)
-    }
-}
-
-impl From<Decorator> for Ast {
-    fn from(node: Decorator) -> Self {
-        Ast::Decorator(node)
-    }
-}
+use crate::text_size::TextRange;
+use crate::Ranged;
+pub use crate::{text_size::TextSize, ConversionFlag};
+use num_bigint::BigInt;
+use std::fmt;
+use std::fmt::Debug;
 
 /// See also [mod](https://docs.python.org/3/library/ast.html#ast.mod)
 #[derive(Clone, Debug, PartialEq, is_macro::Is)]
@@ -171,18 +24,9 @@ pub struct ModModule {
     pub type_ignores: Vec<TypeIgnore>,
 }
 
-impl Node for ModModule {
-    const NAME: &'static str = "Module";
-    const FIELD_NAMES: &'static [&'static str] = &["body", "type_ignores"];
-}
 impl From<ModModule> for Mod {
     fn from(payload: ModModule) -> Self {
         Mod::Module(payload)
-    }
-}
-impl From<ModModule> for Ast {
-    fn from(payload: ModModule) -> Self {
-        Mod::from(payload).into()
     }
 }
 
@@ -193,18 +37,9 @@ pub struct ModInteractive {
     pub body: Vec<Stmt>,
 }
 
-impl Node for ModInteractive {
-    const NAME: &'static str = "Interactive";
-    const FIELD_NAMES: &'static [&'static str] = &["body"];
-}
 impl From<ModInteractive> for Mod {
     fn from(payload: ModInteractive) -> Self {
         Mod::Interactive(payload)
-    }
-}
-impl From<ModInteractive> for Ast {
-    fn from(payload: ModInteractive) -> Self {
-        Mod::from(payload).into()
     }
 }
 
@@ -215,18 +50,9 @@ pub struct ModExpression {
     pub body: Box<Expr>,
 }
 
-impl Node for ModExpression {
-    const NAME: &'static str = "Expression";
-    const FIELD_NAMES: &'static [&'static str] = &["body"];
-}
 impl From<ModExpression> for Mod {
     fn from(payload: ModExpression) -> Self {
         Mod::Expression(payload)
-    }
-}
-impl From<ModExpression> for Ast {
-    fn from(payload: ModExpression) -> Self {
-        Mod::from(payload).into()
     }
 }
 
@@ -238,24 +64,10 @@ pub struct ModFunctionType {
     pub returns: Box<Expr>,
 }
 
-impl Node for ModFunctionType {
-    const NAME: &'static str = "FunctionType";
-    const FIELD_NAMES: &'static [&'static str] = &["argtypes", "returns"];
-}
 impl From<ModFunctionType> for Mod {
     fn from(payload: ModFunctionType) -> Self {
         Mod::FunctionType(payload)
     }
-}
-impl From<ModFunctionType> for Ast {
-    fn from(payload: ModFunctionType) -> Self {
-        Mod::from(payload).into()
-    }
-}
-
-impl Node for Mod {
-    const NAME: &'static str = "mod";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [stmt](https://docs.python.org/3/library/ast.html#ast.stmt)
@@ -330,18 +142,9 @@ pub struct StmtLineMagic {
     pub value: String,
 }
 
-impl Node for StmtLineMagic {
-    const NAME: &'static str = "LineMagic";
-    const FIELD_NAMES: &'static [&'static str] = &["kind", "value"];
-}
 impl From<StmtLineMagic> for Stmt {
     fn from(payload: StmtLineMagic) -> Self {
         Stmt::LineMagic(payload)
-    }
-}
-impl From<StmtLineMagic> for Ast {
-    fn from(payload: StmtLineMagic) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -358,26 +161,9 @@ pub struct StmtFunctionDef {
     pub type_comment: Option<String>,
 }
 
-impl Node for StmtFunctionDef {
-    const NAME: &'static str = "FunctionDef";
-    const FIELD_NAMES: &'static [&'static str] = &[
-        "name",
-        "args",
-        "body",
-        "decorator_list",
-        "returns",
-        "type_params",
-        "type_comment",
-    ];
-}
 impl From<StmtFunctionDef> for Stmt {
     fn from(payload: StmtFunctionDef) -> Self {
         Stmt::FunctionDef(payload)
-    }
-}
-impl From<StmtFunctionDef> for Ast {
-    fn from(payload: StmtFunctionDef) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -394,26 +180,9 @@ pub struct StmtAsyncFunctionDef {
     pub type_comment: Option<String>,
 }
 
-impl Node for StmtAsyncFunctionDef {
-    const NAME: &'static str = "AsyncFunctionDef";
-    const FIELD_NAMES: &'static [&'static str] = &[
-        "name",
-        "args",
-        "body",
-        "decorator_list",
-        "returns",
-        "type_params",
-        "type_comment",
-    ];
-}
 impl From<StmtAsyncFunctionDef> for Stmt {
     fn from(payload: StmtAsyncFunctionDef) -> Self {
         Stmt::AsyncFunctionDef(payload)
-    }
-}
-impl From<StmtAsyncFunctionDef> for Ast {
-    fn from(payload: StmtAsyncFunctionDef) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -429,25 +198,9 @@ pub struct StmtClassDef {
     pub decorator_list: Vec<Decorator>,
 }
 
-impl Node for StmtClassDef {
-    const NAME: &'static str = "ClassDef";
-    const FIELD_NAMES: &'static [&'static str] = &[
-        "name",
-        "bases",
-        "keywords",
-        "body",
-        "decorator_list",
-        "type_params",
-    ];
-}
 impl From<StmtClassDef> for Stmt {
     fn from(payload: StmtClassDef) -> Self {
         Stmt::ClassDef(payload)
-    }
-}
-impl From<StmtClassDef> for Ast {
-    fn from(payload: StmtClassDef) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -458,18 +211,9 @@ pub struct StmtReturn {
     pub value: Option<Box<Expr>>,
 }
 
-impl Node for StmtReturn {
-    const NAME: &'static str = "Return";
-    const FIELD_NAMES: &'static [&'static str] = &["value"];
-}
 impl From<StmtReturn> for Stmt {
     fn from(payload: StmtReturn) -> Self {
         Stmt::Return(payload)
-    }
-}
-impl From<StmtReturn> for Ast {
-    fn from(payload: StmtReturn) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -480,18 +224,9 @@ pub struct StmtDelete {
     pub targets: Vec<Expr>,
 }
 
-impl Node for StmtDelete {
-    const NAME: &'static str = "Delete";
-    const FIELD_NAMES: &'static [&'static str] = &["targets"];
-}
 impl From<StmtDelete> for Stmt {
     fn from(payload: StmtDelete) -> Self {
         Stmt::Delete(payload)
-    }
-}
-impl From<StmtDelete> for Ast {
-    fn from(payload: StmtDelete) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -504,18 +239,9 @@ pub struct StmtTypeAlias {
     pub value: Box<Expr>,
 }
 
-impl Node for StmtTypeAlias {
-    const NAME: &'static str = "TypeAlias";
-    const FIELD_NAMES: &'static [&'static str] = &["name", "type_params", "value"];
-}
 impl From<StmtTypeAlias> for Stmt {
     fn from(payload: StmtTypeAlias) -> Self {
         Stmt::TypeAlias(payload)
-    }
-}
-impl From<StmtTypeAlias> for Ast {
-    fn from(payload: StmtTypeAlias) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -528,18 +254,9 @@ pub struct StmtAssign {
     pub type_comment: Option<String>,
 }
 
-impl Node for StmtAssign {
-    const NAME: &'static str = "Assign";
-    const FIELD_NAMES: &'static [&'static str] = &["targets", "value", "type_comment"];
-}
 impl From<StmtAssign> for Stmt {
     fn from(payload: StmtAssign) -> Self {
         Stmt::Assign(payload)
-    }
-}
-impl From<StmtAssign> for Ast {
-    fn from(payload: StmtAssign) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -552,18 +269,9 @@ pub struct StmtAugAssign {
     pub value: Box<Expr>,
 }
 
-impl Node for StmtAugAssign {
-    const NAME: &'static str = "AugAssign";
-    const FIELD_NAMES: &'static [&'static str] = &["target", "op", "value"];
-}
 impl From<StmtAugAssign> for Stmt {
     fn from(payload: StmtAugAssign) -> Self {
         Stmt::AugAssign(payload)
-    }
-}
-impl From<StmtAugAssign> for Ast {
-    fn from(payload: StmtAugAssign) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -577,18 +285,9 @@ pub struct StmtAnnAssign {
     pub simple: bool,
 }
 
-impl Node for StmtAnnAssign {
-    const NAME: &'static str = "AnnAssign";
-    const FIELD_NAMES: &'static [&'static str] = &["target", "annotation", "value", "simple"];
-}
 impl From<StmtAnnAssign> for Stmt {
     fn from(payload: StmtAnnAssign) -> Self {
         Stmt::AnnAssign(payload)
-    }
-}
-impl From<StmtAnnAssign> for Ast {
-    fn from(payload: StmtAnnAssign) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -603,19 +302,9 @@ pub struct StmtFor {
     pub type_comment: Option<String>,
 }
 
-impl Node for StmtFor {
-    const NAME: &'static str = "For";
-    const FIELD_NAMES: &'static [&'static str] =
-        &["target", "iter", "body", "orelse", "type_comment"];
-}
 impl From<StmtFor> for Stmt {
     fn from(payload: StmtFor) -> Self {
         Stmt::For(payload)
-    }
-}
-impl From<StmtFor> for Ast {
-    fn from(payload: StmtFor) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -630,19 +319,9 @@ pub struct StmtAsyncFor {
     pub type_comment: Option<String>,
 }
 
-impl Node for StmtAsyncFor {
-    const NAME: &'static str = "AsyncFor";
-    const FIELD_NAMES: &'static [&'static str] =
-        &["target", "iter", "body", "orelse", "type_comment"];
-}
 impl From<StmtAsyncFor> for Stmt {
     fn from(payload: StmtAsyncFor) -> Self {
         Stmt::AsyncFor(payload)
-    }
-}
-impl From<StmtAsyncFor> for Ast {
-    fn from(payload: StmtAsyncFor) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -655,18 +334,9 @@ pub struct StmtWhile {
     pub orelse: Vec<Stmt>,
 }
 
-impl Node for StmtWhile {
-    const NAME: &'static str = "While";
-    const FIELD_NAMES: &'static [&'static str] = &["test", "body", "orelse"];
-}
 impl From<StmtWhile> for Stmt {
     fn from(payload: StmtWhile) -> Self {
         Stmt::While(payload)
-    }
-}
-impl From<StmtWhile> for Ast {
-    fn from(payload: StmtWhile) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -679,18 +349,9 @@ pub struct StmtIf {
     pub elif_else_clauses: Vec<ElifElseClause>,
 }
 
-impl Node for StmtIf {
-    const NAME: &'static str = "If";
-    const FIELD_NAMES: &'static [&'static str] = &["test", "body", "elif_else_clauses"];
-}
 impl From<StmtIf> for Stmt {
     fn from(payload: StmtIf) -> Self {
         Stmt::If(payload)
-    }
-}
-impl From<StmtIf> for Ast {
-    fn from(payload: StmtIf) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -699,11 +360,6 @@ pub struct ElifElseClause {
     pub range: TextRange,
     pub test: Option<Expr>,
     pub body: Vec<Stmt>,
-}
-
-impl Node for ElifElseClause {
-    const NAME: &'static str = "ElifElse";
-    const FIELD_NAMES: &'static [&'static str] = &["test", "body"];
 }
 
 /// See also [With](https://docs.python.org/3/library/ast.html#ast.With)
@@ -715,18 +371,9 @@ pub struct StmtWith {
     pub type_comment: Option<String>,
 }
 
-impl Node for StmtWith {
-    const NAME: &'static str = "With";
-    const FIELD_NAMES: &'static [&'static str] = &["items", "body", "type_comment"];
-}
 impl From<StmtWith> for Stmt {
     fn from(payload: StmtWith) -> Self {
         Stmt::With(payload)
-    }
-}
-impl From<StmtWith> for Ast {
-    fn from(payload: StmtWith) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -739,18 +386,9 @@ pub struct StmtAsyncWith {
     pub type_comment: Option<String>,
 }
 
-impl Node for StmtAsyncWith {
-    const NAME: &'static str = "AsyncWith";
-    const FIELD_NAMES: &'static [&'static str] = &["items", "body", "type_comment"];
-}
 impl From<StmtAsyncWith> for Stmt {
     fn from(payload: StmtAsyncWith) -> Self {
         Stmt::AsyncWith(payload)
-    }
-}
-impl From<StmtAsyncWith> for Ast {
-    fn from(payload: StmtAsyncWith) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -762,18 +400,9 @@ pub struct StmtMatch {
     pub cases: Vec<MatchCase>,
 }
 
-impl Node for StmtMatch {
-    const NAME: &'static str = "Match";
-    const FIELD_NAMES: &'static [&'static str] = &["subject", "cases"];
-}
 impl From<StmtMatch> for Stmt {
     fn from(payload: StmtMatch) -> Self {
         Stmt::Match(payload)
-    }
-}
-impl From<StmtMatch> for Ast {
-    fn from(payload: StmtMatch) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -785,18 +414,9 @@ pub struct StmtRaise {
     pub cause: Option<Box<Expr>>,
 }
 
-impl Node for StmtRaise {
-    const NAME: &'static str = "Raise";
-    const FIELD_NAMES: &'static [&'static str] = &["exc", "cause"];
-}
 impl From<StmtRaise> for Stmt {
     fn from(payload: StmtRaise) -> Self {
         Stmt::Raise(payload)
-    }
-}
-impl From<StmtRaise> for Ast {
-    fn from(payload: StmtRaise) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -810,18 +430,9 @@ pub struct StmtTry {
     pub finalbody: Vec<Stmt>,
 }
 
-impl Node for StmtTry {
-    const NAME: &'static str = "Try";
-    const FIELD_NAMES: &'static [&'static str] = &["body", "handlers", "orelse", "finalbody"];
-}
 impl From<StmtTry> for Stmt {
     fn from(payload: StmtTry) -> Self {
         Stmt::Try(payload)
-    }
-}
-impl From<StmtTry> for Ast {
-    fn from(payload: StmtTry) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -835,18 +446,9 @@ pub struct StmtTryStar {
     pub finalbody: Vec<Stmt>,
 }
 
-impl Node for StmtTryStar {
-    const NAME: &'static str = "TryStar";
-    const FIELD_NAMES: &'static [&'static str] = &["body", "handlers", "orelse", "finalbody"];
-}
 impl From<StmtTryStar> for Stmt {
     fn from(payload: StmtTryStar) -> Self {
         Stmt::TryStar(payload)
-    }
-}
-impl From<StmtTryStar> for Ast {
-    fn from(payload: StmtTryStar) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -858,18 +460,9 @@ pub struct StmtAssert {
     pub msg: Option<Box<Expr>>,
 }
 
-impl Node for StmtAssert {
-    const NAME: &'static str = "Assert";
-    const FIELD_NAMES: &'static [&'static str] = &["test", "msg"];
-}
 impl From<StmtAssert> for Stmt {
     fn from(payload: StmtAssert) -> Self {
         Stmt::Assert(payload)
-    }
-}
-impl From<StmtAssert> for Ast {
-    fn from(payload: StmtAssert) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -880,18 +473,9 @@ pub struct StmtImport {
     pub names: Vec<Alias>,
 }
 
-impl Node for StmtImport {
-    const NAME: &'static str = "Import";
-    const FIELD_NAMES: &'static [&'static str] = &["names"];
-}
 impl From<StmtImport> for Stmt {
     fn from(payload: StmtImport) -> Self {
         Stmt::Import(payload)
-    }
-}
-impl From<StmtImport> for Ast {
-    fn from(payload: StmtImport) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -904,18 +488,9 @@ pub struct StmtImportFrom {
     pub level: Option<Int>,
 }
 
-impl Node for StmtImportFrom {
-    const NAME: &'static str = "ImportFrom";
-    const FIELD_NAMES: &'static [&'static str] = &["module", "names", "level"];
-}
 impl From<StmtImportFrom> for Stmt {
     fn from(payload: StmtImportFrom) -> Self {
         Stmt::ImportFrom(payload)
-    }
-}
-impl From<StmtImportFrom> for Ast {
-    fn from(payload: StmtImportFrom) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -926,18 +501,9 @@ pub struct StmtGlobal {
     pub names: Vec<Identifier>,
 }
 
-impl Node for StmtGlobal {
-    const NAME: &'static str = "Global";
-    const FIELD_NAMES: &'static [&'static str] = &["names"];
-}
 impl From<StmtGlobal> for Stmt {
     fn from(payload: StmtGlobal) -> Self {
         Stmt::Global(payload)
-    }
-}
-impl From<StmtGlobal> for Ast {
-    fn from(payload: StmtGlobal) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -948,18 +514,9 @@ pub struct StmtNonlocal {
     pub names: Vec<Identifier>,
 }
 
-impl Node for StmtNonlocal {
-    const NAME: &'static str = "Nonlocal";
-    const FIELD_NAMES: &'static [&'static str] = &["names"];
-}
 impl From<StmtNonlocal> for Stmt {
     fn from(payload: StmtNonlocal) -> Self {
         Stmt::Nonlocal(payload)
-    }
-}
-impl From<StmtNonlocal> for Ast {
-    fn from(payload: StmtNonlocal) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -970,18 +527,9 @@ pub struct StmtExpr {
     pub value: Box<Expr>,
 }
 
-impl Node for StmtExpr {
-    const NAME: &'static str = "Expr";
-    const FIELD_NAMES: &'static [&'static str] = &["value"];
-}
 impl From<StmtExpr> for Stmt {
     fn from(payload: StmtExpr) -> Self {
         Stmt::Expr(payload)
-    }
-}
-impl From<StmtExpr> for Ast {
-    fn from(payload: StmtExpr) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -991,18 +539,9 @@ pub struct StmtPass {
     pub range: TextRange,
 }
 
-impl Node for StmtPass {
-    const NAME: &'static str = "Pass";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
 impl From<StmtPass> for Stmt {
     fn from(payload: StmtPass) -> Self {
         Stmt::Pass(payload)
-    }
-}
-impl From<StmtPass> for Ast {
-    fn from(payload: StmtPass) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -1012,18 +551,9 @@ pub struct StmtBreak {
     pub range: TextRange,
 }
 
-impl Node for StmtBreak {
-    const NAME: &'static str = "Break";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
 impl From<StmtBreak> for Stmt {
     fn from(payload: StmtBreak) -> Self {
         Stmt::Break(payload)
-    }
-}
-impl From<StmtBreak> for Ast {
-    fn from(payload: StmtBreak) -> Self {
-        Stmt::from(payload).into()
     }
 }
 
@@ -1033,24 +563,10 @@ pub struct StmtContinue {
     pub range: TextRange,
 }
 
-impl Node for StmtContinue {
-    const NAME: &'static str = "Continue";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
 impl From<StmtContinue> for Stmt {
     fn from(payload: StmtContinue) -> Self {
         Stmt::Continue(payload)
     }
-}
-impl From<StmtContinue> for Ast {
-    fn from(payload: StmtContinue) -> Self {
-        Stmt::from(payload).into()
-    }
-}
-
-impl Node for Stmt {
-    const NAME: &'static str = "stmt";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [expr](https://docs.python.org/3/library/ast.html#ast.expr)
@@ -1123,18 +639,9 @@ pub struct ExprLineMagic {
     pub value: String,
 }
 
-impl Node for ExprLineMagic {
-    const NAME: &'static str = "LineMagic";
-    const FIELD_NAMES: &'static [&'static str] = &["kind", "value"];
-}
 impl From<ExprLineMagic> for Expr {
     fn from(payload: ExprLineMagic) -> Self {
         Expr::LineMagic(payload)
-    }
-}
-impl From<ExprLineMagic> for Ast {
-    fn from(payload: ExprLineMagic) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1146,18 +653,9 @@ pub struct ExprBoolOp {
     pub values: Vec<Expr>,
 }
 
-impl Node for ExprBoolOp {
-    const NAME: &'static str = "BoolOp";
-    const FIELD_NAMES: &'static [&'static str] = &["op", "values"];
-}
 impl From<ExprBoolOp> for Expr {
     fn from(payload: ExprBoolOp) -> Self {
         Expr::BoolOp(payload)
-    }
-}
-impl From<ExprBoolOp> for Ast {
-    fn from(payload: ExprBoolOp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1169,18 +667,9 @@ pub struct ExprNamedExpr {
     pub value: Box<Expr>,
 }
 
-impl Node for ExprNamedExpr {
-    const NAME: &'static str = "NamedExpr";
-    const FIELD_NAMES: &'static [&'static str] = &["target", "value"];
-}
 impl From<ExprNamedExpr> for Expr {
     fn from(payload: ExprNamedExpr) -> Self {
         Expr::NamedExpr(payload)
-    }
-}
-impl From<ExprNamedExpr> for Ast {
-    fn from(payload: ExprNamedExpr) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1193,18 +682,9 @@ pub struct ExprBinOp {
     pub right: Box<Expr>,
 }
 
-impl Node for ExprBinOp {
-    const NAME: &'static str = "BinOp";
-    const FIELD_NAMES: &'static [&'static str] = &["left", "op", "right"];
-}
 impl From<ExprBinOp> for Expr {
     fn from(payload: ExprBinOp) -> Self {
         Expr::BinOp(payload)
-    }
-}
-impl From<ExprBinOp> for Ast {
-    fn from(payload: ExprBinOp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1216,18 +696,9 @@ pub struct ExprUnaryOp {
     pub operand: Box<Expr>,
 }
 
-impl Node for ExprUnaryOp {
-    const NAME: &'static str = "UnaryOp";
-    const FIELD_NAMES: &'static [&'static str] = &["op", "operand"];
-}
 impl From<ExprUnaryOp> for Expr {
     fn from(payload: ExprUnaryOp) -> Self {
         Expr::UnaryOp(payload)
-    }
-}
-impl From<ExprUnaryOp> for Ast {
-    fn from(payload: ExprUnaryOp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1239,18 +710,9 @@ pub struct ExprLambda {
     pub body: Box<Expr>,
 }
 
-impl Node for ExprLambda {
-    const NAME: &'static str = "Lambda";
-    const FIELD_NAMES: &'static [&'static str] = &["args", "body"];
-}
 impl From<ExprLambda> for Expr {
     fn from(payload: ExprLambda) -> Self {
         Expr::Lambda(payload)
-    }
-}
-impl From<ExprLambda> for Ast {
-    fn from(payload: ExprLambda) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1263,18 +725,9 @@ pub struct ExprIfExp {
     pub orelse: Box<Expr>,
 }
 
-impl Node for ExprIfExp {
-    const NAME: &'static str = "IfExp";
-    const FIELD_NAMES: &'static [&'static str] = &["test", "body", "orelse"];
-}
 impl From<ExprIfExp> for Expr {
     fn from(payload: ExprIfExp) -> Self {
         Expr::IfExp(payload)
-    }
-}
-impl From<ExprIfExp> for Ast {
-    fn from(payload: ExprIfExp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1286,18 +739,9 @@ pub struct ExprDict {
     pub values: Vec<Expr>,
 }
 
-impl Node for ExprDict {
-    const NAME: &'static str = "Dict";
-    const FIELD_NAMES: &'static [&'static str] = &["keys", "values"];
-}
 impl From<ExprDict> for Expr {
     fn from(payload: ExprDict) -> Self {
         Expr::Dict(payload)
-    }
-}
-impl From<ExprDict> for Ast {
-    fn from(payload: ExprDict) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1308,18 +752,9 @@ pub struct ExprSet {
     pub elts: Vec<Expr>,
 }
 
-impl Node for ExprSet {
-    const NAME: &'static str = "Set";
-    const FIELD_NAMES: &'static [&'static str] = &["elts"];
-}
 impl From<ExprSet> for Expr {
     fn from(payload: ExprSet) -> Self {
         Expr::Set(payload)
-    }
-}
-impl From<ExprSet> for Ast {
-    fn from(payload: ExprSet) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1331,18 +766,9 @@ pub struct ExprListComp {
     pub generators: Vec<Comprehension>,
 }
 
-impl Node for ExprListComp {
-    const NAME: &'static str = "ListComp";
-    const FIELD_NAMES: &'static [&'static str] = &["elt", "generators"];
-}
 impl From<ExprListComp> for Expr {
     fn from(payload: ExprListComp) -> Self {
         Expr::ListComp(payload)
-    }
-}
-impl From<ExprListComp> for Ast {
-    fn from(payload: ExprListComp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1354,18 +780,9 @@ pub struct ExprSetComp {
     pub generators: Vec<Comprehension>,
 }
 
-impl Node for ExprSetComp {
-    const NAME: &'static str = "SetComp";
-    const FIELD_NAMES: &'static [&'static str] = &["elt", "generators"];
-}
 impl From<ExprSetComp> for Expr {
     fn from(payload: ExprSetComp) -> Self {
         Expr::SetComp(payload)
-    }
-}
-impl From<ExprSetComp> for Ast {
-    fn from(payload: ExprSetComp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1378,18 +795,9 @@ pub struct ExprDictComp {
     pub generators: Vec<Comprehension>,
 }
 
-impl Node for ExprDictComp {
-    const NAME: &'static str = "DictComp";
-    const FIELD_NAMES: &'static [&'static str] = &["key", "value", "generators"];
-}
 impl From<ExprDictComp> for Expr {
     fn from(payload: ExprDictComp) -> Self {
         Expr::DictComp(payload)
-    }
-}
-impl From<ExprDictComp> for Ast {
-    fn from(payload: ExprDictComp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1401,18 +809,9 @@ pub struct ExprGeneratorExp {
     pub generators: Vec<Comprehension>,
 }
 
-impl Node for ExprGeneratorExp {
-    const NAME: &'static str = "GeneratorExp";
-    const FIELD_NAMES: &'static [&'static str] = &["elt", "generators"];
-}
 impl From<ExprGeneratorExp> for Expr {
     fn from(payload: ExprGeneratorExp) -> Self {
         Expr::GeneratorExp(payload)
-    }
-}
-impl From<ExprGeneratorExp> for Ast {
-    fn from(payload: ExprGeneratorExp) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1423,18 +822,9 @@ pub struct ExprAwait {
     pub value: Box<Expr>,
 }
 
-impl Node for ExprAwait {
-    const NAME: &'static str = "Await";
-    const FIELD_NAMES: &'static [&'static str] = &["value"];
-}
 impl From<ExprAwait> for Expr {
     fn from(payload: ExprAwait) -> Self {
         Expr::Await(payload)
-    }
-}
-impl From<ExprAwait> for Ast {
-    fn from(payload: ExprAwait) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1445,18 +835,9 @@ pub struct ExprYield {
     pub value: Option<Box<Expr>>,
 }
 
-impl Node for ExprYield {
-    const NAME: &'static str = "Yield";
-    const FIELD_NAMES: &'static [&'static str] = &["value"];
-}
 impl From<ExprYield> for Expr {
     fn from(payload: ExprYield) -> Self {
         Expr::Yield(payload)
-    }
-}
-impl From<ExprYield> for Ast {
-    fn from(payload: ExprYield) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1467,18 +848,9 @@ pub struct ExprYieldFrom {
     pub value: Box<Expr>,
 }
 
-impl Node for ExprYieldFrom {
-    const NAME: &'static str = "YieldFrom";
-    const FIELD_NAMES: &'static [&'static str] = &["value"];
-}
 impl From<ExprYieldFrom> for Expr {
     fn from(payload: ExprYieldFrom) -> Self {
         Expr::YieldFrom(payload)
-    }
-}
-impl From<ExprYieldFrom> for Ast {
-    fn from(payload: ExprYieldFrom) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1491,18 +863,9 @@ pub struct ExprCompare {
     pub comparators: Vec<Expr>,
 }
 
-impl Node for ExprCompare {
-    const NAME: &'static str = "Compare";
-    const FIELD_NAMES: &'static [&'static str] = &["left", "ops", "comparators"];
-}
 impl From<ExprCompare> for Expr {
     fn from(payload: ExprCompare) -> Self {
         Expr::Compare(payload)
-    }
-}
-impl From<ExprCompare> for Ast {
-    fn from(payload: ExprCompare) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1515,18 +878,9 @@ pub struct ExprCall {
     pub keywords: Vec<Keyword>,
 }
 
-impl Node for ExprCall {
-    const NAME: &'static str = "Call";
-    const FIELD_NAMES: &'static [&'static str] = &["func", "args", "keywords"];
-}
 impl From<ExprCall> for Expr {
     fn from(payload: ExprCall) -> Self {
         Expr::Call(payload)
-    }
-}
-impl From<ExprCall> for Ast {
-    fn from(payload: ExprCall) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1539,18 +893,9 @@ pub struct ExprFormattedValue {
     pub format_spec: Option<Box<Expr>>,
 }
 
-impl Node for ExprFormattedValue {
-    const NAME: &'static str = "FormattedValue";
-    const FIELD_NAMES: &'static [&'static str] = &["value", "conversion", "format_spec"];
-}
 impl From<ExprFormattedValue> for Expr {
     fn from(payload: ExprFormattedValue) -> Self {
         Expr::FormattedValue(payload)
-    }
-}
-impl From<ExprFormattedValue> for Ast {
-    fn from(payload: ExprFormattedValue) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1561,18 +906,9 @@ pub struct ExprJoinedStr {
     pub values: Vec<Expr>,
 }
 
-impl Node for ExprJoinedStr {
-    const NAME: &'static str = "JoinedStr";
-    const FIELD_NAMES: &'static [&'static str] = &["values"];
-}
 impl From<ExprJoinedStr> for Expr {
     fn from(payload: ExprJoinedStr) -> Self {
         Expr::JoinedStr(payload)
-    }
-}
-impl From<ExprJoinedStr> for Ast {
-    fn from(payload: ExprJoinedStr) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1584,18 +920,9 @@ pub struct ExprConstant {
     pub kind: Option<String>,
 }
 
-impl Node for ExprConstant {
-    const NAME: &'static str = "Constant";
-    const FIELD_NAMES: &'static [&'static str] = &["value", "kind"];
-}
 impl From<ExprConstant> for Expr {
     fn from(payload: ExprConstant) -> Self {
         Expr::Constant(payload)
-    }
-}
-impl From<ExprConstant> for Ast {
-    fn from(payload: ExprConstant) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1608,18 +935,9 @@ pub struct ExprAttribute {
     pub ctx: ExprContext,
 }
 
-impl Node for ExprAttribute {
-    const NAME: &'static str = "Attribute";
-    const FIELD_NAMES: &'static [&'static str] = &["value", "attr", "ctx"];
-}
 impl From<ExprAttribute> for Expr {
     fn from(payload: ExprAttribute) -> Self {
         Expr::Attribute(payload)
-    }
-}
-impl From<ExprAttribute> for Ast {
-    fn from(payload: ExprAttribute) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1632,18 +950,9 @@ pub struct ExprSubscript {
     pub ctx: ExprContext,
 }
 
-impl Node for ExprSubscript {
-    const NAME: &'static str = "Subscript";
-    const FIELD_NAMES: &'static [&'static str] = &["value", "slice", "ctx"];
-}
 impl From<ExprSubscript> for Expr {
     fn from(payload: ExprSubscript) -> Self {
         Expr::Subscript(payload)
-    }
-}
-impl From<ExprSubscript> for Ast {
-    fn from(payload: ExprSubscript) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1655,18 +964,9 @@ pub struct ExprStarred {
     pub ctx: ExprContext,
 }
 
-impl Node for ExprStarred {
-    const NAME: &'static str = "Starred";
-    const FIELD_NAMES: &'static [&'static str] = &["value", "ctx"];
-}
 impl From<ExprStarred> for Expr {
     fn from(payload: ExprStarred) -> Self {
         Expr::Starred(payload)
-    }
-}
-impl From<ExprStarred> for Ast {
-    fn from(payload: ExprStarred) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1678,18 +978,9 @@ pub struct ExprName {
     pub ctx: ExprContext,
 }
 
-impl Node for ExprName {
-    const NAME: &'static str = "Name";
-    const FIELD_NAMES: &'static [&'static str] = &["id", "ctx"];
-}
 impl From<ExprName> for Expr {
     fn from(payload: ExprName) -> Self {
         Expr::Name(payload)
-    }
-}
-impl From<ExprName> for Ast {
-    fn from(payload: ExprName) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1701,18 +992,9 @@ pub struct ExprList {
     pub ctx: ExprContext,
 }
 
-impl Node for ExprList {
-    const NAME: &'static str = "List";
-    const FIELD_NAMES: &'static [&'static str] = &["elts", "ctx"];
-}
 impl From<ExprList> for Expr {
     fn from(payload: ExprList) -> Self {
         Expr::List(payload)
-    }
-}
-impl From<ExprList> for Ast {
-    fn from(payload: ExprList) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1724,18 +1006,9 @@ pub struct ExprTuple {
     pub ctx: ExprContext,
 }
 
-impl Node for ExprTuple {
-    const NAME: &'static str = "Tuple";
-    const FIELD_NAMES: &'static [&'static str] = &["elts", "ctx"];
-}
 impl From<ExprTuple> for Expr {
     fn from(payload: ExprTuple) -> Self {
         Expr::Tuple(payload)
-    }
-}
-impl From<ExprTuple> for Ast {
-    fn from(payload: ExprTuple) -> Self {
-        Expr::from(payload).into()
     }
 }
 
@@ -1748,24 +1021,10 @@ pub struct ExprSlice {
     pub step: Option<Box<Expr>>,
 }
 
-impl Node for ExprSlice {
-    const NAME: &'static str = "Slice";
-    const FIELD_NAMES: &'static [&'static str] = &["lower", "upper", "step"];
-}
 impl From<ExprSlice> for Expr {
     fn from(payload: ExprSlice) -> Self {
         Expr::Slice(payload)
     }
-}
-impl From<ExprSlice> for Ast {
-    fn from(payload: ExprSlice) -> Self {
-        Expr::from(payload).into()
-    }
-}
-
-impl Node for Expr {
-    const NAME: &'static str = "expr";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [expr_context](https://docs.python.org/3/library/ast.html#ast.expr_context)
@@ -1807,15 +1066,7 @@ impl From<ExprContextLoad> for ExprContext {
         ExprContext::Load
     }
 }
-impl From<ExprContextLoad> for Ast {
-    fn from(_: ExprContextLoad) -> Self {
-        ExprContext::Load.into()
-    }
-}
-impl Node for ExprContextLoad {
-    const NAME: &'static str = "Load";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<ExprContext> for ExprContextLoad {
     #[inline]
     fn eq(&self, other: &ExprContext) -> bool {
@@ -1829,15 +1080,7 @@ impl From<ExprContextStore> for ExprContext {
         ExprContext::Store
     }
 }
-impl From<ExprContextStore> for Ast {
-    fn from(_: ExprContextStore) -> Self {
-        ExprContext::Store.into()
-    }
-}
-impl Node for ExprContextStore {
-    const NAME: &'static str = "Store";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<ExprContext> for ExprContextStore {
     #[inline]
     fn eq(&self, other: &ExprContext) -> bool {
@@ -1851,25 +1094,12 @@ impl From<ExprContextDel> for ExprContext {
         ExprContext::Del
     }
 }
-impl From<ExprContextDel> for Ast {
-    fn from(_: ExprContextDel) -> Self {
-        ExprContext::Del.into()
-    }
-}
-impl Node for ExprContextDel {
-    const NAME: &'static str = "Del";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<ExprContext> for ExprContextDel {
     #[inline]
     fn eq(&self, other: &ExprContext) -> bool {
         matches!(other, ExprContext::Del)
     }
-}
-
-impl Node for ExprContext {
-    const NAME: &'static str = "expr_context";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [boolop](https://docs.python.org/3/library/ast.html#ast.BoolOp)
@@ -1902,15 +1132,7 @@ impl From<BoolOpAnd> for BoolOp {
         BoolOp::And
     }
 }
-impl From<BoolOpAnd> for Ast {
-    fn from(_: BoolOpAnd) -> Self {
-        BoolOp::And.into()
-    }
-}
-impl Node for BoolOpAnd {
-    const NAME: &'static str = "And";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<BoolOp> for BoolOpAnd {
     #[inline]
     fn eq(&self, other: &BoolOp) -> bool {
@@ -1924,25 +1146,12 @@ impl From<BoolOpOr> for BoolOp {
         BoolOp::Or
     }
 }
-impl From<BoolOpOr> for Ast {
-    fn from(_: BoolOpOr) -> Self {
-        BoolOp::Or.into()
-    }
-}
-impl Node for BoolOpOr {
-    const NAME: &'static str = "Or";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<BoolOp> for BoolOpOr {
     #[inline]
     fn eq(&self, other: &BoolOp) -> bool {
         matches!(other, BoolOp::Or)
     }
-}
-
-impl Node for BoolOp {
-    const NAME: &'static str = "boolop";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [operator](https://docs.python.org/3/library/ast.html#ast.operator)
@@ -2074,15 +1283,7 @@ impl From<OperatorAdd> for Operator {
         Operator::Add
     }
 }
-impl From<OperatorAdd> for Ast {
-    fn from(_: OperatorAdd) -> Self {
-        Operator::Add.into()
-    }
-}
-impl Node for OperatorAdd {
-    const NAME: &'static str = "Add";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorAdd {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2096,15 +1297,7 @@ impl From<OperatorSub> for Operator {
         Operator::Sub
     }
 }
-impl From<OperatorSub> for Ast {
-    fn from(_: OperatorSub) -> Self {
-        Operator::Sub.into()
-    }
-}
-impl Node for OperatorSub {
-    const NAME: &'static str = "Sub";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorSub {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2118,15 +1311,7 @@ impl From<OperatorMult> for Operator {
         Operator::Mult
     }
 }
-impl From<OperatorMult> for Ast {
-    fn from(_: OperatorMult) -> Self {
-        Operator::Mult.into()
-    }
-}
-impl Node for OperatorMult {
-    const NAME: &'static str = "Mult";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorMult {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2140,15 +1325,7 @@ impl From<OperatorMatMult> for Operator {
         Operator::MatMult
     }
 }
-impl From<OperatorMatMult> for Ast {
-    fn from(_: OperatorMatMult) -> Self {
-        Operator::MatMult.into()
-    }
-}
-impl Node for OperatorMatMult {
-    const NAME: &'static str = "MatMult";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorMatMult {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2162,15 +1339,7 @@ impl From<OperatorDiv> for Operator {
         Operator::Div
     }
 }
-impl From<OperatorDiv> for Ast {
-    fn from(_: OperatorDiv) -> Self {
-        Operator::Div.into()
-    }
-}
-impl Node for OperatorDiv {
-    const NAME: &'static str = "Div";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorDiv {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2184,15 +1353,7 @@ impl From<OperatorMod> for Operator {
         Operator::Mod
     }
 }
-impl From<OperatorMod> for Ast {
-    fn from(_: OperatorMod) -> Self {
-        Operator::Mod.into()
-    }
-}
-impl Node for OperatorMod {
-    const NAME: &'static str = "Mod";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorMod {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2206,15 +1367,7 @@ impl From<OperatorPow> for Operator {
         Operator::Pow
     }
 }
-impl From<OperatorPow> for Ast {
-    fn from(_: OperatorPow) -> Self {
-        Operator::Pow.into()
-    }
-}
-impl Node for OperatorPow {
-    const NAME: &'static str = "Pow";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorPow {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2228,15 +1381,7 @@ impl From<OperatorLShift> for Operator {
         Operator::LShift
     }
 }
-impl From<OperatorLShift> for Ast {
-    fn from(_: OperatorLShift) -> Self {
-        Operator::LShift.into()
-    }
-}
-impl Node for OperatorLShift {
-    const NAME: &'static str = "LShift";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorLShift {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2250,15 +1395,7 @@ impl From<OperatorRShift> for Operator {
         Operator::RShift
     }
 }
-impl From<OperatorRShift> for Ast {
-    fn from(_: OperatorRShift) -> Self {
-        Operator::RShift.into()
-    }
-}
-impl Node for OperatorRShift {
-    const NAME: &'static str = "RShift";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorRShift {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2272,15 +1409,7 @@ impl From<OperatorBitOr> for Operator {
         Operator::BitOr
     }
 }
-impl From<OperatorBitOr> for Ast {
-    fn from(_: OperatorBitOr) -> Self {
-        Operator::BitOr.into()
-    }
-}
-impl Node for OperatorBitOr {
-    const NAME: &'static str = "BitOr";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorBitOr {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2294,15 +1423,7 @@ impl From<OperatorBitXor> for Operator {
         Operator::BitXor
     }
 }
-impl From<OperatorBitXor> for Ast {
-    fn from(_: OperatorBitXor) -> Self {
-        Operator::BitXor.into()
-    }
-}
-impl Node for OperatorBitXor {
-    const NAME: &'static str = "BitXor";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorBitXor {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2316,15 +1437,7 @@ impl From<OperatorBitAnd> for Operator {
         Operator::BitAnd
     }
 }
-impl From<OperatorBitAnd> for Ast {
-    fn from(_: OperatorBitAnd) -> Self {
-        Operator::BitAnd.into()
-    }
-}
-impl Node for OperatorBitAnd {
-    const NAME: &'static str = "BitAnd";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorBitAnd {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
@@ -2338,25 +1451,12 @@ impl From<OperatorFloorDiv> for Operator {
         Operator::FloorDiv
     }
 }
-impl From<OperatorFloorDiv> for Ast {
-    fn from(_: OperatorFloorDiv) -> Self {
-        Operator::FloorDiv.into()
-    }
-}
-impl Node for OperatorFloorDiv {
-    const NAME: &'static str = "FloorDiv";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<Operator> for OperatorFloorDiv {
     #[inline]
     fn eq(&self, other: &Operator) -> bool {
         matches!(other, Operator::FloorDiv)
     }
-}
-
-impl Node for Operator {
-    const NAME: &'static str = "operator";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [unaryop](https://docs.python.org/3/library/ast.html#ast.unaryop)
@@ -2407,15 +1507,7 @@ impl From<UnaryOpInvert> for UnaryOp {
         UnaryOp::Invert
     }
 }
-impl From<UnaryOpInvert> for Ast {
-    fn from(_: UnaryOpInvert) -> Self {
-        UnaryOp::Invert.into()
-    }
-}
-impl Node for UnaryOpInvert {
-    const NAME: &'static str = "Invert";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<UnaryOp> for UnaryOpInvert {
     #[inline]
     fn eq(&self, other: &UnaryOp) -> bool {
@@ -2429,15 +1521,7 @@ impl From<UnaryOpNot> for UnaryOp {
         UnaryOp::Not
     }
 }
-impl From<UnaryOpNot> for Ast {
-    fn from(_: UnaryOpNot) -> Self {
-        UnaryOp::Not.into()
-    }
-}
-impl Node for UnaryOpNot {
-    const NAME: &'static str = "Not";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<UnaryOp> for UnaryOpNot {
     #[inline]
     fn eq(&self, other: &UnaryOp) -> bool {
@@ -2451,15 +1535,7 @@ impl From<UnaryOpUAdd> for UnaryOp {
         UnaryOp::UAdd
     }
 }
-impl From<UnaryOpUAdd> for Ast {
-    fn from(_: UnaryOpUAdd) -> Self {
-        UnaryOp::UAdd.into()
-    }
-}
-impl Node for UnaryOpUAdd {
-    const NAME: &'static str = "UAdd";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<UnaryOp> for UnaryOpUAdd {
     #[inline]
     fn eq(&self, other: &UnaryOp) -> bool {
@@ -2473,25 +1549,12 @@ impl From<UnaryOpUSub> for UnaryOp {
         UnaryOp::USub
     }
 }
-impl From<UnaryOpUSub> for Ast {
-    fn from(_: UnaryOpUSub) -> Self {
-        UnaryOp::USub.into()
-    }
-}
-impl Node for UnaryOpUSub {
-    const NAME: &'static str = "USub";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<UnaryOp> for UnaryOpUSub {
     #[inline]
     fn eq(&self, other: &UnaryOp) -> bool {
         matches!(other, UnaryOp::USub)
     }
-}
-
-impl Node for UnaryOp {
-    const NAME: &'static str = "unaryop";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [cmpop](https://docs.python.org/3/library/ast.html#ast.cmpop)
@@ -2596,15 +1659,7 @@ impl From<CmpOpEq> for CmpOp {
         CmpOp::Eq
     }
 }
-impl From<CmpOpEq> for Ast {
-    fn from(_: CmpOpEq) -> Self {
-        CmpOp::Eq.into()
-    }
-}
-impl Node for CmpOpEq {
-    const NAME: &'static str = "Eq";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpEq {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2618,15 +1673,7 @@ impl From<CmpOpNotEq> for CmpOp {
         CmpOp::NotEq
     }
 }
-impl From<CmpOpNotEq> for Ast {
-    fn from(_: CmpOpNotEq) -> Self {
-        CmpOp::NotEq.into()
-    }
-}
-impl Node for CmpOpNotEq {
-    const NAME: &'static str = "NotEq";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpNotEq {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2640,15 +1687,7 @@ impl From<CmpOpLt> for CmpOp {
         CmpOp::Lt
     }
 }
-impl From<CmpOpLt> for Ast {
-    fn from(_: CmpOpLt) -> Self {
-        CmpOp::Lt.into()
-    }
-}
-impl Node for CmpOpLt {
-    const NAME: &'static str = "Lt";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpLt {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2662,15 +1701,7 @@ impl From<CmpOpLtE> for CmpOp {
         CmpOp::LtE
     }
 }
-impl From<CmpOpLtE> for Ast {
-    fn from(_: CmpOpLtE) -> Self {
-        CmpOp::LtE.into()
-    }
-}
-impl Node for CmpOpLtE {
-    const NAME: &'static str = "LtE";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpLtE {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2684,15 +1715,7 @@ impl From<CmpOpGt> for CmpOp {
         CmpOp::Gt
     }
 }
-impl From<CmpOpGt> for Ast {
-    fn from(_: CmpOpGt) -> Self {
-        CmpOp::Gt.into()
-    }
-}
-impl Node for CmpOpGt {
-    const NAME: &'static str = "Gt";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpGt {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2706,15 +1729,7 @@ impl From<CmpOpGtE> for CmpOp {
         CmpOp::GtE
     }
 }
-impl From<CmpOpGtE> for Ast {
-    fn from(_: CmpOpGtE) -> Self {
-        CmpOp::GtE.into()
-    }
-}
-impl Node for CmpOpGtE {
-    const NAME: &'static str = "GtE";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpGtE {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2728,15 +1743,7 @@ impl From<CmpOpIs> for CmpOp {
         CmpOp::Is
     }
 }
-impl From<CmpOpIs> for Ast {
-    fn from(_: CmpOpIs) -> Self {
-        CmpOp::Is.into()
-    }
-}
-impl Node for CmpOpIs {
-    const NAME: &'static str = "Is";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpIs {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2750,15 +1757,7 @@ impl From<CmpOpIsNot> for CmpOp {
         CmpOp::IsNot
     }
 }
-impl From<CmpOpIsNot> for Ast {
-    fn from(_: CmpOpIsNot) -> Self {
-        CmpOp::IsNot.into()
-    }
-}
-impl Node for CmpOpIsNot {
-    const NAME: &'static str = "IsNot";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpIsNot {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2772,15 +1771,7 @@ impl From<CmpOpIn> for CmpOp {
         CmpOp::In
     }
 }
-impl From<CmpOpIn> for Ast {
-    fn from(_: CmpOpIn) -> Self {
-        CmpOp::In.into()
-    }
-}
-impl Node for CmpOpIn {
-    const NAME: &'static str = "In";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpIn {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
@@ -2794,25 +1785,12 @@ impl From<CmpOpNotIn> for CmpOp {
         CmpOp::NotIn
     }
 }
-impl From<CmpOpNotIn> for Ast {
-    fn from(_: CmpOpNotIn) -> Self {
-        CmpOp::NotIn.into()
-    }
-}
-impl Node for CmpOpNotIn {
-    const NAME: &'static str = "NotIn";
-    const FIELD_NAMES: &'static [&'static str] = &[];
-}
+
 impl std::cmp::PartialEq<CmpOp> for CmpOpNotIn {
     #[inline]
     fn eq(&self, other: &CmpOp) -> bool {
         matches!(other, CmpOp::NotIn)
     }
-}
-
-impl Node for CmpOp {
-    const NAME: &'static str = "cmpop";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [comprehension](https://docs.python.org/3/library/ast.html#ast.comprehension)
@@ -2823,11 +1801,6 @@ pub struct Comprehension {
     pub iter: Expr,
     pub ifs: Vec<Expr>,
     pub is_async: bool,
-}
-
-impl Node for Comprehension {
-    const NAME: &'static str = "comprehension";
-    const FIELD_NAMES: &'static [&'static str] = &["target", "iter", "ifs", "is_async"];
 }
 
 /// See also [excepthandler](https://docs.python.org/3/library/ast.html#ast.excepthandler)
@@ -2845,24 +1818,10 @@ pub struct ExceptHandlerExceptHandler {
     pub body: Vec<Stmt>,
 }
 
-impl Node for ExceptHandlerExceptHandler {
-    const NAME: &'static str = "ExceptHandler";
-    const FIELD_NAMES: &'static [&'static str] = &["type", "name", "body"];
-}
 impl From<ExceptHandlerExceptHandler> for ExceptHandler {
     fn from(payload: ExceptHandlerExceptHandler) -> Self {
         ExceptHandler::ExceptHandler(payload)
     }
-}
-impl From<ExceptHandlerExceptHandler> for Ast {
-    fn from(payload: ExceptHandlerExceptHandler) -> Self {
-        ExceptHandler::from(payload).into()
-    }
-}
-
-impl Node for ExceptHandler {
-    const NAME: &'static str = "excepthandler";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [arguments](https://docs.python.org/3/library/ast.html#ast.arguments)
@@ -2878,19 +1837,6 @@ pub struct PythonArguments {
     pub defaults: Vec<Expr>,
 }
 
-impl Node for PythonArguments {
-    const NAME: &'static str = "arguments";
-    const FIELD_NAMES: &'static [&'static str] = &[
-        "posonlyargs",
-        "args",
-        "vararg",
-        "kwonlyargs",
-        "kw_defaults",
-        "kwarg",
-        "defaults",
-    ];
-}
-
 /// See also [arg](https://docs.python.org/3/library/ast.html#ast.arg)
 #[derive(Clone, Debug, PartialEq)]
 pub struct Arg {
@@ -2898,11 +1844,6 @@ pub struct Arg {
     pub arg: Identifier,
     pub annotation: Option<Box<Expr>>,
     pub type_comment: Option<String>,
-}
-
-impl Node for Arg {
-    const NAME: &'static str = "arg";
-    const FIELD_NAMES: &'static [&'static str] = &["arg", "annotation", "type_comment"];
 }
 
 /// See also [keyword](https://docs.python.org/3/library/ast.html#ast.keyword)
@@ -2913,22 +1854,12 @@ pub struct Keyword {
     pub value: Expr,
 }
 
-impl Node for Keyword {
-    const NAME: &'static str = "keyword";
-    const FIELD_NAMES: &'static [&'static str] = &["arg", "value"];
-}
-
 /// See also [alias](https://docs.python.org/3/library/ast.html#ast.alias)
 #[derive(Clone, Debug, PartialEq)]
 pub struct Alias {
     pub range: TextRange,
     pub name: Identifier,
     pub asname: Option<Identifier>,
-}
-
-impl Node for Alias {
-    const NAME: &'static str = "alias";
-    const FIELD_NAMES: &'static [&'static str] = &["name", "asname"];
 }
 
 /// See also [withitem](https://docs.python.org/3/library/ast.html#ast.withitem)
@@ -2939,11 +1870,6 @@ pub struct WithItem {
     pub optional_vars: Option<Box<Expr>>,
 }
 
-impl Node for WithItem {
-    const NAME: &'static str = "withitem";
-    const FIELD_NAMES: &'static [&'static str] = &["context_expr", "optional_vars"];
-}
-
 /// See also [match_case](https://docs.python.org/3/library/ast.html#ast.match_case)
 #[derive(Clone, Debug, PartialEq)]
 pub struct MatchCase {
@@ -2951,11 +1877,6 @@ pub struct MatchCase {
     pub pattern: Pattern,
     pub guard: Option<Box<Expr>>,
     pub body: Vec<Stmt>,
-}
-
-impl Node for MatchCase {
-    const NAME: &'static str = "match_case";
-    const FIELD_NAMES: &'static [&'static str] = &["pattern", "guard", "body"];
 }
 
 /// See also [pattern](https://docs.python.org/3/library/ast.html#ast.pattern)
@@ -2978,18 +1899,9 @@ pub struct PatternMatchValue {
     pub value: Box<Expr>,
 }
 
-impl Node for PatternMatchValue {
-    const NAME: &'static str = "MatchValue";
-    const FIELD_NAMES: &'static [&'static str] = &["value"];
-}
 impl From<PatternMatchValue> for Pattern {
     fn from(payload: PatternMatchValue) -> Self {
         Pattern::MatchValue(payload)
-    }
-}
-impl From<PatternMatchValue> for Ast {
-    fn from(payload: PatternMatchValue) -> Self {
-        Pattern::from(payload).into()
     }
 }
 
@@ -3000,18 +1912,9 @@ pub struct PatternMatchSingleton {
     pub value: Constant,
 }
 
-impl Node for PatternMatchSingleton {
-    const NAME: &'static str = "MatchSingleton";
-    const FIELD_NAMES: &'static [&'static str] = &["value"];
-}
 impl From<PatternMatchSingleton> for Pattern {
     fn from(payload: PatternMatchSingleton) -> Self {
         Pattern::MatchSingleton(payload)
-    }
-}
-impl From<PatternMatchSingleton> for Ast {
-    fn from(payload: PatternMatchSingleton) -> Self {
-        Pattern::from(payload).into()
     }
 }
 
@@ -3022,18 +1925,9 @@ pub struct PatternMatchSequence {
     pub patterns: Vec<Pattern>,
 }
 
-impl Node for PatternMatchSequence {
-    const NAME: &'static str = "MatchSequence";
-    const FIELD_NAMES: &'static [&'static str] = &["patterns"];
-}
 impl From<PatternMatchSequence> for Pattern {
     fn from(payload: PatternMatchSequence) -> Self {
         Pattern::MatchSequence(payload)
-    }
-}
-impl From<PatternMatchSequence> for Ast {
-    fn from(payload: PatternMatchSequence) -> Self {
-        Pattern::from(payload).into()
     }
 }
 
@@ -3046,18 +1940,9 @@ pub struct PatternMatchMapping {
     pub rest: Option<Identifier>,
 }
 
-impl Node for PatternMatchMapping {
-    const NAME: &'static str = "MatchMapping";
-    const FIELD_NAMES: &'static [&'static str] = &["keys", "patterns", "rest"];
-}
 impl From<PatternMatchMapping> for Pattern {
     fn from(payload: PatternMatchMapping) -> Self {
         Pattern::MatchMapping(payload)
-    }
-}
-impl From<PatternMatchMapping> for Ast {
-    fn from(payload: PatternMatchMapping) -> Self {
-        Pattern::from(payload).into()
     }
 }
 
@@ -3071,18 +1956,9 @@ pub struct PatternMatchClass {
     pub kwd_patterns: Vec<Pattern>,
 }
 
-impl Node for PatternMatchClass {
-    const NAME: &'static str = "MatchClass";
-    const FIELD_NAMES: &'static [&'static str] = &["cls", "patterns", "kwd_attrs", "kwd_patterns"];
-}
 impl From<PatternMatchClass> for Pattern {
     fn from(payload: PatternMatchClass) -> Self {
         Pattern::MatchClass(payload)
-    }
-}
-impl From<PatternMatchClass> for Ast {
-    fn from(payload: PatternMatchClass) -> Self {
-        Pattern::from(payload).into()
     }
 }
 
@@ -3093,18 +1969,9 @@ pub struct PatternMatchStar {
     pub name: Option<Identifier>,
 }
 
-impl Node for PatternMatchStar {
-    const NAME: &'static str = "MatchStar";
-    const FIELD_NAMES: &'static [&'static str] = &["name"];
-}
 impl From<PatternMatchStar> for Pattern {
     fn from(payload: PatternMatchStar) -> Self {
         Pattern::MatchStar(payload)
-    }
-}
-impl From<PatternMatchStar> for Ast {
-    fn from(payload: PatternMatchStar) -> Self {
-        Pattern::from(payload).into()
     }
 }
 
@@ -3116,18 +1983,9 @@ pub struct PatternMatchAs {
     pub name: Option<Identifier>,
 }
 
-impl Node for PatternMatchAs {
-    const NAME: &'static str = "MatchAs";
-    const FIELD_NAMES: &'static [&'static str] = &["pattern", "name"];
-}
 impl From<PatternMatchAs> for Pattern {
     fn from(payload: PatternMatchAs) -> Self {
         Pattern::MatchAs(payload)
-    }
-}
-impl From<PatternMatchAs> for Ast {
-    fn from(payload: PatternMatchAs) -> Self {
-        Pattern::from(payload).into()
     }
 }
 
@@ -3138,24 +1996,10 @@ pub struct PatternMatchOr {
     pub patterns: Vec<Pattern>,
 }
 
-impl Node for PatternMatchOr {
-    const NAME: &'static str = "MatchOr";
-    const FIELD_NAMES: &'static [&'static str] = &["patterns"];
-}
 impl From<PatternMatchOr> for Pattern {
     fn from(payload: PatternMatchOr) -> Self {
         Pattern::MatchOr(payload)
     }
-}
-impl From<PatternMatchOr> for Ast {
-    fn from(payload: PatternMatchOr) -> Self {
-        Pattern::from(payload).into()
-    }
-}
-
-impl Node for Pattern {
-    const NAME: &'static str = "pattern";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [type_ignore](https://docs.python.org/3/library/ast.html#ast.type_ignore)
@@ -3172,24 +2016,10 @@ pub struct TypeIgnoreTypeIgnore {
     pub tag: String,
 }
 
-impl Node for TypeIgnoreTypeIgnore {
-    const NAME: &'static str = "TypeIgnore";
-    const FIELD_NAMES: &'static [&'static str] = &["lineno", "tag"];
-}
 impl From<TypeIgnoreTypeIgnore> for TypeIgnore {
     fn from(payload: TypeIgnoreTypeIgnore) -> Self {
         TypeIgnore::TypeIgnore(payload)
     }
-}
-impl From<TypeIgnoreTypeIgnore> for Ast {
-    fn from(payload: TypeIgnoreTypeIgnore) -> Self {
-        TypeIgnore::from(payload).into()
-    }
-}
-
-impl Node for TypeIgnore {
-    const NAME: &'static str = "type_ignore";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [type_param](https://docs.python.org/3/library/ast.html#ast.type_param)
@@ -3208,18 +2038,9 @@ pub struct TypeParamTypeVar {
     pub bound: Option<Box<Expr>>,
 }
 
-impl Node for TypeParamTypeVar {
-    const NAME: &'static str = "TypeVar";
-    const FIELD_NAMES: &'static [&'static str] = &["name", "bound"];
-}
 impl From<TypeParamTypeVar> for TypeParam {
     fn from(payload: TypeParamTypeVar) -> Self {
         TypeParam::TypeVar(payload)
-    }
-}
-impl From<TypeParamTypeVar> for Ast {
-    fn from(payload: TypeParamTypeVar) -> Self {
-        TypeParam::from(payload).into()
     }
 }
 
@@ -3230,18 +2051,9 @@ pub struct TypeParamParamSpec {
     pub name: Identifier,
 }
 
-impl Node for TypeParamParamSpec {
-    const NAME: &'static str = "ParamSpec";
-    const FIELD_NAMES: &'static [&'static str] = &["name"];
-}
 impl From<TypeParamParamSpec> for TypeParam {
     fn from(payload: TypeParamParamSpec) -> Self {
         TypeParam::ParamSpec(payload)
-    }
-}
-impl From<TypeParamParamSpec> for Ast {
-    fn from(payload: TypeParamParamSpec) -> Self {
-        TypeParam::from(payload).into()
     }
 }
 
@@ -3252,24 +2064,10 @@ pub struct TypeParamTypeVarTuple {
     pub name: Identifier,
 }
 
-impl Node for TypeParamTypeVarTuple {
-    const NAME: &'static str = "TypeVarTuple";
-    const FIELD_NAMES: &'static [&'static str] = &["name"];
-}
 impl From<TypeParamTypeVarTuple> for TypeParam {
     fn from(payload: TypeParamTypeVarTuple) -> Self {
         TypeParam::TypeVarTuple(payload)
     }
-}
-impl From<TypeParamTypeVarTuple> for Ast {
-    fn from(payload: TypeParamTypeVarTuple) -> Self {
-        TypeParam::from(payload).into()
-    }
-}
-
-impl Node for TypeParam {
-    const NAME: &'static str = "type_param";
-    const FIELD_NAMES: &'static [&'static str] = &[];
 }
 
 /// See also [decorator](https://docs.python.org/3/library/ast.html#ast.decorator)
@@ -3277,11 +2075,6 @@ impl Node for TypeParam {
 pub struct Decorator {
     pub range: TextRange,
     pub expression: Expr,
-}
-
-impl Node for Decorator {
-    const NAME: &'static str = "decorator";
-    const FIELD_NAMES: &'static [&'static str] = &["expression"];
 }
 
 /// An alternative type of AST `arguments`. This is parser-friendly and human-friendly definition of function arguments.
@@ -3304,12 +2097,6 @@ pub struct Arguments {
     pub kwarg: Option<Box<Arg>>,
 }
 
-impl Node for Arguments {
-    const NAME: &'static str = "alt:arguments";
-    const FIELD_NAMES: &'static [&'static str] =
-        &["posonlyargs", "args", "vararg", "kwonlyargs", "kwarg"];
-}
-
 /// An alternative type of AST `arg`. This is used for each function argument that might have a default value.
 /// Used by `Arguments` original type.
 ///
@@ -3320,11 +2107,6 @@ pub struct ArgWithDefault {
     pub range: TextRange,
     pub def: Arg,
     pub default: Option<Box<Expr>>,
-}
-
-impl Node for ArgWithDefault {
-    const NAME: &'static str = "arg_with_default";
-    const FIELD_NAMES: &'static [&'static str] = &["def", "default"];
 }
 
 pub type Suite = Vec<Stmt>;
@@ -3495,5 +2277,735 @@ impl MagicKind {
             MagicKind::ShCap | MagicKind::Magic2 | MagicKind::Help2 => 2,
         };
         len.into()
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct Identifier {
+    id: String,
+    range: TextRange,
+}
+
+impl Identifier {
+    #[inline]
+    pub fn new(id: impl Into<String>, range: TextRange) -> Self {
+        Self {
+            id: id.into(),
+            range,
+        }
+    }
+}
+
+impl Identifier {
+    #[inline]
+    pub fn as_str(&self) -> &str {
+        self.id.as_str()
+    }
+}
+
+impl PartialEq<str> for Identifier {
+    #[inline]
+    fn eq(&self, other: &str) -> bool {
+        self.id == other
+    }
+}
+
+impl PartialEq<String> for Identifier {
+    #[inline]
+    fn eq(&self, other: &String) -> bool {
+        &self.id == other
+    }
+}
+
+impl std::ops::Deref for Identifier {
+    type Target = str;
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        self.id.as_str()
+    }
+}
+
+impl AsRef<str> for Identifier {
+    #[inline]
+    fn as_ref(&self) -> &str {
+        self.id.as_str()
+    }
+}
+
+impl AsRef<String> for Identifier {
+    #[inline]
+    fn as_ref(&self) -> &String {
+        &self.id
+    }
+}
+
+impl std::fmt::Display for Identifier {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(&self.id, f)
+    }
+}
+
+impl From<Identifier> for String {
+    #[inline]
+    fn from(identifier: Identifier) -> String {
+        identifier.id
+    }
+}
+
+impl Ranged for Identifier {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Int(u32);
+
+impl Int {
+    pub fn new(i: u32) -> Self {
+        Self(i)
+    }
+    pub fn to_u32(&self) -> u32 {
+        self.0
+    }
+    pub fn to_usize(&self) -> usize {
+        self.0 as _
+    }
+}
+
+impl std::cmp::PartialEq<u32> for Int {
+    #[inline]
+    fn eq(&self, other: &u32) -> bool {
+        self.0 == *other
+    }
+}
+
+impl std::cmp::PartialEq<usize> for Int {
+    #[inline]
+    fn eq(&self, other: &usize) -> bool {
+        self.0 as usize == *other
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, is_macro::Is)]
+pub enum Constant {
+    None,
+    Bool(bool),
+    Str(String),
+    Bytes(Vec<u8>),
+    Int(BigInt),
+    Float(f64),
+    Complex { real: f64, imag: f64 },
+    Ellipsis,
+}
+
+impl Constant {
+    pub fn is_true(self) -> bool {
+        self.bool().map_or(false, |b| b)
+    }
+    pub fn is_false(self) -> bool {
+        self.bool().map_or(false, |b| !b)
+    }
+    pub fn complex(self) -> Option<(f64, f64)> {
+        match self {
+            Constant::Complex { real, imag } => Some((real, imag)),
+            _ => None,
+        }
+    }
+}
+
+impl From<String> for Constant {
+    fn from(s: String) -> Constant {
+        Self::Str(s)
+    }
+}
+impl From<Vec<u8>> for Constant {
+    fn from(b: Vec<u8>) -> Constant {
+        Self::Bytes(b)
+    }
+}
+impl From<bool> for Constant {
+    fn from(b: bool) -> Constant {
+        Self::Bool(b)
+    }
+}
+impl From<BigInt> for Constant {
+    fn from(i: BigInt) -> Constant {
+        Self::Int(i)
+    }
+}
+
+#[cfg(feature = "rustpython-literal")]
+impl std::fmt::Display for Constant {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Constant::None => f.pad("None"),
+            Constant::Bool(b) => f.pad(if *b { "True" } else { "False" }),
+            Constant::Str(s) => rustpython_literal::escape::UnicodeEscape::new_repr(s.as_str())
+                .str_repr()
+                .write(f),
+            Constant::Bytes(b) => {
+                let escape = rustpython_literal::escape::AsciiEscape::new_repr(b);
+                let repr = escape.bytes_repr().to_string().unwrap();
+                f.pad(&repr)
+            }
+            Constant::Int(i) => std::fmt::Display::fmt(&i, f),
+            Constant::Float(fp) => f.pad(&rustpython_literal::float::to_string(*fp)),
+            Constant::Complex { real, imag } => {
+                if *real == 0.0 {
+                    write!(f, "{imag}j")
+                } else {
+                    write!(f, "({real}{imag:+}j)")
+                }
+            }
+            Constant::Ellipsis => f.pad("..."),
+        }
+    }
+}
+
+impl Ranged for crate::nodes::ModModule {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ModInteractive {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ModExpression {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ModFunctionType {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::Mod {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::Module(node) => node.range(),
+            Self::Interactive(node) => node.range(),
+            Self::Expression(node) => node.range(),
+            Self::FunctionType(node) => node.range(),
+        }
+    }
+}
+
+impl Ranged for crate::nodes::StmtFunctionDef {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtAsyncFunctionDef {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtClassDef {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtReturn {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtDelete {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtTypeAlias {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtAssign {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtAugAssign {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtAnnAssign {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtFor {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtAsyncFor {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtWhile {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtIf {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ElifElseClause {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtWith {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtAsyncWith {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtMatch {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtRaise {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtTry {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtTryStar {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtAssert {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtImport {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtImportFrom {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtGlobal {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtNonlocal {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtExpr {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtPass {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtBreak {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::StmtContinue {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for StmtLineMagic {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::Stmt {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::FunctionDef(node) => node.range(),
+            Self::AsyncFunctionDef(node) => node.range(),
+            Self::ClassDef(node) => node.range(),
+            Self::Return(node) => node.range(),
+            Self::Delete(node) => node.range(),
+            Self::TypeAlias(node) => node.range(),
+            Self::Assign(node) => node.range(),
+            Self::AugAssign(node) => node.range(),
+            Self::AnnAssign(node) => node.range(),
+            Self::For(node) => node.range(),
+            Self::AsyncFor(node) => node.range(),
+            Self::While(node) => node.range(),
+            Self::If(node) => node.range(),
+            Self::With(node) => node.range(),
+            Self::AsyncWith(node) => node.range(),
+            Self::Match(node) => node.range(),
+            Self::Raise(node) => node.range(),
+            Self::Try(node) => node.range(),
+            Self::TryStar(node) => node.range(),
+            Self::Assert(node) => node.range(),
+            Self::Import(node) => node.range(),
+            Self::ImportFrom(node) => node.range(),
+            Self::Global(node) => node.range(),
+            Self::Nonlocal(node) => node.range(),
+            Self::Expr(node) => node.range(),
+            Self::Pass(node) => node.range(),
+            Self::Break(node) => node.range(),
+            Self::Continue(node) => node.range(),
+            Stmt::LineMagic(node) => node.range(),
+        }
+    }
+}
+
+impl Ranged for crate::nodes::ExprBoolOp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprNamedExpr {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprBinOp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprUnaryOp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprLambda {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprIfExp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprDict {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprSet {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprListComp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprSetComp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprDictComp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprGeneratorExp {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprAwait {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprYield {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprYieldFrom {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprCompare {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprCall {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprFormattedValue {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprJoinedStr {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprConstant {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprAttribute {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprSubscript {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprStarred {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprName {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprList {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprTuple {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExprSlice {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for ExprLineMagic {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::Expr {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::BoolOp(node) => node.range(),
+            Self::NamedExpr(node) => node.range(),
+            Self::BinOp(node) => node.range(),
+            Self::UnaryOp(node) => node.range(),
+            Self::Lambda(node) => node.range(),
+            Self::IfExp(node) => node.range(),
+            Self::Dict(node) => node.range(),
+            Self::Set(node) => node.range(),
+            Self::ListComp(node) => node.range(),
+            Self::SetComp(node) => node.range(),
+            Self::DictComp(node) => node.range(),
+            Self::GeneratorExp(node) => node.range(),
+            Self::Await(node) => node.range(),
+            Self::Yield(node) => node.range(),
+            Self::YieldFrom(node) => node.range(),
+            Self::Compare(node) => node.range(),
+            Self::Call(node) => node.range(),
+            Self::FormattedValue(node) => node.range(),
+            Self::JoinedStr(node) => node.range(),
+            Self::Constant(node) => node.range(),
+            Self::Attribute(node) => node.range(),
+            Self::Subscript(node) => node.range(),
+            Self::Starred(node) => node.range(),
+            Self::Name(node) => node.range(),
+            Self::List(node) => node.range(),
+            Self::Tuple(node) => node.range(),
+            Self::Slice(node) => node.range(),
+            Expr::LineMagic(node) => node.range(),
+        }
+    }
+}
+
+impl Ranged for crate::nodes::Comprehension {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ExceptHandlerExceptHandler {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::ExceptHandler {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::ExceptHandler(node) => node.range(),
+        }
+    }
+}
+
+impl Ranged for crate::nodes::PythonArguments {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::Arg {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::Keyword {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::Alias {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::WithItem {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::MatchCase {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchValue {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchSingleton {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchSequence {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchMapping {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchClass {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchStar {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchAs {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::PatternMatchOr {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::Pattern {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::MatchValue(node) => node.range(),
+            Self::MatchSingleton(node) => node.range(),
+            Self::MatchSequence(node) => node.range(),
+            Self::MatchMapping(node) => node.range(),
+            Self::MatchClass(node) => node.range(),
+            Self::MatchStar(node) => node.range(),
+            Self::MatchAs(node) => node.range(),
+            Self::MatchOr(node) => node.range(),
+        }
+    }
+}
+
+impl Ranged for crate::nodes::TypeIgnoreTypeIgnore {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::TypeIgnore {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::TypeIgnore(node) => node.range(),
+        }
+    }
+}
+impl Ranged for crate::nodes::TypeParamTypeVar {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::TypeParamTypeVarTuple {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::TypeParamParamSpec {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::TypeParam {
+    fn range(&self) -> TextRange {
+        match self {
+            Self::TypeVar(node) => node.range(),
+            Self::TypeVarTuple(node) => node.range(),
+            Self::ParamSpec(node) => node.range(),
+        }
+    }
+}
+impl Ranged for crate::nodes::Decorator {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::Arguments {
+    fn range(&self) -> TextRange {
+        self.range
+    }
+}
+impl Ranged for crate::nodes::ArgWithDefault {
+    fn range(&self) -> TextRange {
+        self.range
     }
 }
